@@ -35,9 +35,16 @@ public class UsuarioService {
 
     public Usuario update(Integer id, Usuario usuario) {
         Usuario usuarioUpdate = findById( id );
-
+        //Para pegar a data e hora automatica
+        usuarioUpdate.setData_criacao( LocalDateTime.now() );
         if (usuario.getNome() != null && !usuario.getNome().isBlank()) {
             usuarioUpdate.setNome( usuario.getNome() );
+        }
+        if (usuario.getEmail() != null && !usuario.getEmail().isBlank()) {
+            usuarioUpdate.setEmail( usuarioUpdate.getEmail() );
+        }
+        if (usuario.getSenha() != null && !usuario.getSenha().isBlank()) {
+            usuarioUpdate.setSenha( usuario.getSenha() );
         }
         if (usuario.getCargo() != null && !usuario.getCargo().isBlank()) {
             usuarioUpdate.setCargo( usuario.getCargo() );
