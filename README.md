@@ -37,6 +37,7 @@ A aplicação foi construída utilizando **Java**, **Spring Boot** e **MySQL** c
 ---
 
 👥 Autores
+
 João Víctor
 
 José
