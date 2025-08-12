@@ -43,7 +43,7 @@ public class HistoricoCompraService {
         novoHistoricoCompra.setTipo_evento(validador(novoHistoricoCompra.getTipo_evento(), antigoHistoricoCompra.getTipo_evento(), this::isValidoString));
         novoHistoricoCompra.setData_evento(validador(novoHistoricoCompra.getData_evento(), antigoHistoricoCompra.getData_evento(), this::isValidoString));
         novoHistoricoCompra.setDescricao(validador(novoHistoricoCompra.getDescricao(), antigoHistoricoCompra.getDescricao(), this::isValidoString));
-        novoHistoricoCompra.setHistoricoId(historicoCompraId);
+        novoHistoricoCompra.setId(historicoCompraId);
 
         return novoHistoricoCompra;
     }

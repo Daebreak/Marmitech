@@ -40,7 +40,7 @@ public class PedidoItemService {
         atualizadoPedidoItem.setPrecoUnitarioPedido(validator(atualizadoPedidoItem.getPrecoUnitarioPedido(), antigPedidoItem.getPrecoUnitarioPedido(), this::isNumeroValido));
         atualizadoPedidoItem.setQuantidade(validator(atualizadoPedidoItem.getQuantidade(), antigPedidoItem.getQuantidade(), this::isNumeroValido));
         atualizadoPedidoItem.setSubtotal(validator(atualizadoPedidoItem.getSubtotal(), antigPedidoItem.getSubtotal(), this::isNumeroValido));
-        atualizadoPedidoItem.setPedidoId(pedidoItemId);
+        atualizadoPedidoItem.setId(pedidoItemId);
         
         return pedidoItemRepository.save(atualizadoPedidoItem);
     }

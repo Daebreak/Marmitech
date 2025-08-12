@@ -18,7 +18,7 @@ public class PedidoItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int pedidoItemId;
+    private int id;
     private int pedidoId;
     private int produtoId;
     private int quantidade;
