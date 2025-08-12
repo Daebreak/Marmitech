@@ -1,4 +1,4 @@
-package Entity;
+package com.marmitech.Marmitech.Entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Data;
@@ -13,5 +13,6 @@ public class pedido_Item {
     int quantidade;
     double preco_unitario_pedido;
     Double subTotal;
+    String detalhe;
 }
 
