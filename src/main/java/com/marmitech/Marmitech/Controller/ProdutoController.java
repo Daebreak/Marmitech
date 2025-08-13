@@ -1,8 +1,9 @@
 package com.marmitech.Marmitech.Controller;
 
-import com.marmitech.Marmitech.Entity.Cliente;
-import com.marmitech.Marmitech.Services.ClienteService;
+import com.marmitech.Marmitech.Entity.Produto;
+import com.marmitech.Marmitech.Services.ProdutoService;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -10,60 +11,60 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @Controller
-@RequestMapping("/api/cliente")
+@RequestMapping("/api/produto")
 @RequiredArgsConstructor
-public class ClienteController {
-    private final ClienteService clienteService;
+public class ProdutoController {
+    private final ProdutoService produtoService;
 
     @PostMapping("/save")
-    public ResponseEntity<Cliente> save(@RequestBody Cliente cliente) {
+    public ResponseEntity<Produto> save(@RequestBody Produto produto) {
         try {
-            var result = clienteService.save( cliente );
+            var result = produtoService.save( produto );
             return new ResponseEntity<>( result, HttpStatus.CREATED );
         } catch (Exception ex) {
-            return new ResponseEntity<>( null, HttpStatus.CREATED );
+            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
         }
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<Cliente>> findAll() {
+    public ResponseEntity<List<Produto>> findAll() {
         try {
-            var result = clienteService.findAll();
-            return new ResponseEntity<>( result, HttpStatus.OK );
-        } catch (Exception ex) {
-            return new ResponseEntity<>( null, HttpStatus.CREATED );
-        }
-    }
-
-    @GetMapping("/findById/{id}")
-    public ResponseEntity<Cliente> findById(@PathVariable Integer id) {
-        try {
-            var result = clienteService.findById( id );
-            return new ResponseEntity<>( result, HttpStatus.FOUND );
-        } catch (Exception ex) {
-            return new ResponseEntity<>( null, HttpStatus.CREATED );
-        }
-    }
-
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Cliente> update(@PathVariable Integer id, @RequestBody Cliente cliente) {
-        try {
-            var result = clienteService.findById( id );
+            var result = produtoService.findAll();
             return new ResponseEntity<>( result, HttpStatus.OK );
         } catch (Exception ex) {
             return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @GetMapping("findById/{id}")
+    public ResponseEntity<Produto> findById(@PathVariable Integer id) {
+        try {
+            var result = produtoService.findById( id );
+            return new ResponseEntity<>( result, HttpStatus.OK );
+        } catch (Exception ex) {
+            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
+        }
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Produto> update(@PathVariable Integer id, @RequestBody Produto produto) {
+        try {
+            var result = produtoService.update( id, produto );
+            return new ResponseEntity<>( result, HttpStatus.OK );
+        } catch (Exception ex) {
+            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
+        }
+    }
+
+    @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         try {
-            clienteService.delete( id );
+            produtoService.delete( id );
             return new ResponseEntity<>( null, HttpStatus.OK );
         } catch (Exception ex) {
             return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
         }
     }
+
 }
