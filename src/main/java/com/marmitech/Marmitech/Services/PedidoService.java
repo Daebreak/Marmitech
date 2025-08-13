@@ -13,9 +13,13 @@ import java.time.LocalDateTime;
 public class PedidoService {
     private final PedidoRepository pedidoRepository;
 
+
     public Pedido save(Pedido pedido) {
-        pedido.setData_pedido( LocalDateTime.now() );
-        return pedidoRepository.save( pedido );
+        if (pedido != null) {
+            pedido.setData_pedido(LocalDateTime.now());
+
+        }
+        return pedidoRepository.save(pedido);
     }
 
     public List<Pedido> findAll() {

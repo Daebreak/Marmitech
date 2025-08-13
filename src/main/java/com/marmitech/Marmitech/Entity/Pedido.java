@@ -21,8 +21,8 @@ public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int pedido_id;
-
     private int cliente_id;
+    private int senha_Pedido;
     private LocalDateTime data_pedido;
     private Double valor_total;
     private String status;
