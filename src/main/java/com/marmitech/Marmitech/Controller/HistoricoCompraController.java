@@ -5,7 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +24,7 @@ public class HistoricoCompraController {
     @Autowired
     private HistoricoCompraService historicoCompraService;
 
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public ResponseEntity<HistoricoCompra> save(@RequestBody HistoricoCompra historicoCompra){
         try {
             return new ResponseEntity<>(historicoCompraService.save(historicoCompra), HttpStatus.CREATED);
@@ -29,7 +33,7 @@ public class HistoricoCompraController {
         }
     }
     
-    @RequestMapping("/update/{historicoCompraId}")
+    @PutMapping("/update/{historicoCompraId}")
     public ResponseEntity<HistoricoCompra> update(@RequestBody HistoricoCompra historicoCompra, @PathVariable int historicoCompraId){
         try {
             return new ResponseEntity<>(historicoCompraService.update(historicoCompra, historicoCompraId), HttpStatus.CREATED);
@@ -39,7 +43,7 @@ public class HistoricoCompraController {
     }
 
     
-    @RequestMapping("/delete/{historicoCompraId}")
+    @DeleteMapping("/delete/{historicoCompraId}")
     public ResponseEntity<String> delete(@PathVariable int historicoCompraId){
         try {
             return new ResponseEntity<>(historicoCompraService.delete(historicoCompraId), HttpStatus.CREATED);
@@ -48,7 +52,7 @@ public class HistoricoCompraController {
         }
     }
         
-    @RequestMapping("/findById/{historicoCompraId}")
+    @GetMapping("/findById/{historicoCompraId}")
     public ResponseEntity<HistoricoCompra> findById(@PathVariable int historicoCompraId){
         try {
             return new ResponseEntity<>(historicoCompraService.findById(historicoCompraId), HttpStatus.CREATED);
@@ -58,7 +62,7 @@ public class HistoricoCompraController {
     }
 
         
-    @RequestMapping("/findAll")
+    @GetMapping("/findAll")
     public ResponseEntity<List<HistoricoCompra>> findAll(){
         try {
             return new ResponseEntity<>(historicoCompraService.findAll(), HttpStatus.CREATED);

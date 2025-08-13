@@ -5,7 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +24,7 @@ public class PedidoItemController {
     @Autowired
     private PedidoItemService pedidoItemService;
 
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public ResponseEntity<PedidoItem> save(@RequestBody PedidoItem pedidoItem){
         try {
             return new ResponseEntity<>(pedidoItemService.save(pedidoItem), HttpStatus.CREATED);
@@ -29,7 +33,7 @@ public class PedidoItemController {
         }
     }
     
-    @RequestMapping("/update/{pedidoItemId}")
+    @PutMapping("/update/{pedidoItemId}")
     public ResponseEntity<PedidoItem> update(@RequestBody PedidoItem pedidoItem, @PathVariable int pedidoItemId){
         try {
             return new ResponseEntity<>(pedidoItemService.update(pedidoItem, pedidoItemId), HttpStatus.CREATED);
@@ -39,7 +43,7 @@ public class PedidoItemController {
     }
 
     
-    @RequestMapping("/delete/{pedidoItemId}")
+    @DeleteMapping("/delete/{pedidoItemId}")
     public ResponseEntity<String> delete(@PathVariable int pedidoItemId){
         try {
             return new ResponseEntity<>(pedidoItemService.delete(pedidoItemId), HttpStatus.CREATED);
@@ -48,7 +52,7 @@ public class PedidoItemController {
         }
     }
         
-    @RequestMapping("/findById/{pedidoItemId}")
+    @GetMapping("/findById/{pedidoItemId}")
     public ResponseEntity<PedidoItem> findById(@PathVariable int pedidoItemId){
         try {
             return new ResponseEntity<>(pedidoItemService.findById(pedidoItemId), HttpStatus.CREATED);
@@ -58,7 +62,7 @@ public class PedidoItemController {
     }
 
         
-    @RequestMapping("/findAll")
+    @GetMapping("/findAll")
     public ResponseEntity<List<PedidoItem>> findAll(){
         try {
             return new ResponseEntity<>(pedidoItemService.findAll(), HttpStatus.CREATED);
