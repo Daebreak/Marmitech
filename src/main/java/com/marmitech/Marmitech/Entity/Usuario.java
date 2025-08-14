@@ -48,5 +48,6 @@ public class Usuario {
     }
 
     @OneToMany(mappedBy = "usuario")
+
     private List<Pedido> pedidos ;
 }
