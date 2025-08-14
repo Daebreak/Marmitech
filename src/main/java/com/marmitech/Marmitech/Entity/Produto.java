@@ -26,8 +26,5 @@ public class Produto {
     private LocalDateTime data_cadastro;
 
 
-    @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn()
-    private Usuario usuario;
 
 }
