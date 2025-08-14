@@ -1,4 +1,4 @@
-package com.marmitech.Marmitech.Service;
+package com.marmitech.Marmitech.Services;
 
 import java.util.List;
 import java.util.function.Predicate;

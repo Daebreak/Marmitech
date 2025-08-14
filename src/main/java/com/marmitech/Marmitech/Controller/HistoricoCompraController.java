@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.marmitech.Marmitech.Entity.HistoricoCompra;
-import com.marmitech.Marmitech.Service.HistoricoCompraService;
+import com.marmitech.Marmitech.Services.HistoricoCompraService;
 
 @RestController
 @RequestMapping("/historicoCompra")
