@@ -2,16 +2,21 @@ package com.marmitech.Marmitech.Services;
 
 import com.marmitech.Marmitech.Entity.Usuario;
 import com.marmitech.Marmitech.Repository.UsuarioRepository;
+import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UsuarioService {
+    @Autowired
     private final UsuarioRepository usuarioRepository;
 
     public Usuario save(Usuario usuario) {
@@ -50,5 +55,13 @@ public class UsuarioService {
             usuarioUpdate.setCargo( usuario.getCargo() );
         }
         return usuarioRepository.save( usuarioUpdate );
+    }
+
+    public void login(String nome, String senha) {
+        boolean existe = usuarioRepository.findByNomeAndSenha( nome, senha ).isPresent();
+
+        if (!existe) {
+            throw new RuntimeException();
+        }
     }
 }

@@ -1,13 +1,12 @@
 package com.marmitech.Marmitech.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.List;
 
 import java.time.LocalDateTime;
 
@@ -19,6 +18,7 @@ import java.time.LocalDateTime;
 public class Pedido {
 
     @Id
+//    @Column(name = "pedido_id_teste")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int pedido_id;
 
@@ -27,4 +27,8 @@ public class Pedido {
     private Double valor_total;
     private String status;
     private String endereco_entrega;
+//
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pedido", cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    private List<HistoricoCompra> historicos;
 }

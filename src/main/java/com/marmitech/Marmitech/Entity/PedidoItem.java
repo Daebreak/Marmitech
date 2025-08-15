@@ -28,7 +28,7 @@ public class PedidoItem {
     public PedidoItem(int pedidoId, int produtoId, int quantidade, int precoUnitarioPedido, int subtotal) {
 
         if (pedidoId <= 0) {
-            throw new IllegalArgumentException("pedidoId não pode ser menor que 1.");
+            throw new IllegalArgumentException("pedido_id não pode ser menor que 1.");
         }
         if (produtoId <= 0) {
             throw new IllegalArgumentException("produtoId não pode ser menor que 1");
