@@ -3,17 +3,21 @@ package com.marmitech.Marmitech.Controller;
 import com.marmitech.Marmitech.Entity.Usuario;
 import com.marmitech.Marmitech.Services.UsuarioService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/api/usuario")
 @RequiredArgsConstructor
 public class UsuarioController {
+
+    @Autowired
     private final UsuarioService usuarioService;
 
     @PostMapping("/save")
@@ -65,4 +69,15 @@ public class UsuarioController {
             return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
         }
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<Void> login(@RequestBody Usuario usuario) {
+        try {
+            usuarioService.login(usuario.getNome(), usuario.getSenha());
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
 }
