@@ -2,7 +2,6 @@ package com.marmitech.Marmitech.Services;
 
 import com.marmitech.Marmitech.Entity.Usuario;
 import com.marmitech.Marmitech.Repository.UsuarioRepository;
-import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 
 @Slf4j
@@ -57,11 +57,27 @@ public class UsuarioService {
         return usuarioRepository.save( usuarioUpdate );
     }
 
-    public void login(String nome, String senha) {
-        boolean existe = usuarioRepository.findByNomeAndSenha( nome, senha ).isPresent();
-
-        if (!existe) {
-            throw new RuntimeException();
+    public void login(String nome, String senha) throws RuntimeException {
+        Optional<Usuario> usuarioOPT = usuarioRepository.findByNomeAndSenha( nome, senha );
+        if (usuarioOPT.isEmpty()) {
+            throw new RuntimeException( "Usuario ou senha invalidos" );
         }
+        Usuario usuario = usuarioOPT.get();
+
+        if (usuario.getCargo().equalsIgnoreCase( "Caixa" )) {
+            System.out.println( "Mudando para tela de caixa" );
+        }
+        if (usuario.getCargo().equalsIgnoreCase( "Cozinha" )) {
+            System.out.println( "Mudando para a tela de cozinha" );
+        }
+
+    }
+
+    public List<Usuario> findByCargo(String cargo) {
+        return usuarioRepository.getByCargo( cargo );
+    }
+
+    public List<Usuario> findByNome(String nome) {
+        return usuarioRepository.findByNome( nome );
     }
 }
