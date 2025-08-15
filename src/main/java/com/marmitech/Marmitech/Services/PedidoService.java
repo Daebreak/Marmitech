@@ -17,21 +17,24 @@ public class PedidoService {
 
 
     public Pedido save(Pedido pedido) {
-        if (pedido.getPedido_id() >0 ) {
-            pedido.setData_pedido(LocalDateTime.now());
-
+        // pega a data e hora fornecida pelo sistema //
+        pedido.setData_pedido(LocalDateTime.now());
+        // id do pedido precisa ser maior qu e 0 //
+        if (pedido.getPedido_id() < 0 ) {
+            throw new IllegalArgumentException("ID invalido");
         }
-        if (pedido.getCliente_id() >= 0){
-
+        // id do cliente precias ser  maior que 0 //
+        if (pedido.getCliente_id() < 0) {
+        throw new IllegalArgumentException("ID invalido");
         }
         if (pedido.getData_pedido() == null) {
-
+            throw new IllegalArgumentException("Data do pedido não pode ser nulo");
         }
         if (pedido.getValor_total() == null){
-
+            throw new IllegalArgumentException("O valor não pode ser nulo ");
         }
         if (pedido.getStatus() == null){
-
+            throw new IllegalArgumentException("Status nao pode ser nulo");
         }
         if (pedido.getEndereco_entrega() == null){
 
