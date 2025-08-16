@@ -10,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
 public class Usuario {
 
     @Id
@@ -20,7 +21,6 @@ public class Usuario {
     private String senha;
     private String cargo;
     private LocalDateTime data_criacao;
-
 
 
     public Usuario(int usuarioId, String nome, String email, String cargo, LocalDateTime data_criacao) {
@@ -47,7 +47,7 @@ public class Usuario {
         this.data_criacao = data_criacao;
     }
 
-    @OneToMany(mappedBy = "usuario")
+   // @OneToMany(mappedBy = "usuario")
 
-    private List<Pedido> pedidos ;
+    //private List<Pedido> pedidos ;
 }

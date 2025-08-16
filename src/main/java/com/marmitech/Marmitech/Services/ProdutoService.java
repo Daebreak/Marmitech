@@ -36,7 +36,7 @@ public class ProdutoService {
         Produto produtoUpdate = findById( id );
         produtoUpdate.setData_cadastro( LocalDateTime.now() );
         if (produto.getSku() != null) {
-            produtoUpdate.setProduto_id( produto.getUsuario_id() );
+           // produtoUpdate.setProduto_id( produto.getUsuario_id() );
         }
         if (produto.getNome() != null || produto.getNome().isBlank()) {
             produtoUpdate.setNome( produto.getNome() );

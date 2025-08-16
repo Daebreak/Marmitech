@@ -5,7 +5,7 @@ import com.marmitech.Marmitech.Services.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+//import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UsuarioController {
     private final UsuarioService usuarioService;
+
 
     @PostMapping("/save")
     public ResponseEntity<Usuario> save(@RequestBody Usuario usuario) {
