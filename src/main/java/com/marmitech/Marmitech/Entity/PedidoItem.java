@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,34 +23,17 @@ public class PedidoItem {
     private int id;
     private int pedidoId;
     private int produtoId;
+
+    @NotNull
+    @NotBlank(message = "quantidade não pode ser null ou vazio")
     private int quantidade;
+
+    @NotNull
+    @NotBlank(message = "precoUnitarioPedido não pode ser null ou vazio")
     private int precoUnitarioPedido;
+
+    @NotNull
+    @NotBlank(message = "subTotal não pode ser null ou vazio")
     private int subtotal;
 
-    public PedidoItem(int pedidoId, int produtoId, int quantidade, int precoUnitarioPedido, int subtotal) {
-
-        if (pedidoId <= 0) {
-            throw new IllegalArgumentException("pedido_id não pode ser menor que 1.");
-        }
-        if (produtoId <= 0) {
-            throw new IllegalArgumentException("produtoId não pode ser menor que 1");
-        }
-        if (quantidade <= 0) {
-            throw new IllegalArgumentException("quantidade não pode ser menor que 1.");
-        }
-        if (precoUnitarioPedido < 0) {
-            throw new IllegalArgumentException("precoUnitarioPedido não pode ser menor que 1.");
-        }
-        if (subtotal < 0) {
-            throw new IllegalArgumentException("subtotal não pode ser menor que 1.");
-        }
-
-        this.pedidoId = pedidoId;
-        this.produtoId = produtoId;
-        this.quantidade = quantidade;
-        this.precoUnitarioPedido = precoUnitarioPedido;
-        this.subtotal = subtotal;
-    }
-
-    
 }

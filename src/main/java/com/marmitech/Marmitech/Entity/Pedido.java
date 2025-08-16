@@ -2,6 +2,8 @@ package com.marmitech.Marmitech.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,17 +20,27 @@ import java.time.LocalDateTime;
 public class Pedido {
 
     @Id
-//    @Column(name = "pedido_id_teste")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int pedido_id;
 
     private int cliente_id;
+
     private LocalDateTime data_pedido;
+
+    @NotNull
+    @NotBlank(message = "valor_total não pode ser null ou vazio")
     private Double valor_total;
+
+    @NotNull
+    @NotBlank(message = "status não pode ser null ou vazio")
     private String status;
+
+    @NotNull
+    @NotBlank(message = "endereco_entrega não pode ser null ou vazio")
     private String endereco_entrega;
-//
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pedido", cascade = CascadeType.ALL)
-//    @JsonIgnore
-//    private List<HistoricoCompra> historicos;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    @JsonIgnore
+    private Usuario usuarios;
 }

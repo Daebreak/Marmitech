@@ -2,6 +2,7 @@ package com.marmitech.Marmitech.Controller;
 
 import com.marmitech.Marmitech.Entity.Cliente;
 import com.marmitech.Marmitech.Services.ClienteService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class ClienteController {
     private final ClienteService clienteService;
 
     @PostMapping("/save")
-    public ResponseEntity<Cliente> save(@RequestBody Cliente cliente) {
+    public ResponseEntity<Cliente> save(@RequestBody @Valid Cliente cliente) {
         try {
             var result = clienteService.save( cliente );
             return new ResponseEntity<>( result, HttpStatus.CREATED );

@@ -2,6 +2,7 @@ package com.marmitech.Marmitech.Controller;
 
 import com.marmitech.Marmitech.Entity.Produto;
 import com.marmitech.Marmitech.Services.ProdutoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ public class ProdutoController {
     private final ProdutoService produtoService;
 
     @PostMapping("/save")
-    public ResponseEntity<Produto> save(@RequestBody Produto produto) {
+    public ResponseEntity<Produto> save(@RequestBody @Valid Produto produto) {
         try {
             var result = produtoService.save( produto );
             return new ResponseEntity<>( result, HttpStatus.CREATED );
