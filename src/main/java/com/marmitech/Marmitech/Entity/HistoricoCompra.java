@@ -33,8 +33,7 @@ public class HistoricoCompra {
     @NotBlank(message = "descricao não pode ser null ou vazio")
     private String descricao;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "pedido_id")
-    @JsonIgnore
     private Pedido pedido;
 }

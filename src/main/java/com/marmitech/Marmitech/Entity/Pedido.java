@@ -28,8 +28,6 @@ public class Pedido {
 
     private LocalDateTime data_pedido;
 
-    @NotNull
-    @NotBlank(message = "valor_total não pode ser null ou vazio")
     private Double valor_total;
 
     @NotNull
@@ -48,6 +46,5 @@ public class Pedido {
 
     //Pedido que sera atrelado ao historico
     @OneToMany(mappedBy = "pedido")
-    @JsonIgnore
     private List<HistoricoCompra> historicos;
 }

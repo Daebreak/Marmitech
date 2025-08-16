@@ -20,7 +20,7 @@ public class HistoricoCompraController {
     private HistoricoCompraService historicoCompraService;
 
     @PostMapping("/save")
-    public ResponseEntity<HistoricoCompra> save(@RequestBody @PathVariable @Valid HistoricoCompra historicoCompra){
+    public ResponseEntity<HistoricoCompra> save(@RequestBody @Valid HistoricoCompra historicoCompra){
         try {
             return new ResponseEntity<>(historicoCompraService.save(historicoCompra), HttpStatus.CREATED);
         } catch (Exception e) {
