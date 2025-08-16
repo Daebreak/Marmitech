@@ -39,8 +39,9 @@ public class Pedido {
     @NotBlank(message = "endereco_entrega não pode ser null ou vazio")
     private String endereco_entrega;
 
+    //Pedido que sera atrelado ao usuario
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     @JsonIgnore
-    private Usuario usuarios;
+    private Usuario usuario;
 }
