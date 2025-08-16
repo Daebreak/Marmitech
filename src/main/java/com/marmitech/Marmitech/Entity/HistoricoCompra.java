@@ -1,5 +1,6 @@
 package com.marmitech.Marmitech.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -34,5 +35,6 @@ public class HistoricoCompra {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pedido_id")
+    @JsonIgnore
     private Pedido pedido;
 }

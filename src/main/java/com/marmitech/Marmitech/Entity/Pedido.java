@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.util.List;
 
 import java.time.LocalDateTime;
@@ -44,4 +45,9 @@ public class Pedido {
     @JoinColumn(name = "usuario_id")
     @JsonIgnore
     private Usuario usuario;
+
+    //Pedido que sera atrelado ao historico
+    @OneToMany(mappedBy = "pedido")
+    @JsonIgnore
+    private List<HistoricoCompra> historicos;
 }
