@@ -18,7 +18,7 @@ public class HistoricoCompra {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
     private int pedidoId;
     private int clienteId;
     private String data_evento;

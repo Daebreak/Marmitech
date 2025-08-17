@@ -19,7 +19,7 @@ public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long cliente_id;
+    private int cliente_id;
 
     private String nome;
     private String email;
@@ -55,6 +55,5 @@ public class Cliente {
         this.data_cadastro = data_cadastro;
 
     }
-@OneToMany(mappedBy = "cliente")
-   private List<Pedido> pedidos;
+
 }
