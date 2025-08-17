@@ -22,7 +22,7 @@ public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int cliente_id;
+    private int clienteId;
 
     @NotNull
     @NotBlank(message = "nome não pode ser null ou vazio")
@@ -38,12 +38,12 @@ public class Cliente {
 
     @NotNull
     @NotBlank(message = "cpf_cnpj não pode ser null ou vazio")
-    private String cpf_cnpj;
+    private String cpfCnpj;
 
     @NotNull
     @NotBlank(message = "endereco não pode ser null ou vazio")
     private String endereco;
 
-    private LocalDateTime data_cadastro;
+    private LocalDateTime dataCadastro;
 
 }
