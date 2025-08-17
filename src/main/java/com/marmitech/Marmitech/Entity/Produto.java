@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int produto_id;
+   private long produto_id;
     private String sku;
     private String nome;
     private String descricao;
@@ -24,7 +24,6 @@ public class Produto {
     private String categoria;
 
     private LocalDateTime data_cadastro;
-
 
 
 }

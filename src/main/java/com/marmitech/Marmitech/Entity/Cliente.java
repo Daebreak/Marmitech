@@ -1,15 +1,14 @@
 package com.marmitech.Marmitech.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,7 +19,7 @@ public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int cliente_id;
+    private long cliente_id;
 
     private String nome;
     private String email;
@@ -56,4 +55,6 @@ public class Cliente {
         this.data_cadastro = data_cadastro;
 
     }
+@OneToMany(mappedBy = "cliente")
+   private List<Pedido> pedidos;
 }
