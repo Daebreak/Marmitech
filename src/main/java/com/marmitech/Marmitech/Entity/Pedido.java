@@ -1,6 +1,7 @@
 package com.marmitech.Marmitech.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -41,7 +42,7 @@ public class Pedido {
     //Pedido que sera atrelado ao usuario
     @ManyToOne
     @JoinColumn(name = "usuario_id")
-    @JsonIgnore
+    @JsonIgnoreProperties("pedidos")
     private Usuario usuario;
 
     //Pedido que sera atrelado ao historico
