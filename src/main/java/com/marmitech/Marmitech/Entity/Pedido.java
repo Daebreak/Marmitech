@@ -1,14 +1,26 @@
 package com.marmitech.Marmitech.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.List;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+@JsonIdentityInfo(
+  generator = ObjectIdGenerators.PropertyGenerator.class,
+  property = "id"
+)
 
 @Entity
 @Getter
@@ -17,18 +29,28 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Pedido {
 
+    //    @Column(name = "pedido_id_teste")
     @Id
-//    @Column(name = "pedido_id_teste")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int pedido_id;
-
-    private int cliente_id;
-    private LocalDateTime data_pedido;
-    private Double valor_total;
+    private int id;
+    //private int cliente_id;
+    //private int usuario_id;
+    private String data_pedido;
+    private BigDecimal valor_total;
     private String status;
     private String endereco_entrega;
 //
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pedido", cascade = CascadeType.ALL)
 //    @JsonIgnore
 //    private List<HistoricoCompra> historicos;
+
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PedidoItem> pedidoItems = new HashSet<>();
+
+    public void addItem(PedidoItem item) {
+        item.setPedido(this);
+        this.pedidoItems.add(item);
+    }
+
 }

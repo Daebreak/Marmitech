@@ -29,7 +29,7 @@ public class PedidoItemController {
         try {
             return new ResponseEntity<>(pedidoItemService.save(pedidoItem), HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(pedidoItem, HttpStatus.BAD_REQUEST);
         }
     }
     
