@@ -16,7 +16,7 @@ public class ProdutoService {
     private final ProdutoRepository produtoRepository;
 
     public Produto save(Produto produto) {
-        produto.setData_cadastro( LocalDate.now().toString() );
+        produto.setDataCadastro( LocalDate.now().toString() );
         return produtoRepository.save( produto );
     }
 
@@ -35,16 +35,16 @@ public class ProdutoService {
 
     public Produto update(Integer id, Produto produto) {
         Produto produtoUpdate = findById( id );
-        produtoUpdate.setData_cadastro( LocalDateTime.now().toString() );
-        
+        produtoUpdate.setDataCadastro( LocalDateTime.now().toString() );
+
         if (produto.getNome() != null || produto.getNome().isBlank()) {
             produtoUpdate.setNome( produto.getNome() );
         }
         if (produto.getDescricao() != null || produto.getDescricao().isBlank()) {
             produtoUpdate.setDescricao( produto.getDescricao() );
         }
-        if (produto.getPreco_unitario() > 0) {
-            produtoUpdate.setPreco_unitario( produto.getPreco_unitario() );
+        if (produto.getPrecoUnitario() > 0) {
+            produtoUpdate.setPrecoUnitario( produto.getPrecoUnitario() );
         }
         if (produto.getCategoria() != null || produto.getCategoria().isBlank()) {
             produtoUpdate.setCategoria( produto.getCategoria() );

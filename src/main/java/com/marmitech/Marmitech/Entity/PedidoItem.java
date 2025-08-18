@@ -21,18 +21,12 @@ public class PedidoItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    //private int produtoId;
     private int pedidoId;
     private int produtoId;
 
     @NotNull
     @NotBlank(message = "quantidade não pode ser null ou vazio")
     private int quantidade;
-
-
-    @ManyToOne
-    @JoinColumn(name = "produto_id")
-    private Produto produto;
 
     @NotNull
     @NotBlank(message = "precoUnitarioPedido não pode ser null ou vazio")
@@ -42,10 +36,13 @@ public class PedidoItem {
     @NotBlank(message = "subTotal não pode ser null ou vazio")
     private BigDecimal subtotal;
 
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore
     @JoinColumn(name = "pedido_id")
     private Pedido pedido;
+
+    @ManyToOne
+    @JoinColumn(name = "produto_id")
+    private Produto produto;
 
 }
