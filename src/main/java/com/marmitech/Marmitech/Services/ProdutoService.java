@@ -5,6 +5,7 @@ import com.marmitech.Marmitech.Repository.ProdutoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class ProdutoService {
     private final ProdutoRepository produtoRepository;
 
     public Produto save(Produto produto) {
-        produto.setData_cadastro( LocalDateTime.now() );
+        produto.setData_cadastro( LocalDate.now().toString() );
         return produtoRepository.save( produto );
     }
 
@@ -34,10 +35,8 @@ public class ProdutoService {
 
     public Produto update(Integer id, Produto produto) {
         Produto produtoUpdate = findById( id );
-        produtoUpdate.setData_cadastro( LocalDateTime.now() );
-        if (produto.getSku() != null) {
-            produtoUpdate.setProduto_id( produto.getUsuario_id() );
-        }
+        produtoUpdate.setData_cadastro( LocalDateTime.now().toString() );
+        
         if (produto.getNome() != null || produto.getNome().isBlank()) {
             produtoUpdate.setNome( produto.getNome() );
         }

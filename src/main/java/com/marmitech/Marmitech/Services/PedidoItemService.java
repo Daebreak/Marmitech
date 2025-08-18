@@ -1,5 +1,6 @@
 package com.marmitech.Marmitech.Services;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -16,6 +17,10 @@ public class PedidoItemService {
 
     private Boolean isNumeroValido(int novoNum){
         return novoNum > 0;
+    }
+
+    private Boolean isPrecoValido(BigDecimal novoNum){
+        return novoNum.compareTo(BigDecimal.ZERO) < 0;
     }
 
     private <T> T validator(T novo, T antigo, Predicate<T> validar){
@@ -35,12 +40,10 @@ public class PedidoItemService {
         
         PedidoItem antigPedidoItem = pedidoItemRepository.findById(pedidoItemId).get();
         
-        atualizadoPedidoItem.setPedidoId(validator(atualizadoPedidoItem.getPedidoId(), antigPedidoItem.getPedidoId(), this::isNumeroValido));
-        atualizadoPedidoItem.setProdutoId(validator(atualizadoPedidoItem.getProdutoId(), antigPedidoItem.getProdutoId(), this::isNumeroValido));
-        atualizadoPedidoItem.setPrecoUnitarioPedido(validator(atualizadoPedidoItem.getPrecoUnitarioPedido(), antigPedidoItem.getPrecoUnitarioPedido(), this::isNumeroValido));
+        //atualizadoPedidoItem.setProdutoId(validator(atualizadoPedidoItem.getProdutoId(), antigPedidoItem.getProdutoId(), this::isNumeroValido));
+        atualizadoPedidoItem.setPrecoUnitarioPedido(validator(atualizadoPedidoItem.getPrecoUnitarioPedido(), antigPedidoItem.getPrecoUnitarioPedido(), this::isPrecoValido));
         atualizadoPedidoItem.setQuantidade(validator(atualizadoPedidoItem.getQuantidade(), antigPedidoItem.getQuantidade(), this::isNumeroValido));
-        atualizadoPedidoItem.setSubtotal(validator(atualizadoPedidoItem.getSubtotal(), antigPedidoItem.getSubtotal(), this::isNumeroValido));
-        atualizadoPedidoItem.setId(pedidoItemId);
+        atualizadoPedidoItem.setSubtotal(validator(atualizadoPedidoItem.getSubtotal(), antigPedidoItem.getSubtotal(), this::isPrecoValido));
         
         return pedidoItemRepository.save(atualizadoPedidoItem);
     }
