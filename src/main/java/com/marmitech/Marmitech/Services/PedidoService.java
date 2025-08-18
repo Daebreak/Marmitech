@@ -34,15 +34,43 @@ public class PedidoService {
             pedido.addItem(item);
         }
 
+        // id do pedido precisa ser maior qu e 0 //
+        if (pedido.getPedido_id() < 0 ) {
+            throw new IllegalArgumentException("ID invalido");
+        }
+        // id do cliente precias ser  maior que 0 //
+        if (pedido.getCliente_id() < 0) {
+        throw new IllegalArgumentException("ID invalido");
+        }
+        if (pedido.getData_pedido() == null) {
+            throw new IllegalArgumentException("Data do pedido não pode ser nulo");
+        }
+        if (pedido.getValor_total() == null){
+            throw new IllegalArgumentException("O valor não pode ser nulo ");
+        }
+        if (pedido.getStatus() == null){
+            throw new IllegalArgumentException("Status nao pode ser nulo");
+        }
+        if (pedido.getEndereco_entrega() == null){
+            
+        }
+
         pedido.setData_pedido(LocalDate.now().toString());
         return pedidoRepository.save(pedido);
     }
 
     public List<Pedido> findAll() {
+         List<Pedido> listaPedidos = pedidoRepository.findAll();
+        if (listaPedidos == null){
+            throw new IllegalArgumentException("Nao ha produtos para exibir");
+        }
         return pedidoRepository.findAll();
     }
 
     public Pedido findById(Integer id) {
+        if (id < 0){
+            throw new IllegalArgumentException("ID DO PEDIDO INVALIDO");
+        }
         return pedidoRepository.findById( id ).orElseThrow( RuntimeException::new );
     }
 
@@ -63,12 +91,15 @@ public class PedidoService {
 
     public Pedido update(Integer id, Pedido pedido) {
         Pedido pedidoUpdate = findById( id );
-
         return pedidoRepository.save( pedidoUpdate );
     }
 
     public void delete(Integer id) {
         var delete = findById( id );
         pedidoRepository.delete( delete );
+        if ( id < 0){
+            throw new IllegalArgumentException("ID DO PEDIDO INVALIDO");
+        }
+
     }
 }

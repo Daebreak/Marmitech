@@ -26,7 +26,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Pedido {
 
-    //    @Column(name = "pedido_id_teste")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -38,7 +37,7 @@ public class Pedido {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-private Cliente cliente; // quem comprou
+    private Cliente cliente; // quem comprou
 
 
     @ManyToOne
