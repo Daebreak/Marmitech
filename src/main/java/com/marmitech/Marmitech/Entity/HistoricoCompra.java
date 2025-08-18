@@ -1,6 +1,5 @@
 package com.marmitech.Marmitech.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,7 +18,6 @@ public class HistoricoCompra {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int clienteId;
 
     @NotNull
     @NotBlank(message = "data_evento não pode ser null ou vazio")

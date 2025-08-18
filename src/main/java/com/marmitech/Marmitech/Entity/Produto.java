@@ -47,12 +47,10 @@ public class Produto {
     @NotBlank(message = "descricao não pode ser null ou vazio")
     private String descricao;
 
-    @NotNull
-    @NotBlank(message = "preco_unitario não pode ser null ou vazio")
+    @NotNull(message = "preco_unitario não pode ser null ou vazio")
     private int preco_unitario;
 
-    @NotNull
-    @NotBlank(message = "estoque não pode ser null ou vazio")
+    @NotNull(message = "estoque não pode ser null ou vazio")
     private int estoque;
 
     @NotNull
@@ -62,31 +60,4 @@ public class Produto {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PedidoItem> pedidoItems = new HashSet<>();
-
-    // public Produto(String sku, String nome, String descricao, int preco_unitario, String categoria, int usuario_id, LocalDateTime data_cadastro) {
-    //     if (produto_id <= 0) {
-    //         throw new IllegalArgumentException( "produto_id nao pode ser menor que zero" );
-    //     }
-    //     if (sku == null || sku.isBlank()) {
-    //         throw new IllegalArgumentException( "sku nao pode ser null ou vazio" );
-    //     }
-    //     if (nome == null || nome.isBlank()) {
-    //         throw new IllegalArgumentException( "nome nao pode ser null ou vazio" );
-    //     }
-    //     if (descricao == null || descricao.isBlank()) {
-    //         throw new IllegalArgumentException( "descricao nao pode ser null ou vazio" );
-    //     }
-    //     if (preco_unitario <= 0) {
-    //         throw new IllegalArgumentException( "preco_unitario nao pode ser menor que zero" );
-    //     }
-    //     if (categoria == null || categoria.isBlank()) {
-    //         throw new IllegalArgumentException( "categoria nao pode ser null ou vazio" );
-    //     }
-    //     if (usuario_id <= 0) {
-    //         throw new IllegalArgumentException( "usuario_id nao pode ser menor que zero" );
-    //     }
-    //     if (data_cadastro == null || data_cadastro.isBefore( LocalDateTime.now() )) {
-    //         throw new IllegalArgumentException( "data_cadastro não pode ser null e deve ser no presente" );
-    //     }
-    // }
 }

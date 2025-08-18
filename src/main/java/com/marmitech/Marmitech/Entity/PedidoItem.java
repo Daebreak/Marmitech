@@ -28,8 +28,6 @@ public class PedidoItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int pedidoId;
-    private int produtoId;
 
     @NotNull
     @NotBlank(message = "quantidade não pode ser null ou vazio")

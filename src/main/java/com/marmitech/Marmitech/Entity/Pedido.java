@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -70,5 +70,13 @@ public class Pedido {
         item.setPedido(this);
         this.pedidoItems.add(item);
     }
+
+    public void addHistorico(HistoricoCompra historico) {
+    if (historicos == null) {
+        historicos = new ArrayList<>();
+    }
+    historico.setPedido(this); // garante o vínculo
+    historicos.add(historico);
+}
 
 }

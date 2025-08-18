@@ -1,9 +1,11 @@
 package com.marmitech.Marmitech.Services;
 
+import com.marmitech.Marmitech.Entity.HistoricoCompra;
 import com.marmitech.Marmitech.Entity.Pedido;
 import com.marmitech.Marmitech.Entity.Usuario;
 import com.marmitech.Marmitech.Entity.PedidoItem;
 import com.marmitech.Marmitech.Entity.Produto;
+import com.marmitech.Marmitech.Repository.ClienteRepository;
 import com.marmitech.Marmitech.Repository.PedidoRepository;
 import com.marmitech.Marmitech.Repository.UsuarioRepository;
 import com.marmitech.Marmitech.Repository.ProdutoRepository;
@@ -24,6 +26,9 @@ public class PedidoService {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Autowired
     private ProdutoRepository produtoRepository;
 
     public Pedido save(Pedido pedido) {
@@ -31,6 +36,22 @@ public class PedidoService {
         pedido.getPedidoItems().clear();
         pedido.setData_pedido(LocalDate.now().toString());
         
+        for (HistoricoCompra hist : pedido.getHistoricos()) {
+            hist.setPedido(pedido);
+        }
+
+    if (pedido.getUsuario() != null && pedido.getUsuario().getId() < 0) {
+        var usuario = usuarioRepository.findById(pedido.getUsuario().getId())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        pedido.setUsuario(usuario);
+    }
+
+    if (pedido.getCliente() != null && pedido.getCliente().getId() < 0) {
+        var cliente = clienteRepository.findById(pedido.getCliente().getId())
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        pedido.setCliente(cliente);
+    }
+
         for (PedidoItem item : itens) {
             Produto produto = produtoRepository.findById(item.getProduto().getId())
                     .orElseThrow(() -> new RuntimeException("Produto não encontrado: " + item.getProduto().getId()));
@@ -39,11 +60,6 @@ public class PedidoService {
             
             pedido.addItem(item);
         }
-
-        //Para salvar o id do usuario no banco de dados
-        Usuario usuarioExistente = usuarioRepository.findById( pedido.getUsuario().getUsuarioId() )
-                .orElseThrow( () -> new RuntimeException( "Usuario nao encontrado" ) );
-        pedido.setUsuario( usuarioExistente );
 
         if (pedido.getData_pedido() == null) {
             throw new IllegalArgumentException("Data do pedido não pode ser nulo");

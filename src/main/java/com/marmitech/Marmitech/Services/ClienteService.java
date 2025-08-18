@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +19,7 @@ public class ClienteService {
     private final ClienteRepository clienteRepository;
 
     public Cliente save(Cliente cliente) {
-        cliente.setDataCadastro( LocalDateTime.now() );
+        cliente.setDataCadastro( LocalDate.now() );
 
         // Validação para não permitir nomes duplicados
         if (cliente.getNome() != null && !cliente.getNome().isBlank()) {

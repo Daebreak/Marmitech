@@ -35,21 +35,8 @@ public class ProdutoService {
 
     public Produto update(Integer id, Produto produto) {
         Produto produtoUpdate = findById( id );
-        produtoUpdate.setData_cadastro( LocalDateTime.now().toString() );
-        
-        if (produto.getNome() != null || produto.getNome().isBlank()) {
-            produtoUpdate.setNome( produto.getNome() );
-        }
-        if (produto.getDescricao() != null || produto.getDescricao().isBlank()) {
-            produtoUpdate.setDescricao( produto.getDescricao() );
-        }
-        if (produto.getPreco_unitario() > 0) {
-            produtoUpdate.setPreco_unitario( produto.getPreco_unitario() );
-        }
-        if (produto.getCategoria() != null || produto.getCategoria().isBlank()) {
-            produtoUpdate.setCategoria( produto.getCategoria() );
-        }
+        produtoUpdate.setData_cadastro( LocalDate.now().toString() );
+    
         return produtoRepository.save( produtoUpdate );
-
     }
 }
