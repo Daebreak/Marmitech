@@ -2,6 +2,7 @@ package com.marmitech.Marmitech.Controller;
 
 import com.marmitech.Marmitech.Entity.Usuario;
 import com.marmitech.Marmitech.Services.UsuarioService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class UsuarioController {
 
 
     @PostMapping("/save")
-    public ResponseEntity<Usuario> save(@RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> save(@RequestBody @Valid Usuario usuario) {
         try {
             var result = usuarioService.save( usuario );
             return new ResponseEntity<>( result, HttpStatus.CREATED );
@@ -72,12 +73,32 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody Usuario usuario) {
+    public ResponseEntity<Void> login(@RequestParam String nome, @RequestParam String senha) {
         try {
-            usuarioService.login(usuario.getNome(), usuario.getSenha());
-            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+            usuarioService.login( nome, senha );
+            return new ResponseEntity<>( HttpStatus.ACCEPTED );
         } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>( HttpStatus.UNAUTHORIZED );
+        }
+    }
+
+    @GetMapping("/findByCargo/{cargo}")
+    public ResponseEntity<List<Usuario>> findByCargo(@PathVariable String cargo) {
+        try {
+            var result = usuarioService.findByCargo( cargo );
+            return new ResponseEntity<>( result, HttpStatus.OK );
+        } catch (Exception ex) {
+            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
+        }
+    }
+
+    @GetMapping("/findByNome/{nome}")
+    public ResponseEntity<List<Usuario>> findByNome(@PathVariable String nome) {
+        try {
+            var result = usuarioService.findByNome( nome );
+            return new ResponseEntity<>( result, HttpStatus.OK );
+        } catch (Exception ex) {
+            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
         }
     }
 

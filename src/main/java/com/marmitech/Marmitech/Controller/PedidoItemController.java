@@ -2,6 +2,7 @@ package com.marmitech.Marmitech.Controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class PedidoItemController {
     private PedidoItemService pedidoItemService;
 
     @PostMapping("/save")
-    public ResponseEntity<PedidoItem> save(@RequestBody PedidoItem pedidoItem){
+    public ResponseEntity<PedidoItem> save(@RequestBody @Valid PedidoItem pedidoItem){
         try {
             return new ResponseEntity<>(pedidoItemService.save(pedidoItem), HttpStatus.CREATED);
         } catch (Exception e) {

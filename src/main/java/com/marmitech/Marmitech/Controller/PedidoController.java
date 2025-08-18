@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.marmitech.Marmitech.Entity.Pedido;
 import com.marmitech.Marmitech.Services.PedidoService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/pedido")
@@ -26,7 +27,7 @@ public class PedidoController {
     private PedidoService pedidoService;
 
     @PostMapping("/save")
-    public ResponseEntity<Pedido> save(@RequestBody Pedido pedido) {
+    public ResponseEntity<Pedido> save(@RequestBody @Valid Pedido pedido) {
         try {
             return new ResponseEntity<Pedido>(pedidoService.save(pedido), HttpStatus.CREATED );
         } catch (Exception e) {

@@ -6,6 +6,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,10 +34,29 @@ public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @NotNull
+    @NotBlank(message = "sku não pode ser null ou vazio")
     private String sku;
+
+    @NotNull
+    @NotBlank(message = "nome não pode ser null ou vazio")
     private String nome;
+
+    @NotNull
+    @NotBlank(message = "descricao não pode ser null ou vazio")
     private String descricao;
+
+    @NotNull
+    @NotBlank(message = "preco_unitario não pode ser null ou vazio")
     private int preco_unitario;
+
+    @NotNull
+    @NotBlank(message = "estoque não pode ser null ou vazio")
+    private int estoque;
+
+    @NotNull
+    @NotBlank(message = "categoria não pode ser null ou vazio")
     private String categoria;
     private String data_cadastro;
 

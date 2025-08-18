@@ -11,6 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,8 +30,17 @@ public class PedidoItem {
     private int id;
     private int pedidoId;
     private int produtoId;
+
+    @NotNull
+    @NotBlank(message = "quantidade não pode ser null ou vazio")
     private int quantidade;
+
+    @NotNull
+    @NotBlank(message = "precoUnitarioPedido não pode ser null ou vazio")
     private BigDecimal precoUnitarioPedido;
+
+    @NotNull
+    @NotBlank(message = "subTotal não pode ser null ou vazio")
     private BigDecimal subtotal;
 
     @ManyToOne(cascade = CascadeType.ALL)

@@ -1,9 +1,11 @@
 package com.marmitech.Marmitech.Services;
 
 import com.marmitech.Marmitech.Entity.Pedido;
+import com.marmitech.Marmitech.Entity.Usuario;
 import com.marmitech.Marmitech.Entity.PedidoItem;
 import com.marmitech.Marmitech.Entity.Produto;
 import com.marmitech.Marmitech.Repository.PedidoRepository;
+import com.marmitech.Marmitech.Repository.UsuarioRepository;
 import com.marmitech.Marmitech.Repository.ProdutoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ import java.time.LocalDate;
 public class PedidoService {
     @Autowired
     private PedidoRepository pedidoRepository;
+    
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
     private ProdutoRepository produtoRepository;
@@ -24,15 +29,21 @@ public class PedidoService {
     public Pedido save(Pedido pedido) {
         List<PedidoItem> itens = new ArrayList<>(pedido.getPedidoItems());
         pedido.getPedidoItems().clear();
-
+        pedido.setData_pedido(LocalDate.now().toString());
+        
         for (PedidoItem item : itens) {
-        Produto produto = produtoRepository.findById(item.getProduto().getId())
+            Produto produto = produtoRepository.findById(item.getProduto().getId())
                     .orElseThrow(() -> new RuntimeException("Produto não encontrado: " + item.getProduto().getId()));
 
             item.setProduto(produto);
-
+            
             pedido.addItem(item);
         }
+
+        //Para salvar o id do usuario no banco de dados
+        Usuario usuarioExistente = usuarioRepository.findById( pedido.getUsuario().getUsuarioId() )
+                .orElseThrow( () -> new RuntimeException( "Usuario nao encontrado" ) );
+        pedido.setUsuario( usuarioExistente );
 
         if (pedido.getData_pedido() == null) {
             throw new IllegalArgumentException("Data do pedido não pode ser nulo");
@@ -47,7 +58,7 @@ public class PedidoService {
             
         }
 
-        pedido.setData_pedido(LocalDate.now().toString());
+
         return pedidoRepository.save(pedido);
     }
 
