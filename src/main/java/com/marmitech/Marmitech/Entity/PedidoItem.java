@@ -21,19 +21,14 @@ public class PedidoItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int pedidoId;
-    private int produtoId;
 
     @NotNull
-    @NotBlank(message = "quantidade não pode ser null ou vazio")
     private int quantidade;
 
     @NotNull
-    @NotBlank(message = "precoUnitarioPedido não pode ser null ou vazio")
     private BigDecimal precoUnitarioPedido;
 
     @NotNull
-    @NotBlank(message = "subTotal não pode ser null ou vazio")
     private BigDecimal subtotal;
 
     @ManyToOne(cascade = CascadeType.ALL)

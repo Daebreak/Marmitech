@@ -20,7 +20,7 @@ public class PedidoItemService {
     }
 
     private Boolean isPrecoValido(BigDecimal novoNum){
-        return novoNum.compareTo(BigDecimal.ZERO) < 0;
+        return novoNum.compareTo(BigDecimal.ZERO) > 0;
     }
 
     private <T> T validator(T novo, T antigo, Predicate<T> validar){
@@ -39,13 +39,11 @@ public class PedidoItemService {
     public PedidoItem update(PedidoItem atualizadoPedidoItem, int pedidoItemId){
         
         PedidoItem antigPedidoItem = pedidoItemRepository.findById(pedidoItemId).get();
-        
-        //atualizadoPedidoItem.setProdutoId(validator(atualizadoPedidoItem.getProdutoId(), antigPedidoItem.getProdutoId(), this::isNumeroValido));
-        atualizadoPedidoItem.setPrecoUnitarioPedido(validator(atualizadoPedidoItem.getPrecoUnitarioPedido(), antigPedidoItem.getPrecoUnitarioPedido(), this::isPrecoValido));
-        atualizadoPedidoItem.setQuantidade(validator(atualizadoPedidoItem.getQuantidade(), antigPedidoItem.getQuantidade(), this::isNumeroValido));
-        atualizadoPedidoItem.setSubtotal(validator(atualizadoPedidoItem.getSubtotal(), antigPedidoItem.getSubtotal(), this::isPrecoValido));
-        
-        return pedidoItemRepository.save(atualizadoPedidoItem);
+        antigPedidoItem.setProduto(validator(atualizadoPedidoItem.getProduto(), antigPedidoItem.getProduto(), produto -> produto != null ));
+        antigPedidoItem.setPrecoUnitarioPedido(validator(atualizadoPedidoItem.getPrecoUnitarioPedido(), antigPedidoItem.getPrecoUnitarioPedido(), this::isPrecoValido ) );
+        antigPedidoItem.setQuantidade(validator(atualizadoPedidoItem.getQuantidade(), antigPedidoItem.getQuantidade(), this::isNumeroValido));
+        antigPedidoItem.setSubtotal(validator(atualizadoPedidoItem.getSubtotal(), antigPedidoItem.getSubtotal(), this::isPrecoValido));
+        return pedidoItemRepository.save(antigPedidoItem) ;
     }
 
     @Transactional
