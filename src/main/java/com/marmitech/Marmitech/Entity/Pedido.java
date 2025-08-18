@@ -1,7 +1,7 @@
 package com.marmitech.Marmitech.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.*;
@@ -33,17 +33,20 @@ public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    //private int cliente_id;
-    //private int usuario_id;
     private String data_pedido;
     private BigDecimal valor_total;
     private String status;
     private String endereco_entrega;
-//
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pedido", cascade = CascadeType.ALL)
-//    @JsonIgnore
-//    private List<HistoricoCompra> historicos;
 
+
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+private Cliente cliente; // quem comprou
+
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id") //quem registrou o pedido
+    private Usuario usuario;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PedidoItem> pedidoItems = new HashSet<>();

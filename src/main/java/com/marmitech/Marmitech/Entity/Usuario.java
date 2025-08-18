@@ -1,17 +1,16 @@
 package com.marmitech.Marmitech.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
 public class Usuario {
 
     @Id
@@ -22,6 +21,7 @@ public class Usuario {
     private String senha;
     private String cargo;
     private LocalDateTime data_criacao;
+
 
     public Usuario(int usuarioId, String nome, String email, String cargo, LocalDateTime data_criacao) {
         if (usuarioId <= 0) {
@@ -46,4 +46,8 @@ public class Usuario {
         this.cargo = cargo;
         this.data_criacao = data_criacao;
     }
+
+   // @OneToMany(mappedBy = "usuario")
+
+    //private List<Pedido> pedidos ;
 }

@@ -34,7 +34,8 @@ public class PedidoItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    //private int produtoId;
+    private int pedidoId;
+    private int produtoId;
     private int quantidade;
     private BigDecimal precoUnitarioPedido;
     private BigDecimal subtotal;

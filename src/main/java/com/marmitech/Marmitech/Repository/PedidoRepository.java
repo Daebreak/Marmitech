@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import com.marmitech.Marmitech.Entity.Pedido;
 import com.marmitech.Marmitech.Entity.Produto;
 
+import java.util.List;
+
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
 
