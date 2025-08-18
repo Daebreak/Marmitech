@@ -34,14 +34,6 @@ public class PedidoService {
             pedido.addItem(item);
         }
 
-        // id do pedido precisa ser maior qu e 0 //
-        if (pedido.getPedido_id() < 0 ) {
-            throw new IllegalArgumentException("ID invalido");
-        }
-        // id do cliente precias ser  maior que 0 //
-        if (pedido.getCliente_id() < 0) {
-        throw new IllegalArgumentException("ID invalido");
-        }
         if (pedido.getData_pedido() == null) {
             throw new IllegalArgumentException("Data do pedido não pode ser nulo");
         }
