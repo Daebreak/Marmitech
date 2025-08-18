@@ -19,7 +19,7 @@ public class ClienteService {
     private final ClienteRepository clienteRepository;
 
     public Cliente save(Cliente cliente) {
-        cliente.setDataCadastro( LocalDate.now() );
+        cliente.setDataCadastro( LocalDate.now().toString() );
 
         // Validação para não permitir nomes duplicados
         if (cliente.getNome() != null && !cliente.getNome().isBlank()) {
