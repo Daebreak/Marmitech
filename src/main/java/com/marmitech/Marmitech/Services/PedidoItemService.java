@@ -20,7 +20,7 @@ public class PedidoItemService {
     }
 
     private Boolean isPrecoValido(BigDecimal novoNum){
-        return novoNum.compareTo(BigDecimal.ZERO) < 0;
+        return novoNum.compareTo(BigDecimal.ZERO) > 0;
     }
 
     private <T> T validator(T novo, T antigo, Predicate<T> validar){

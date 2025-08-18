@@ -11,6 +11,8 @@ import com.marmitech.Marmitech.Repository.UsuarioRepository;
 import com.marmitech.Marmitech.Repository.ProdutoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import com.marmitech.Marmitech.Repository.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import java.util.List;
 import java.time.LocalDate;
 
 @Service
+@RequiredArgsConstructor
 public class PedidoService {
     @Autowired
     private PedidoRepository pedidoRepository;

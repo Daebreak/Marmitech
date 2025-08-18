@@ -1,9 +1,6 @@
 package com.marmitech.Marmitech.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -45,6 +42,5 @@ public class Cliente {
     @NotBlank(message = "endereco não pode ser null ou vazio")
     private String endereco;
 
-    private LocalDate dataCadastro;
-
+    private String dataCadastro;
 }

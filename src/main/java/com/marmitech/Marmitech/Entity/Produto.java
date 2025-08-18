@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
+
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -56,8 +57,10 @@ public class Produto {
     @NotNull
     @NotBlank(message = "categoria não pode ser null ou vazio")
     private String categoria;
-    private String data_cadastro;
+    //private int usuario_id; //tabela do usuario
+    private String dataCadastro;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PedidoItem> pedidoItems = new HashSet<>();
+
 }

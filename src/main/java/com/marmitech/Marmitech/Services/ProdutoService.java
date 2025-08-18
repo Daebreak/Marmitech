@@ -16,7 +16,7 @@ public class ProdutoService {
     private final ProdutoRepository produtoRepository;
 
     public Produto save(Produto produto) {
-        produto.setData_cadastro( LocalDate.now().toString() );
+        produto.setDataCadastro( LocalDate.now().toString() );
         return produtoRepository.save( produto );
     }
 

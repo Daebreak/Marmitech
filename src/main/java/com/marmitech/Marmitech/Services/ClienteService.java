@@ -53,23 +53,23 @@ public class ClienteService {
 
     public Cliente update(Integer id, Cliente cliente) {
         Cliente clienteUpdate = findById( id );
+        clienteUpdate.setDataCadastro( LocalDateTime.now().toString() );
 
-        if (cliente.getNome() != null || !cliente.getNome().isBlank()) {
+        if (cliente.getNome() != null && !cliente.getNome().isBlank()) {
             clienteUpdate.setNome( cliente.getNome() );
         }
-        if (cliente.getEmail() != null || !cliente.getEmail().isBlank()) {
+        if (cliente.getEmail() != null && !cliente.getEmail().isBlank()) {
             clienteUpdate.setEmail( cliente.getEmail() );
         }
-        if (cliente.getTelefone() != null || !cliente.getTelefone().isBlank()) {
+        if (cliente.getTelefone() != null && !cliente.getTelefone().isBlank()) {
             clienteUpdate.setTelefone( cliente.getTelefone() );
         }
-        if (cliente.getCpfCnpj() != null || !cliente.getCpfCnpj().isBlank()) {
+        if (cliente.getCpfCnpj() != null && !cliente.getCpfCnpj().isBlank()) {
             clienteUpdate.setCpfCnpj( cliente.getCpfCnpj() );
         }
-        if (cliente.getEndereco() != null || !cliente.getEndereco().isBlank()) {
-            clienteUpdate.setCpfCnpj( cliente.getEndereco() );
+        if (cliente.getEndereco() != null && !cliente.getEndereco().isBlank()) {
+            clienteUpdate.setEndereco( cliente.getEndereco() );
         }
-
         return clienteRepository.save( clienteUpdate );
 
     }
