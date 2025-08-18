@@ -34,7 +34,20 @@ public class PedidoService {
     public Pedido save(Pedido pedido) {
         List<PedidoItem> itens = new ArrayList<>(pedido.getPedidoItems());
         pedido.getPedidoItems().clear();
-        pedido.setData_pedido( LocalDateTime.now().toString() );
+        // id do pedido precisa ser maior que 0
+        if (pedido.getId() < 0 ) {
+            throw new IllegalArgumentException("ID invalido");
+        }
+        if (pedido.getData_pedido() == null) {
+            throw new IllegalArgumentException("Data do pedido não pode ser nulo");
+        }
+        if (pedido.getValor_total() == null){
+            throw new IllegalArgumentException("O valor não pode ser nulo ");
+        }
+        if (pedido.getStatus() == null){
+            throw new IllegalArgumentException("Status nao pode ser nulo");
+        }
+
         //Para salvar o id do usuario no banco de dados
         Usuario usuarioExistente = usuarioRepository.findById( pedido.getUsuario().getUsuarioId() )
                 .orElseThrow( () -> new RuntimeException( "Usuario nao encontrado" ) );
@@ -48,16 +61,22 @@ public class PedidoService {
 
             pedido.addItem(item);
         }
-
-        pedido.setData_pedido(LocalDate.now().toString());
+        pedido.setData_pedido( LocalDateTime.now().toString() );
         return pedidoRepository.save(pedido);
     }
 
     public List<Pedido> findAll() {
+         List<Pedido> listaPedidos = pedidoRepository.findAll();
+        if (listaPedidos == null){
+            throw new IllegalArgumentException("Nao ha produtos para exibir");
+        }
         return pedidoRepository.findAll();
     }
 
     public Pedido findById(Integer id) {
+        if (id < 0){
+            throw new IllegalArgumentException("ID DO PEDIDO INVALIDO");
+        }
         return pedidoRepository.findById( id ).orElseThrow( RuntimeException::new );
     }
 
@@ -78,11 +97,18 @@ public class PedidoService {
 
     public Pedido update(Integer id, Pedido pedido) {
         Pedido pedidoUpdate = findById( id );
+        if (id < 0){
+            throw new IllegalArgumentException("ID DO PEDIDO INVALIDO");
+        }
         return pedidoRepository.save( pedidoUpdate );
     }
 
     public void delete(Integer id) {
         var delete = findById( id );
         pedidoRepository.delete( delete );
+        if ( id < 0){
+            throw new IllegalArgumentException("ID DO PEDIDO INVALIDO");
+        }
+
     }
 }

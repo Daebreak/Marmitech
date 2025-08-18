@@ -45,7 +45,6 @@ public class Pedido {
     @NotBlank(message = "endereco_entrega não pode ser null ou vazio")
     private String endereco_entrega;
 
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PedidoItem> pedidoItems = new HashSet<>();
 
@@ -53,7 +52,6 @@ public class Pedido {
         item.setPedido(this);
         this.pedidoItems.add(item);
     }
-
 
     //Pedido que sera atrelado ao usuario
     @ManyToOne
