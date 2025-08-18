@@ -1,6 +1,5 @@
 package com.marmitech.Marmitech.Services;
 
-import com.marmitech.Marmitech.Entity.PedidoItem;
 import com.marmitech.Marmitech.Entity.Produto;
 import com.marmitech.Marmitech.Repository.ProdutoRepository;
 import lombok.RequiredArgsConstructor;
