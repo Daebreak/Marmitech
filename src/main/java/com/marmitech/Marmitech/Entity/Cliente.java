@@ -41,5 +41,5 @@ public class Cliente {
     @NotBlank(message = "endereco não pode ser null ou vazio")
     private String endereco;
 
-    private LocalDateTime dataCadastro;
+    private String dataCadastro;
 }

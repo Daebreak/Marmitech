@@ -50,7 +50,7 @@ public class ClienteController {
     @PutMapping("/update/{id}" )
     public ResponseEntity<Cliente> update(@PathVariable Integer id, @RequestBody Cliente cliente) {
         try {
-            var result = clienteService.findById( id );
+            var result = clienteService.update( id, cliente );
             return new ResponseEntity<>( result, HttpStatus.OK );
         } catch (Exception ex) {
             return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
