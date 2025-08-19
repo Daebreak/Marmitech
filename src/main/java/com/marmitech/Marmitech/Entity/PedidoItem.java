@@ -24,16 +24,16 @@ public class PedidoItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotNull
+    //@NotNull
     private int quantidade;
 
-    @NotNull
+    //@NotNull
     private BigDecimal precoUnitarioPedido;
 
-    @NotNull
+    //@NotNull
     private BigDecimal subtotal;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "pedido_id")
     private Pedido pedido;

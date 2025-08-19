@@ -35,7 +35,7 @@ public class ProdutoService {
 
     public Produto update(Integer id, Produto produto) {
         Produto produtoUpdate = findById( id );
-        produtoUpdate.setData_cadastro( LocalDate.now().toString() );
+        produtoUpdate.setDataCadastro( LocalDate.now().toString() );
     
         return produtoRepository.save( produtoUpdate );
     }

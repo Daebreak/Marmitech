@@ -48,10 +48,10 @@ public class Produto {
     @NotBlank(message = "descricao não pode ser null ou vazio")
     private String descricao;
 
-    @NotNull(message = "preco_unitario não pode ser null ou vazio")
+    //@NotNull(message = "preco_unitario não pode ser null ou vazio")
     private int preco_unitario;
 
-    @NotNull(message = "estoque não pode ser null ou vazio")
+    //@NotNull(message = "estoque não pode ser null ou vazio")
     private int estoque;
 
     @NotNull

@@ -8,6 +8,9 @@ import com.marmitech.Marmitech.Entity.Produto;
 import com.marmitech.Marmitech.Repository.ClienteRepository;
 import com.marmitech.Marmitech.Repository.PedidoRepository;
 import com.marmitech.Marmitech.Repository.UsuarioRepository;
+
+import jakarta.transaction.Transactional;
+
 import com.marmitech.Marmitech.Repository.ProdutoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,7 @@ public class PedidoService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
+    @Transactional
     public Pedido save(Pedido pedido) {
         List<PedidoItem> itens = new ArrayList<>(pedido.getPedidoItems());
         pedido.getPedidoItems().clear();
@@ -111,11 +115,13 @@ public class PedidoService {
         return pedidoRepository.findByPedidoItemsProdutoNome( nomeProduto );
     }
 
+    @Transactional
     public Pedido update(Integer id, Pedido pedido) {
         Pedido pedidoUpdate = findById( id );
         return pedidoRepository.save( pedidoUpdate );
     }
 
+    @Transactional
     public void delete(Integer id) {
         var delete = findById( id );
         pedidoRepository.delete( delete );
