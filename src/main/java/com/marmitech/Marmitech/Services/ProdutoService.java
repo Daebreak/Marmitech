@@ -50,6 +50,13 @@ public class ProdutoService {
             produtoUpdate.setCategoria( produto.getCategoria() );
         }
         return produtoRepository.save( produtoUpdate );
+    }
 
+    public List<Produto> findByCategoria(String categoria) {
+        return produtoRepository.findByCategoria( categoria );
+    }
+
+    public List<Produto> findByPrecoUnitario(int precoUnitario) {
+        return produtoRepository.findByPrecoUnitario( precoUnitario );
     }
 }

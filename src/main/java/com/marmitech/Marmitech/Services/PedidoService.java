@@ -38,10 +38,10 @@ public class PedidoService {
         if (pedido.getId() < 0 ) {
             throw new IllegalArgumentException("ID invalido");
         }
-        if (pedido.getData_pedido() == null) {
+        if (pedido.getDataPedido() == null) {
             throw new IllegalArgumentException("Data do pedido não pode ser nulo");
         }
-        if (pedido.getValor_total() == null){
+        if (pedido.getValorTotal() == null){
             throw new IllegalArgumentException("O valor não pode ser nulo ");
         }
         if (pedido.getStatus() == null){
@@ -61,7 +61,7 @@ public class PedidoService {
 
             pedido.addItem(item);
         }
-        pedido.setData_pedido( LocalDateTime.now().toString() );
+        pedido.setDataPedido( LocalDateTime.now().toString() );
         return pedidoRepository.save(pedido);
     }
 

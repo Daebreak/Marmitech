@@ -35,17 +35,17 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String data_pedido;
+    private String dataPedido;
 
-    private BigDecimal valor_total;
+    private Double valorTotal;
 
     @NotNull
     @NotBlank(message = "status não pode ser null ou vazio")
     private String status;
 
     @NotNull
-    @NotBlank(message = "endereco_entrega não pode ser null ou vazio")
-    private String endereco_entrega;
+    @NotBlank(message = "enderecoEntrega não pode ser null ou vazio")
+    private String enderecoEntrega;
 
     //Pedido que sera atrelado ao usuario
     @ManyToOne

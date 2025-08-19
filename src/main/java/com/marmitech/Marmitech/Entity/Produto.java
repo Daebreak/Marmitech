@@ -6,6 +6,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.OneToMany;
@@ -48,12 +49,12 @@ public class Produto {
     @NotBlank(message = "descricao não pode ser null ou vazio")
     private String descricao;
 
-    @NotNull
-    @NotBlank(message = "precoUnitario não pode ser null ou vazio")
+    @NotNull(message = "preco_unitario não pode ser null ou vazio")
+    @Min(1)
     private int precoUnitario;
 
-    @NotNull
-    @NotBlank(message = "estoque não pode ser null ou vazio")
+    @NotNull(message = "estoque não pode ser null ou vazio")
+    @Min(1)
     private int estoque;
 
     @NotNull

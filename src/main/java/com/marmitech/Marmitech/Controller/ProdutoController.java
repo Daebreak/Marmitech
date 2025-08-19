@@ -1,5 +1,6 @@
 package com.marmitech.Marmitech.Controller;
 
+import com.marmitech.Marmitech.Entity.Pedido;
 import com.marmitech.Marmitech.Entity.Produto;
 import com.marmitech.Marmitech.Services.ProdutoService;
 import jakarta.validation.Valid;
@@ -63,6 +64,26 @@ public class ProdutoController {
         try {
             produtoService.delete( id );
             return new ResponseEntity<>( null, HttpStatus.OK );
+        } catch (Exception ex) {
+            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
+        }
+    }
+
+    @GetMapping("/findByCategoria/{categoria}")
+    public ResponseEntity<List<Produto>> findByCategoria(@PathVariable String categoria) {
+        try {
+            var result = produtoService.findByCategoria( categoria );
+            return new ResponseEntity<>( result, HttpStatus.OK );
+        } catch (Exception ex) {
+            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
+        }
+    }
+
+    @GetMapping("/findByPrecoUnitario/{precoUnitario}")
+    public ResponseEntity<List<Produto>> findByPrecoUnitario(@PathVariable int precoUnitario) {
+        try {
+            var result = produtoService.findByPrecoUnitario( precoUnitario );
+            return new ResponseEntity<>( result, HttpStatus.OK );
         } catch (Exception ex) {
             return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
         }

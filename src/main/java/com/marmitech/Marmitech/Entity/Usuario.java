@@ -36,7 +36,7 @@ public class Usuario {
     @NotBlank(message = "cargo não pode ser null ou vazio")
     private String cargo;
 
-    private LocalDateTime data_criacao;
+    private LocalDateTime dataCriacao;
 
     //Um usuario(caixa) pode registrar varios pedidos
     @OneToMany(mappedBy = "usuario")

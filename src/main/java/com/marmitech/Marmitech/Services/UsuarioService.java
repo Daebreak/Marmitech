@@ -21,7 +21,7 @@ public class UsuarioService {
 
     public Usuario save(Usuario usuario) {
         //Para pegar a data e hora automatica
-        usuario.setData_criacao( LocalDateTime.now() );
+        usuario.setDataCriacao( LocalDateTime.now() );
         return usuarioRepository.save( usuario );
     }
 
@@ -41,7 +41,7 @@ public class UsuarioService {
     public Usuario update(Integer id, Usuario usuario) {
         Usuario usuarioUpdate = findById( id );
         //Para pegar a data e hora automatica
-        usuarioUpdate.setData_criacao( LocalDateTime.now() );
+        usuarioUpdate.setDataCriacao( LocalDateTime.now() );
         if (usuario.getNome() != null && !usuario.getNome().isBlank()) {
             usuarioUpdate.setNome( usuario.getNome() );
         }
