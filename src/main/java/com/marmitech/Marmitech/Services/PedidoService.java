@@ -39,50 +39,49 @@ public class PedidoService {
 
     @Transactional
     public Pedido save(Pedido pedido) {
-        List<PedidoItem> itens = new ArrayList<>(pedido.getPedidoItems());
-        pedido.getPedidoItems().clear();
-        pedido.setData_pedido(LocalDate.now().toString());
-        
-        for (HistoricoCompra hist : pedido.getHistoricos()) {
-            hist.setPedido(pedido);
-        }
+    pedido.setData_pedido(LocalDate.now().toString());
 
-    if (pedido.getUsuario() != null && pedido.getUsuario().getId() < 0) {
+    // Associa o pedido a cada item do pedido
+    for (PedidoItem item : pedido.getPedidoItems()) {
+        // Busca a entidade 'Produto' gerida pelo JPA para evitar o erro "detached entity"
+        Produto produto = produtoRepository.findById(item.getProduto().getId())
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado: " + item.getProduto().getId()));
+
+        item.setProduto(produto); // Define o produto gerido no item
+        item.setPedido(pedido); // Estabelece a referência de volta para o pedido (lado "dono" da relação)
+    }
+
+    for (HistoricoCompra hist : pedido.getHistoricos()) {
+        hist.setPedido(pedido);
+    }
+
+    if (pedido.getUsuario() != null && pedido.getUsuario().getId() > 0) { // Corrigido para > 0
         var usuario = usuarioRepository.findById(pedido.getUsuario().getId())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
         pedido.setUsuario(usuario);
     }
 
-    if (pedido.getCliente() != null && pedido.getCliente().getId() < 0) {
+    if (pedido.getCliente() != null && pedido.getCliente().getId() > 0) { // Corrigido para > 0
         var cliente = clienteRepository.findById(pedido.getCliente().getId())
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
         pedido.setCliente(cliente);
     }
 
-        for (PedidoItem item : itens) {
-            Produto produto = produtoRepository.findById(item.getProduto().getId())
-                    .orElseThrow(() -> new RuntimeException("Produto não encontrado: " + item.getProduto().getId()));
+    // Validações
+    if (pedido.getData_pedido() == null) {
+        throw new IllegalArgumentException("Data do pedido não pode ser nulo");
+    }
+    if (pedido.getValor_total() == null) {
+        throw new IllegalArgumentException("O valor não pode ser nulo ");
+    }
+    if (pedido.getStatus() == null) {
+        throw new IllegalArgumentException("Status nao pode ser nulo");
+    }
+    if (pedido.getEndereco_entrega() == null) {
+        throw new IllegalArgumentException("Endereço de entrega não pode ser nulo");
+    }
 
-            item.setProduto(produto);
-            
-            pedido.addItem(item);
-        }
-
-        if (pedido.getData_pedido() == null) {
-            throw new IllegalArgumentException("Data do pedido não pode ser nulo");
-        }
-        if (pedido.getValor_total() == null){
-            throw new IllegalArgumentException("O valor não pode ser nulo ");
-        }
-        if (pedido.getStatus() == null){
-            throw new IllegalArgumentException("Status nao pode ser nulo");
-        }
-        if (pedido.getEndereco_entrega() == null){
-            
-        }
-
-
-        return pedidoRepository.save(pedido);
+    return pedidoRepository.save(pedido);
     }
 
     public List<Pedido> findAll() {
