@@ -60,7 +60,7 @@ public class Produto {
     //private int usuario_id; //tabela do usuario
     private String dataCadastro;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "produto")
     private Set<PedidoItem> pedidoItems = new HashSet<>();
 
 }
