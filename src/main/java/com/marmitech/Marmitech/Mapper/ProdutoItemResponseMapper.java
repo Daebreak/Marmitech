@@ -1,0 +1,14 @@
+package com.marmitech.Marmitech.Mapper;
+
+import com.marmitech.Marmitech.DTO.PedidoItemResponseDTO;
+import com.marmitech.Marmitech.Entity.PedidoItem;
+
+public class ProdutoItemResponseMapper {
+    public static PedidoItemResponseDTO toDto(PedidoItem pedidoItem){
+        return new PedidoItemResponseDTO(
+            pedidoItem.getProduto().getNome(),
+            pedidoItem.getQuantidade(),
+            pedidoItem.getPrecoUnitarioPedido()
+        );
+    }
+}

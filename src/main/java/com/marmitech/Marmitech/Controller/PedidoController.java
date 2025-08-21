@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.marmitech.Marmitech.DTO.PedidoResponseDTO;
 import com.marmitech.Marmitech.Entity.Pedido;
 import com.marmitech.Marmitech.Services.PedidoService;
 import jakarta.validation.Valid;
@@ -27,7 +28,7 @@ public class PedidoController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<Pedido>> findAll() {
+    public ResponseEntity<List<PedidoResponseDTO>> findAll() {
         try {
             var result = pedidoService.findAll();
             return new ResponseEntity<>( result, HttpStatus.OK );
