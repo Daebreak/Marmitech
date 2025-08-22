@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 
 import java.util.Set;
@@ -49,7 +50,7 @@ public class Produto {
     private String descricao;
 
     //@NotNull(message = "preco_unitario não pode ser null ou vazio")
-    private int preco_unitario;
+    private BigDecimal preco_unitario;
 
     //@NotNull(message = "estoque não pode ser null ou vazio")
     private int estoque;
