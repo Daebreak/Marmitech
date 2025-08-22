@@ -1,8 +1,8 @@
-package com.marmitech.Marmitech.Mapper;
+package com.marmitech.Marmitech.Mapper.ResponseMapper;
 
 import java.math.BigDecimal;
 
-import com.marmitech.Marmitech.DTO.PedidoItemResponseDTO;
+import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoItemResponseDTO;
 import com.marmitech.Marmitech.Entity.PedidoItem;
 
 public class ProdutoItemResponseMapper {

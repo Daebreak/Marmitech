@@ -1,4 +1,4 @@
-package com.marmitech.Marmitech.DTO;
+package com.marmitech.Marmitech.DTO.ResponseDTO;
 
 import java.math.BigDecimal;
 

@@ -50,7 +50,7 @@ public class Produto {
     private String descricao;
 
     //@NotNull(message = "preco_unitario não pode ser null ou vazio")
-    private BigDecimal preco_unitario;
+    private BigDecimal precoUnitario;
 
     //@NotNull(message = "estoque não pode ser null ou vazio")
     private int estoque;

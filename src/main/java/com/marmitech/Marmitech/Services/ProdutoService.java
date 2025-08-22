@@ -1,12 +1,15 @@
 package com.marmitech.Marmitech.Services;
 
+import com.marmitech.Marmitech.DTO.RequestDTO.ProdutoSaveDTO;
+import com.marmitech.Marmitech.DTO.ResponseDTO.ProdutoListaDTO;
 import com.marmitech.Marmitech.Entity.Produto;
+import com.marmitech.Marmitech.Mapper.RequestMapper.SaveProdutoMapping;
+import com.marmitech.Marmitech.Mapper.ResponseMapper.ProdutoListaMapper;
 import com.marmitech.Marmitech.Repository.ProdutoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -15,13 +18,21 @@ public class ProdutoService {
 
     private final ProdutoRepository produtoRepository;
 
-    public Produto save(Produto produto) {
-        produto.setDataCadastro( LocalDate.now().toString() );
-        return produtoRepository.save( produto );
+    public ProdutoListaDTO save(ProdutoSaveDTO produto) {
+        Produto novoProduto = SaveProdutoMapping.toEntity(produto);
+
+        novoProduto.setDataCadastro( LocalDate.now().toString() );
+        
+        Produto salvoProduto = produtoRepository.save( novoProduto );
+
+        return ProdutoListaMapper.toDto(salvoProduto); 
     }
 
-    public List<Produto> findAll() {
-        return produtoRepository.findAll();
+    public List<ProdutoListaDTO> findAll() {
+        return produtoRepository.findAll()
+        .stream()
+        .map(ProdutoListaMapper::toDto)
+        .toList();
     }
 
     public Produto findById(Integer id) {

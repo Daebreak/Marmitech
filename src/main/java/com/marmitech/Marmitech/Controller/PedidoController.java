@@ -7,8 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.marmitech.Marmitech.DTO.PedidoResponseDTO;
+import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoResponseDTO;
 import com.marmitech.Marmitech.Entity.Pedido;
+import com.marmitech.Marmitech.Mapper.ResponseMapper.PedidoResponseMapper;
 import com.marmitech.Marmitech.Services.PedidoService;
 import jakarta.validation.Valid;
 
@@ -38,10 +39,13 @@ public class PedidoController {
     }
 
     @GetMapping("/findById/{id}")
-    public ResponseEntity<Pedido> findById(@PathVariable Integer id) {
+    public ResponseEntity<PedidoResponseDTO> findById(@PathVariable Integer id) {
         try {
             var result = pedidoService.findById( id );
-            return new ResponseEntity<>( result, HttpStatus.FOUND );
+
+            PedidoResponseDTO pedidoDto = PedidoResponseMapper.toDto(result);
+
+            return new ResponseEntity<>( pedidoDto, HttpStatus.FOUND );
         } catch (Exception ex) {
             return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
         }

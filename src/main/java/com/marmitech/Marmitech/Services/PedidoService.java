@@ -1,10 +1,10 @@
 package com.marmitech.Marmitech.Services;
 
-import com.marmitech.Marmitech.DTO.PedidoResponseDTO;
+import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoResponseDTO;
 import com.marmitech.Marmitech.Entity.HistoricoCompra;
 import com.marmitech.Marmitech.Entity.Pedido;
 import com.marmitech.Marmitech.Entity.Usuario;
-import com.marmitech.Marmitech.Mapper.PedidoResponseMapper;
+import com.marmitech.Marmitech.Mapper.ResponseMapper.PedidoResponseMapper;
 import com.marmitech.Marmitech.Entity.PedidoItem;
 import com.marmitech.Marmitech.Entity.Produto;
 import com.marmitech.Marmitech.Repository.ClienteRepository;

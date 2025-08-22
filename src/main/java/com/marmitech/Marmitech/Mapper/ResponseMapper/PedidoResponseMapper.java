@@ -1,10 +1,10 @@
-package com.marmitech.Marmitech.Mapper;
+package com.marmitech.Marmitech.Mapper.ResponseMapper;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.marmitech.Marmitech.DTO.PedidoItemResponseDTO;
-import com.marmitech.Marmitech.DTO.PedidoResponseDTO;
+import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoItemResponseDTO;
+import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoResponseDTO;
 import com.marmitech.Marmitech.Entity.Pedido;
 import com.marmitech.Marmitech.Entity.PedidoItem;
 
