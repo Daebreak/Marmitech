@@ -11,7 +11,6 @@ import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoResponseDTO;
 import com.marmitech.Marmitech.Entity.Pedido;
 import com.marmitech.Marmitech.Mapper.ResponseMapper.PedidoResponseMapper;
 import com.marmitech.Marmitech.Services.PedidoService;
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/pedido")

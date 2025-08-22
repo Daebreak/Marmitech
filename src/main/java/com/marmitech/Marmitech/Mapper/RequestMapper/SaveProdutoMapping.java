@@ -18,7 +18,7 @@ public class SaveProdutoMapping {
     public static Produto toEntity(ProdutoSaveDTO produtoDto){
         Produto produto = new Produto();
         produto.setNome(produtoDto.nome());
-        produto.setDescricao(produtoDto.descrição());
+        produto.setDescricao(produtoDto.descricao());
         produto.setCategoria(produtoDto.categoria());
         produto.setEstoque(produtoDto.estoque());
         produto.setPrecoUnitario(produtoDto.precoUnitario());
