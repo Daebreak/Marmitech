@@ -1,4 +1,5 @@
 export class Produto {
+    id!: number;
     nome!: string;
     descricao!: string;
     categoria!: string;
@@ -8,6 +9,7 @@ export class Produto {
     sku!: string;
 
     constructor( data: any ) {
+        this.id = data.id;
         this.nome = data.nome;
         this.descricao = data.descricao;
         this.categoria = data.categoria;

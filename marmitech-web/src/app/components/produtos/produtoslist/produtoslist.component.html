@@ -4,9 +4,22 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="card-body">
+          <h3>Produtos</h3>
+
+          <div class="direita">
+            <button
+              type="button"
+              class="btn btn-primary btn-rounded"
+              mdbRipple
+              [routerLink]="['/admin/produtos/new']"
+            >
+              Novo
+            </button>
+          </div>
+          <br />
           <table class="table table-striped">
             <thead>
-              <tr>
+              <tr class="centralizar">
                 <th>SKU</th>
                 <th>Nome</th>
                 <th>Descrição</th>
@@ -32,13 +45,13 @@
                     type="button"
                     class="btn btn-primary btn-rounded"
                     mdbRipple
-                    [routerLink]="['/admin/produtos/edit', produto.sku]"
+                    [routerLink]="['/admin/produtos/edit', produto.id]"
                   >
                     Editar
                   </button>
                   <button
                     type="button"
-                    class="btn btn-primary btn-rounded"
+                    class="btn btn-danger btn-rounded"
                     mdbRipple
                     (click)="deletar()"
                   >

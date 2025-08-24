@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Produto } from '../../../models/produto';
-import { RouterLink } from "../../../../../node_modules/@angular/router/router_module.d-Bx9ArA6K";
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-produtoslist',
@@ -13,6 +13,7 @@ export class ProdutoslistComponent {
 
   constructor() {
     this.lista.push( new Produto({
+      id: 1,
       nome: 'Produto 1',
       descricao: 'Descrição do Produto 1',
       categoria: 'Categoria A',
@@ -23,6 +24,7 @@ export class ProdutoslistComponent {
     }) );
 
     this.lista.push( new Produto({
+      id: 2,
       nome: 'Produto 2',
       descricao: 'Descrição do Produto 2',
       categoria: 'Categoria B',
@@ -33,6 +35,7 @@ export class ProdutoslistComponent {
     }) );
 
     this.lista.push( new Produto({
+      id: 3,
       nome: 'Produto 3',
       descricao: 'Descrição do Produto 3',
       categoria: 'Categoria A',
