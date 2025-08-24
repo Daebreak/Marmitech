@@ -1,1 +1,56 @@
-<p>produtoslist works!</p>
+<br />
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Categoria</th>
+                <th>Preço</th>
+                <th>Estoque</th>
+                <th>Data Cadastro</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (produto of lista; track $index) {
+              <tr>
+                <td>{{ produto.sku }}</td>
+                <td>{{ produto.nome }}</td>
+                <td>{{ produto.descricao }}</td>
+                <td>{{ produto.categoria }}</td>
+                <td>{{ produto.precoUnitario }}</td>
+                <td>{{ produto.estoque }}</td>
+                <td>{{ produto.dataCadastro }}</td>
+                <td class="direita">
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-rounded"
+                    mdbRipple
+                    [routerLink]="['/admin/produtos/edit', produto.sku]"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-rounded"
+                    mdbRipple
+                    (click)="deletar()"
+                  >
+                    Deletar
+                  </button>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
