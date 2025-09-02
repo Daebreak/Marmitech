@@ -1,15 +1,14 @@
 package com.marmitech.Marmitech.Entity;
 
+import java.math.BigDecimal;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 
 @Entity
 @NoArgsConstructor
@@ -22,22 +21,22 @@ public class PedidoItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotNull
+    //@NotNull
     private int quantidade;
 
-    @NotNull
+    //@NotNull
     private BigDecimal precoUnitarioPedido;
 
-    @NotNull
+    //@NotNull
     private BigDecimal subtotal;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "pedido_id")
     private Pedido pedido;
 
+    
     @ManyToOne
     @JoinColumn(name = "produto_id")
     private Produto produto;
-
 }

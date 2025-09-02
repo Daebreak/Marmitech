@@ -7,7 +7,7 @@ import lombok.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -18,7 +18,7 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int usuarioId;
+    private int id;
 
     @NotNull
     @NotBlank(message = "nome não pode ser null ou vazio")
@@ -36,7 +36,8 @@ public class Usuario {
     @NotBlank(message = "cargo não pode ser null ou vazio")
     private String cargo;
 
-    private LocalDateTime dataCriacao;
+    private LocalDate data_criacao;
+
 
     //Um usuario(caixa) pode registrar varios pedidos
     @OneToMany(mappedBy = "usuario")

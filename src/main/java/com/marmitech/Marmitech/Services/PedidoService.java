@@ -1,10 +1,18 @@
 package com.marmitech.Marmitech.Services;
 
+import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoResponseDTO;
+import com.marmitech.Marmitech.Entity.HistoricoCompra;
 import com.marmitech.Marmitech.Entity.Pedido;
+import com.marmitech.Marmitech.Entity.Usuario;
+import com.marmitech.Marmitech.Mapper.ResponseMapper.PedidoResponseMapper;
 import com.marmitech.Marmitech.Entity.PedidoItem;
 import com.marmitech.Marmitech.Entity.Produto;
-import com.marmitech.Marmitech.Entity.Usuario;
+import com.marmitech.Marmitech.Repository.ClienteRepository;
 import com.marmitech.Marmitech.Repository.PedidoRepository;
+import com.marmitech.Marmitech.Repository.UsuarioRepository;
+
+import jakarta.transaction.Transactional;
+
 import com.marmitech.Marmitech.Repository.ProdutoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,64 +21,77 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
 public class PedidoService {
     @Autowired
     private PedidoRepository pedidoRepository;
+    
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
 
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
+    @Transactional
     public Pedido save(Pedido pedido) {
-        List<PedidoItem> itens = new ArrayList<>(pedido.getPedidoItems());
-        pedido.getPedidoItems().clear();
-        // id do pedido precisa ser maior que 0
-        if (pedido.getId() < 0 ) {
-            throw new IllegalArgumentException("ID invalido");
-        }
-        if (pedido.getDataPedido() == null) {
-            throw new IllegalArgumentException("Data do pedido não pode ser nulo");
-        }
-        if (pedido.getValorTotal() == null){
-            throw new IllegalArgumentException("O valor não pode ser nulo ");
-        }
-        if (pedido.getStatus() == null){
-            throw new IllegalArgumentException("Status nao pode ser nulo");
-        }
+    pedido.setData_pedido(LocalDate.now().toString());
 
-        //Para salvar o id do usuario no banco de dados
-        Usuario usuarioExistente = usuarioRepository.findById( pedido.getUsuario().getUsuarioId() )
-                .orElseThrow( () -> new RuntimeException( "Usuario nao encontrado" ) );
-        pedido.setUsuario( usuarioExistente );
-
-        for (PedidoItem item : itens) {
+    // Associa o pedido a cada item do pedido
+    for (PedidoItem item : pedido.getPedidoItems()) {
+        // Busca a entidade 'Produto' gerida pelo JPA para evitar o erro "detached entity"
         Produto produto = produtoRepository.findById(item.getProduto().getId())
-                    .orElseThrow(() -> new RuntimeException("Produto não encontrado: " + item.getProduto().getId()));
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado: " + item.getProduto().getId()));
 
-            item.setProduto(produto);
-
-            pedido.addItem(item);
-        }
-        pedido.setDataPedido( LocalDateTime.now().toString() );
-        return pedidoRepository.save(pedido);
+        item.setProduto(produto); // Define o produto gerido no item
+        item.setPedido(pedido); // Estabelece a referência de volta para o pedido (lado "dono" da relação)
     }
 
-    public List<Pedido> findAll() {
-         List<Pedido> listaPedidos = pedidoRepository.findAll();
-        if (listaPedidos == null){
-            throw new IllegalArgumentException("Nao ha produtos para exibir");
-        }
-        return pedidoRepository.findAll();
+    for (HistoricoCompra hist : pedido.getHistoricos()) {
+        hist.setPedido(pedido);
+    }
+
+    if (pedido.getUsuario() != null && pedido.getUsuario().getId() > 0) { // Corrigido para > 0
+        var usuario = usuarioRepository.findById(pedido.getUsuario().getId())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        pedido.setUsuario(usuario);
+    }
+
+    if (pedido.getCliente() != null && pedido.getCliente().getId() > 0) { // Corrigido para > 0
+        var cliente = clienteRepository.findById(pedido.getCliente().getId())
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        pedido.setCliente(cliente);
+    }
+
+    // Validações
+    if (pedido.getData_pedido() == null) {
+        throw new IllegalArgumentException("Data do pedido não pode ser nulo");
+    }
+    if (pedido.getValor_total() == null) {
+        throw new IllegalArgumentException("O valor não pode ser nulo ");
+    }
+    if (pedido.getStatus() == null) {
+        throw new IllegalArgumentException("Status nao pode ser nulo");
+    }
+    if (pedido.getEndereco_entrega() == null) {
+        throw new IllegalArgumentException("Endereço de entrega não pode ser nulo");
+    }
+
+    return pedidoRepository.save(pedido);
+    }
+
+    public List<PedidoResponseDTO> findAll() {
+        return pedidoRepository
+        .findAll()
+        .stream()
+        .map(PedidoResponseMapper::toDto)
+        .toList();
     }
 
     public Pedido findById(Integer id) {
@@ -95,14 +116,13 @@ public class PedidoService {
         return pedidoRepository.findByPedidoItemsProdutoNome( nomeProduto );
     }
 
+    @Transactional
     public Pedido update(Integer id, Pedido pedido) {
         Pedido pedidoUpdate = findById( id );
-        if (id < 0){
-            throw new IllegalArgumentException("ID DO PEDIDO INVALIDO");
-        }
         return pedidoRepository.save( pedidoUpdate );
     }
 
+    @Transactional
     public void delete(Integer id) {
         var delete = findById( id );
         pedidoRepository.delete( delete );

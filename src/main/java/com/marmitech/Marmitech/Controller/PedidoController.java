@@ -1,14 +1,15 @@
 package com.marmitech.Marmitech.Controller;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoResponseDTO;
 import com.marmitech.Marmitech.Entity.Pedido;
+import com.marmitech.Marmitech.Mapper.ResponseMapper.PedidoResponseMapper;
 import com.marmitech.Marmitech.Services.PedidoService;
 
 @RestController
@@ -27,7 +28,7 @@ public class PedidoController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<Pedido>> findAll() {
+    public ResponseEntity<List<PedidoResponseDTO>> findAll() {
         try {
             var result = pedidoService.findAll();
             return new ResponseEntity<>( result, HttpStatus.OK );
@@ -37,10 +38,13 @@ public class PedidoController {
     }
 
     @GetMapping("/findById/{id}")
-    public ResponseEntity<Pedido> findById(@PathVariable Integer id) {
+    public ResponseEntity<PedidoResponseDTO> findById(@PathVariable Integer id) {
         try {
             var result = pedidoService.findById( id );
-            return new ResponseEntity<>( result, HttpStatus.FOUND );
+
+            PedidoResponseDTO pedidoDto = PedidoResponseMapper.toDto(result);
+
+            return new ResponseEntity<>( pedidoDto, HttpStatus.FOUND );
         } catch (Exception ex) {
             return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
         }

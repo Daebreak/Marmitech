@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +21,7 @@ public class UsuarioService {
 
     public Usuario save(Usuario usuario) {
         //Para pegar a data e hora automatica
-        usuario.setDataCriacao( LocalDateTime.now() );
+        usuario.setData_criacao( LocalDate.now() );
         return usuarioRepository.save( usuario );
     }
 
@@ -41,7 +41,7 @@ public class UsuarioService {
     public Usuario update(Integer id, Usuario usuario) {
         Usuario usuarioUpdate = findById( id );
         //Para pegar a data e hora automatica
-        usuarioUpdate.setDataCriacao( LocalDateTime.now() );
+        usuarioUpdate.setData_criacao( LocalDate.now() );
         if (usuario.getNome() != null && !usuario.getNome().isBlank()) {
             usuarioUpdate.setNome( usuario.getNome() );
         }

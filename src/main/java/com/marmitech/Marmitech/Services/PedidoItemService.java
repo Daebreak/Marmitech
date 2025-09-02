@@ -39,11 +39,12 @@ public class PedidoItemService {
     public PedidoItem update(PedidoItem atualizadoPedidoItem, int pedidoItemId){
         
         PedidoItem antigPedidoItem = pedidoItemRepository.findById(pedidoItemId).get();
-        antigPedidoItem.setProduto(validator(atualizadoPedidoItem.getProduto(), antigPedidoItem.getProduto(), produto -> produto != null ));
-        antigPedidoItem.setPrecoUnitarioPedido(validator(atualizadoPedidoItem.getPrecoUnitarioPedido(), antigPedidoItem.getPrecoUnitarioPedido(), this::isPrecoValido ) );
-        antigPedidoItem.setQuantidade(validator(atualizadoPedidoItem.getQuantidade(), antigPedidoItem.getQuantidade(), this::isNumeroValido));
-        antigPedidoItem.setSubtotal(validator(atualizadoPedidoItem.getSubtotal(), antigPedidoItem.getSubtotal(), this::isPrecoValido));
-        return pedidoItemRepository.save(antigPedidoItem) ;
+        
+        atualizadoPedidoItem.setPrecoUnitarioPedido(validator(atualizadoPedidoItem.getPrecoUnitarioPedido(), antigPedidoItem.getPrecoUnitarioPedido(), this::isPrecoValido));
+        atualizadoPedidoItem.setQuantidade(validator(atualizadoPedidoItem.getQuantidade(), antigPedidoItem.getQuantidade(), this::isNumeroValido));
+        atualizadoPedidoItem.setSubtotal(validator(atualizadoPedidoItem.getSubtotal(), antigPedidoItem.getSubtotal(), this::isPrecoValido));
+        
+        return pedidoItemRepository.save(atualizadoPedidoItem);
     }
 
     @Transactional

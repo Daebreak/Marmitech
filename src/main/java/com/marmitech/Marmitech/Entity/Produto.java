@@ -1,6 +1,5 @@
 package com.marmitech.Marmitech.Entity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 
 import java.util.Set;
@@ -63,7 +63,7 @@ public class Produto {
     //private int usuario_id; //tabela do usuario
     private String dataCadastro;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "produto")
     private Set<PedidoItem> pedidoItems = new HashSet<>();
 
 }

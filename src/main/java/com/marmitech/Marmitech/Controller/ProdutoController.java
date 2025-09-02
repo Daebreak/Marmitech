@@ -1,7 +1,9 @@
 package com.marmitech.Marmitech.Controller;
 
-import com.marmitech.Marmitech.Entity.Pedido;
+import com.marmitech.Marmitech.DTO.RequestDTO.ProdutoSaveDTO;
+import com.marmitech.Marmitech.DTO.ResponseDTO.ProdutoListaDTO;
 import com.marmitech.Marmitech.Entity.Produto;
+import com.marmitech.Marmitech.Mapper.ResponseMapper.ProdutoListaMapper;
 import com.marmitech.Marmitech.Services.ProdutoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,30 +22,32 @@ public class ProdutoController {
     private final ProdutoService produtoService;
 
     @PostMapping("/save")
-    public ResponseEntity<Produto> save(@RequestBody @Valid Produto produto) {
+    public ResponseEntity<ProdutoListaDTO> save(@RequestBody @Valid ProdutoSaveDTO produtoDto) {
         try {
-            var result = produtoService.save( produto );
-            return new ResponseEntity<>( result, HttpStatus.CREATED );
+            ProdutoListaDTO produto = produtoService.save( produtoDto );
+            return new ResponseEntity<>( produto, HttpStatus.CREATED );
         } catch (Exception ex) {
             return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
         }
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<Produto>> findAll() {
+    public ResponseEntity<List<ProdutoListaDTO>> findAll() {
         try {
-            var result = produtoService.findAll();
-            return new ResponseEntity<>( result, HttpStatus.OK );
+            return new ResponseEntity<>( produtoService.findAll(), HttpStatus.OK );
         } catch (Exception ex) {
             return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
         }
     }
 
     @GetMapping("findById/{id}")
-    public ResponseEntity<Produto> findById(@PathVariable Integer id) {
+    public ResponseEntity<ProdutoListaDTO> findById(@PathVariable Integer id) {
         try {
             var result = produtoService.findById( id );
-            return new ResponseEntity<>( result, HttpStatus.OK );
+
+            ProdutoListaDTO produtoDto = ProdutoListaMapper.toDto(result);
+
+            return new ResponseEntity<>( produtoDto, HttpStatus.OK );
         } catch (Exception ex) {
             return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
         }
@@ -64,26 +68,6 @@ public class ProdutoController {
         try {
             produtoService.delete( id );
             return new ResponseEntity<>( null, HttpStatus.OK );
-        } catch (Exception ex) {
-            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
-        }
-    }
-
-    @GetMapping("/findByCategoria/{categoria}")
-    public ResponseEntity<List<Produto>> findByCategoria(@PathVariable String categoria) {
-        try {
-            var result = produtoService.findByCategoria( categoria );
-            return new ResponseEntity<>( result, HttpStatus.OK );
-        } catch (Exception ex) {
-            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
-        }
-    }
-
-    @GetMapping("/findByPrecoUnitario/{precoUnitario}")
-    public ResponseEntity<List<Produto>> findByPrecoUnitario(@PathVariable int precoUnitario) {
-        try {
-            var result = produtoService.findByPrecoUnitario( precoUnitario );
-            return new ResponseEntity<>( result, HttpStatus.OK );
         } catch (Exception ex) {
             return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
         }

@@ -38,7 +38,7 @@ public class HistoricoCompraService {
     public HistoricoCompra update(HistoricoCompra novoHistoricoCompra, int historicoCompraId){
         HistoricoCompra antigoHistoricoCompra = historicoCompraRepository.findById(historicoCompraId).get();
 
-        novoHistoricoCompra.setClienteId(validador(novoHistoricoCompra.getClienteId(), antigoHistoricoCompra.getClienteId(), this::isValidoNum));
+        //novoHistoricoCompra.setClienteId(validador(novoHistoricoCompra.getClienteId(), antigoHistoricoCompra.getClienteId(), this::isValidoNum));
         //novoHistoricoCompra.setPedidoId(validador(novoHistoricoCompra.getPedidoId(), antigoHistoricoCompra.getPedidoId(), this::isValidoNum));
         novoHistoricoCompra.setTipo_evento(validador(novoHistoricoCompra.getTipo_evento(), antigoHistoricoCompra.getTipo_evento(), this::isValidoString));
         novoHistoricoCompra.setData_evento(validador(novoHistoricoCompra.getData_evento(), antigoHistoricoCompra.getData_evento(), this::isValidoString));

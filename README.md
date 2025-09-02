@@ -44,7 +44,7 @@ José
 
 Marina
 
-Jhoran Igor
+Jhoran Ygor
 
 📄Agradecimentos
 
