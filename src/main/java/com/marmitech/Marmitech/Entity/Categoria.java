@@ -12,12 +12,12 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class categoria {
+public class Categoria {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
+    private int id;
     @NotNull
     @NotBlank
-    private Integer id;
     public String nome;
     public String descricao;
 }
