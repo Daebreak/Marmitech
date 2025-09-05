@@ -51,7 +51,7 @@ public class Produto {
 
     @NotNull(message = "preco_unitario não pode ser null ou vazio")
     @Min(1)
-    private int precoUnitario;
+    private BigDecimal precoUnitario;
 
     @NotNull(message = "estoque não pode ser null ou vazio")
     @Min(1)

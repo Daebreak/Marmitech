@@ -26,8 +26,8 @@ public class PedidoResponseMapper {
         return new PedidoResponseDTO(
             pedido.getCliente().getNome(), 
             pedido.getStatus(), 
-            pedido.getEndereco_entrega(), 
+            pedido.getEnderecoEntrega(),
             pedidoItemResponseDTOs, 
-            pedido.getValor_total());
+            pedido.getValorTotal());
     }
 }

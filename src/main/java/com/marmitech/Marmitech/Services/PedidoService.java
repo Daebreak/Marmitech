@@ -41,7 +41,7 @@ public class PedidoService {
 
     @Transactional
     public Pedido save(Pedido pedido) {
-    pedido.setData_pedido(LocalDate.now().toString());
+    pedido.setDataPedido(LocalDate.now().toString());
 
     // Associa o pedido a cada item do pedido
     for (PedidoItem item : pedido.getPedidoItems()) {
@@ -70,16 +70,16 @@ public class PedidoService {
     }
 
     // Validações
-    if (pedido.getData_pedido() == null) {
+    if (pedido.getDataPedido() == null) {
         throw new IllegalArgumentException("Data do pedido não pode ser nulo");
     }
-    if (pedido.getValor_total() == null) {
+    if (pedido.getValorTotal() == null) {
         throw new IllegalArgumentException("O valor não pode ser nulo ");
     }
     if (pedido.getStatus() == null) {
         throw new IllegalArgumentException("Status nao pode ser nulo");
     }
-    if (pedido.getEndereco_entrega() == null) {
+    if (pedido.getEnderecoEntrega() == null) {
         throw new IllegalArgumentException("Endereço de entrega não pode ser nulo");
     }
 

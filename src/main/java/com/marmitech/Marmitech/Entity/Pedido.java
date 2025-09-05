@@ -38,7 +38,7 @@ public class Pedido {
 
     private String dataPedido;
 
-    private Double valorTotal;
+    private BigDecimal valorTotal;
 
     @NotNull
     @NotBlank(message = "status não pode ser null ou vazio")
