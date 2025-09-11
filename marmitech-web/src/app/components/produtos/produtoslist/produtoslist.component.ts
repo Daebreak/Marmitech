@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import {MdbModalModule, MdbModalRef, MdbModalService} from 'mdb-angular-ui-kit/modal';
 import { ProdutosdetailsComponent } from "../produtosdetails/produtosdetails.component";
+import { ProdutoService } from '../../../services/produto.service';
 
 @Component({
   selector: 'app-produtoslist',
@@ -27,43 +28,20 @@ export class ProdutoslistComponent {
   @ViewChild('modalProdutoDetalhe') modalProdutoDetalhe!: TemplateRef<any>;
   modalRef!: MdbModalRef<any>;
 
+  produtoService = inject(ProdutoService);
+
   constructor() {
-    this.lista.push(new Produto({
-      id: 1,
-      nome: 'Produto 1',
-      descricao: 'Descrição do Produto 1',
-      categoria: 'Categoria A',
-      dataCadastro: '2023-10-01',
-      precoUnitario: 100.00,
-      estoque: 50,
-      sku: 'SKU001'
-    }));
+  }
 
-    this.lista.push(new Produto({
-      id: 2,
-      nome: 'Produto 2',
-      descricao: 'Descrição do Produto 2',
-      categoria: 'Categoria B',
-      dataCadastro: '2023-10-05',
-      precoUnitario: 150.00,
-      estoque: 30,
-      sku: 'SKU002'
-    }));
-
-    this.lista.push(new Produto({
-      id: 3,
-      nome: 'Produto 3',
-      descricao: 'Descrição do Produto 3',
-      categoria: 'Categoria A',
-      dataCadastro: '2023-10-10',
-      precoUnitario: 200.00,
-      estoque: 20,
-      sku: 'SKU003'
-    }));
-
-    history.state.produtoNovo && this.lista.push(history.state.produtoNovo);
-    history.state.produtoEditado && (this.lista = this.lista.map(p => p.id === history.state.produtoEditado.id ? history.state.produtoEditado : p));
-
+  findAll() {
+    this.produtoService.findAll().subscribe({
+      next: lista => {
+        this.lista = lista;
+      },
+      error: (err) => {
+        console.error('Erro ao buscar produtos:', err);
+      }
+    });
   }
 
   editById(produto: Produto) {
