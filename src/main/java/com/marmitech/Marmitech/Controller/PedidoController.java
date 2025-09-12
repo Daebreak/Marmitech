@@ -14,6 +14,7 @@ import com.marmitech.Marmitech.Services.PedidoService;
 
 @RestController
 @RequestMapping("/api/pedido")
+@CrossOrigin("*")
 public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
@@ -23,11 +24,14 @@ public class PedidoController {
         try {
             return new ResponseEntity<Pedido>(pedidoService.save(pedido), HttpStatus.CREATED );
         } catch (Exception e) {
-            return new ResponseEntity<>( pedido, HttpStatus.BAD_REQUEST );
+            // Adicione esta linha para imprimir o erro no console do Spring!
+            e.printStackTrace();
+            // Retorne um erro 500, que é mais apropriado para uma exceção inesperada
+            return new ResponseEntity<>( null, HttpStatus.INTERNAL_SERVER_ERROR );
         }
     }
 
-    @GetMapping("/findAll")
+    @GetMapping
     public ResponseEntity<List<PedidoResponseDTO>> findAll() {
         try {
             var result = pedidoService.findAll();

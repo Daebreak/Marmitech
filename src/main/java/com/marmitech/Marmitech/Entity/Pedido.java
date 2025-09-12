@@ -60,7 +60,7 @@ public class Pedido {
     
     //Pedido que sera atrelado ao historico
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<HistoricoCompra> historicos;
+    private List<HistoricoCompra> historicos = new ArrayList<>();
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PedidoItem> pedidoItems = new HashSet<>();
@@ -77,7 +77,5 @@ public class Pedido {
         historico.setPedido(this); // garante o vínculo
         historicos.add(historico);  
     }
-    
-    
 
 }
