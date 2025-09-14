@@ -10,11 +10,27 @@ export class ProdutoService {
 
   http = inject(HttpClient);
 
-  API = "192.168.100.146:8080/api/produto";
+  API = "http://192.168.122.219:8080/api/produto";
 
   constructor() { }
 
   findAll(): Observable<Produto[]> {
-    return this.http.get<Produto[]>(this.API+"/findAll");
+    return this.http.get<Produto[]>(`${this.API}/findAll`);
+  }
+
+  delete(id: number): Observable<string> {
+    return this.http.delete<string>(`${this.API}/delete/${id}`, { responseType: 'text' as 'json' });
+  }
+
+  save(produto: Produto): Observable<string> {
+    return this.http.post<string>(`${this.API}/save`, produto, { responseType: 'text' as 'json' });
+  }
+
+ update(produto: Produto): Observable<Produto> {
+    return this.http.put<Produto>(`${this.API}/update/${produto.id}`, produto);
+  }
+
+  findById(id: number): Observable<Produto> {
+    return this.http.get<Produto>(`${this.API}/findById/${id}`);
   }
 }

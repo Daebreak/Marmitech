@@ -31,6 +31,7 @@ export class ProdutoslistComponent {
   produtoService = inject(ProdutoService);
 
   constructor() {
+    this.findAll();
   }
 
   findAll() {
@@ -39,7 +40,11 @@ export class ProdutoslistComponent {
         this.lista = lista;
       },
       error: (err) => {
-        console.error('Erro ao buscar produtos:', err);
+        Swal.fire(
+          'Erro!',
+          'Houve um erro ao executar esta ação: ' + err.error,
+          'error'
+        );
       }
     });
   }
@@ -64,12 +69,7 @@ export class ProdutoslistComponent {
 
 
   retornoDetalhe(produto: Produto) {
-    if(produto.id) {
-      this.lista = this.lista.map(p => p.id === produto.id ? produto : p);
-    } else {
-      produto.id = this.lista.length + 1;
-      this.lista.push(produto);
-    }
+    this.findAll();
     this.modalRef.close();    
   }
 
@@ -85,12 +85,24 @@ export class ProdutoslistComponent {
       cancelButtonText: 'Não'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.lista = this.lista.filter(p => p.id !== produto.id);
-        Swal.fire(
-          'Excluído!',
-          'Produto ' + produto.nome + ' excluído com sucesso.',
-          'success'
-        );
+        this.produtoService.delete(produto.id!).subscribe({
+          next: msg => {
+            Swal.fire(
+              'Excluído!',
+              'Produto ' + produto.nome + ' excluído com sucesso.',
+              'success'
+            );
+            this.findAll();
+          },
+          error: err =>{
+            Swal.fire(
+              'Erro!',
+              'Houve um erro ao executar esta ação: ' + err.error,
+              'error'
+            );
+          }
+        })
+
       }
     });
   }
