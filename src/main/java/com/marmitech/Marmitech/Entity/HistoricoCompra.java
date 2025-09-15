@@ -21,11 +21,11 @@ public class HistoricoCompra {
 
     @NotNull
     @NotBlank(message = "data_evento não pode ser null ou vazio")
-    private String data_evento;
+    private String dataEvento;
 
     @NotNull
     @NotBlank(message = "tipo_evento não pode ser null ou vazio")
-    private String tipo_evento;
+    private String tipoEvento;
 
     @NotNull
     @NotBlank(message = "descricao não pode ser null ou vazio")
