@@ -24,10 +24,14 @@ public class PedidoResponseMapper {
         .collect(Collectors.toSet());
 
         return new PedidoResponseDTO(
-            pedido.getCliente().getNome(), 
-            pedido.getStatus(), 
-            pedido.getEnderecoEntrega(),
-            pedidoItemResponseDTOs, 
-            pedido.getValorTotal());
+                //Colocando o id para aparecer no hostorico do front
+                pedido.getId(),
+                pedido.getCliente().getNome(),
+                pedido.getStatus(),
+                pedido.getEnderecoEntrega(),
+                pedidoItemResponseDTOs,
+                pedido.getValorTotal(),
+                pedido.getDataPedido()
+        );
     }
 }

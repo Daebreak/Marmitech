@@ -1,5 +1,6 @@
 package com.marmitech.Marmitech.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -33,5 +34,6 @@ public class HistoricoCompra {
 
     @ManyToOne
     @JoinColumn(name = "pedido_id")
+    @JsonBackReference("pedido-historico")// referência na relação Pedido <-> HistoricoCompra. objeto historicoCompra seja incluido tambem no Pedido e vice versa
     private Pedido pedido;
 }

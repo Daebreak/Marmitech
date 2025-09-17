@@ -1,5 +1,6 @@
 package com.marmitech.Marmitech.Entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -18,14 +19,6 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 
 import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
-@JsonIdentityInfo(
-  generator = ObjectIdGenerators.PropertyGenerator.class,
-  property = "id"
-)
 
 @Entity
 @Getter
@@ -64,6 +57,8 @@ public class Produto {
     private String dataCadastro;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "produto")
+    @JsonManagedReference("produto-item")/* referência na relação Produto <-> PedidoItem.
+    permitindo que a lista de PedidoItem seja incluída a partir do Produto. */
     private Set<PedidoItem> pedidoItems = new HashSet<>();
 
 }
