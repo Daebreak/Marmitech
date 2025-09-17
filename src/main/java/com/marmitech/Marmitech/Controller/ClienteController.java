@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/cliente" )
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class ClienteController {
     private final ClienteService clienteService;
@@ -27,7 +28,7 @@ public class ClienteController {
         }
     }
 
-    @GetMapping("/findAll" )
+    @GetMapping
     public ResponseEntity<List<Cliente>> findAll() {
         try {
             var result = clienteService.findAll();
