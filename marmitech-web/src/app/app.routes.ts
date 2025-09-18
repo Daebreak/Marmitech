@@ -8,6 +8,7 @@ import { CategoriasdetailsComponent } from './components/categorias/categoriasde
 import { PedidoslistComponent } from './components/pedidos/pedidoslist/pedidoslist.component';
 import { PedidosdetailsComponent } from './components/pedidos/pedidosdetails/pedidosdetails.component';
 import { PedidosItemlistComponent } from './components/pedidosItem/pedidos-itemlist/pedidos-itemlist.component';
+import { PedidosItemdetailsComponent } from './components/pedidosItem/pedidos-itemdetails/pedidos-itemdetails.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -19,9 +20,11 @@ export const routes: Routes = [
         {path: 'pedidos', component: PedidoslistComponent},
         {path: 'pedidos/new', component: PedidosdetailsComponent},
         {path: 'pedidos/edit/:id', component: PedidosdetailsComponent},
-        {path: 'pedidosItem', component: PedidosItemlistComponent},
         {path: 'categorias', component: CategoriaslistComponent},
         {path: 'categorias/new', component: CategoriasdetailsComponent},
-        {path: 'categorias/edit/:id', component: CategoriasdetailsComponent}
+        {path: 'categorias/edit/:id', component: CategoriasdetailsComponent},
+        {path: 'pedidosItem', component: PedidosItemlistComponent},
+        {path: 'pedidosItem/new', component: PedidosItemdetailsComponent},
+        {path: 'pedidosItem/edit/:id', component: PedidosItemdetailsComponent}
     ]}
 ];

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoItemResponseDTO;
 import com.marmitech.Marmitech.Entity.PedidoItem;
 import com.marmitech.Marmitech.Services.PedidoItemService;
 
@@ -66,9 +67,9 @@ public class PedidoItemController {
 
         
     @GetMapping("/findAll")
-    public ResponseEntity<List<PedidoItem>> findAll(){
+    public ResponseEntity<List<PedidoItemResponseDTO>> findAll(){
         try {
-            return new ResponseEntity<>(pedidoItemService.findAll(), HttpStatus.CREATED);
+            return new ResponseEntity<>(pedidoItemService.findAll(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
