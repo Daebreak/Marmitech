@@ -8,6 +8,11 @@ import { CategoriasdetailsComponent } from './components/categorias/categoriasde
 import { PedidoslistComponent } from './components/pedidos/pedidoslist/pedidoslist.component';
 import { PedidosdetailsComponent } from './components/pedidos/pedidosdetails/pedidosdetails.component';
 import { PedidosItemlistComponent } from './components/pedidosItem/pedidos-itemlist/pedidos-itemlist.component';
+import { Cliente } from './models/cliente';
+import { ClientelistComponent } from './components/cliente/clientelist/clientelist.component';
+import { clienteDetailsComponent } from './components/cliente/clientedetails/clientedetails.component';
+
+
 
 export const routes: Routes = [
     {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -22,6 +27,9 @@ export const routes: Routes = [
         {path: 'pedidosItem', component: PedidosItemlistComponent},
         {path: 'categorias', component: CategoriaslistComponent},
         {path: 'categorias/new', component: CategoriasdetailsComponent},
-        {path: 'categorias/edit/:id', component: CategoriasdetailsComponent}
+        {path: 'categorias/edit/:id', component: CategoriasdetailsComponent},
+        {path:'cliente',component:ClientelistComponent},
+        {path:'cliente/new',component:clienteDetailsComponent},
+        {path:'cliente/edit/:id',component:clienteDetailsComponent}
     ]}
 ];

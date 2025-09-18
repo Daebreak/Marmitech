@@ -1,0 +1,54 @@
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <h3>Cadastro de Clientes</h3>
+
+          <div class="direita">
+            <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="new()">
+              Novo
+            </button>
+          </div>
+
+        </div>
+        <br />
+        <table class="table table-striped">
+          <thead>
+            <tr class="centralizar">
+              <th>Nome</th>
+              <th>E-mail</th>
+              <th>Telefone</th>
+              <th>Data de Cadastro</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+              @for (cliente of lista; track $index){
+            <tr>
+              <td>{{ cliente.nome }}</td>
+              <td>{{ cliente.email }}</td>
+              <td>{{ cliente.telefone }}</td>
+              <td>{{ cliente.dataCadastro | date: 'dd/MM/yyyy' }}</td>
+
+              <td class="direita">
+                <button type="button" class="btn btn-primary btn-rounded" mdbRipple
+                        (click)="editById(cliente)">
+                  Editar
+                </button>
+                <button type="button" class="btn btn-danger btn-rounded" mdbRipple
+                        (click)="deleteById(cliente)">
+                  Deletar
+                </button>
+              </td>
+            </tr>
+        }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
