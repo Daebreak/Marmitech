@@ -21,44 +21,27 @@ public class PedidoController {
 
     @PostMapping("/save")
     public ResponseEntity<Pedido> save(@RequestBody Pedido pedido) {
-        try {
-            return new ResponseEntity<Pedido>(pedidoService.save(pedido), HttpStatus.CREATED );
-        } catch (Exception e) {
-            // Adicione esta linha para imprimir o erro no console do Spring!
-            e.printStackTrace();
-            // Retorne um erro 500, que é mais apropriado para uma exceção inesperada
-            return new ResponseEntity<>( null, HttpStatus.INTERNAL_SERVER_ERROR );
-        }
+        return new ResponseEntity<Pedido>( pedidoService.save( pedido ), HttpStatus.CREATED );
     }
 
     @GetMapping
     public ResponseEntity<List<PedidoResponseDTO>> findAll() {
-        try {
-            var result = pedidoService.findAll();
-            return new ResponseEntity<>( result, HttpStatus.OK );
-        } catch (Exception ex) {
-            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST);
-        }
+        var result = pedidoService.findAll();
+        return new ResponseEntity<>( result, HttpStatus.OK );
     }
 
     @GetMapping("/findById/{id}")
     public ResponseEntity<PedidoResponseDTO> findById(@PathVariable Integer id) {
-        try {
-            var result = pedidoService.findById( id );
-
-            PedidoResponseDTO pedidoDto = PedidoResponseMapper.toDto(result);
-
-            return new ResponseEntity<>( pedidoDto, HttpStatus.FOUND );
-        } catch (Exception ex) {
-            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
-        }
+        var result = pedidoService.findById( id );
+        PedidoResponseDTO pedidoDto = PedidoResponseMapper.toDto( result );
+        return new ResponseEntity<>( pedidoDto, HttpStatus.FOUND );
     }
 
     @GetMapping("/findByStatus")
     public ResponseEntity<List<Pedido>> findByStatus(@RequestParam String status) {
         try {
             List<Pedido> result = pedidoService.findByStatus( status );
-            
+
             return new ResponseEntity<>( result, HttpStatus.FOUND );
         } catch (Exception ex) {
             return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
@@ -69,7 +52,7 @@ public class PedidoController {
     public ResponseEntity<List<Pedido>> findByProdutoNome(@RequestParam String nomeProduto) {
         try {
             List<Pedido> result = pedidoService.findByProdutoNome( nomeProduto );
-            
+
             return new ResponseEntity<>( result, HttpStatus.FOUND );
         } catch (Exception ex) {
             return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
@@ -81,7 +64,7 @@ public class PedidoController {
     public ResponseEntity<List<Pedido>> findByProduto(@RequestParam int produtoId) {
         try {
             List<Pedido> result = pedidoService.findByProduto( produtoId );
-            
+
             return new ResponseEntity<>( result, HttpStatus.FOUND );
         } catch (Exception ex) {
             return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
@@ -90,21 +73,13 @@ public class PedidoController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Pedido> update(@PathVariable Integer id, @RequestBody Pedido pedido) {
-        try {
-            var result = pedidoService.findById( id );
-            return new ResponseEntity<>( result, HttpStatus.OK );
-        } catch (Exception ex) {
-            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
-        }
+        var result = pedidoService.findById( id );
+        return new ResponseEntity<>( result, HttpStatus.OK );
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        try {
-            pedidoService.delete( id );
-            return new ResponseEntity<>( null, HttpStatus.OK );
-        } catch (Exception ex) {
-            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
-        }
+        pedidoService.delete( id );
+        return new ResponseEntity<>( null, HttpStatus.OK );
     }
 }

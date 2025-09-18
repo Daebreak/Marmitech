@@ -19,14 +19,16 @@ public class PedidoResponseMapper {
 
     public static PedidoResponseDTO toDto(Pedido pedido){
         Set<PedidoItemResponseDTO> pedidoItemResponseDTOs = pedido.getPedidoItems()
-        .stream()
-        .map(PedidoResponseMapper::toItemDto)
-        .collect(Collectors.toSet());
+                .stream()
+                .map(PedidoResponseMapper::toItemDto)
+                .collect(Collectors.toSet());
+
+        //Passando o nome do cliente para nao dar erro na hora de enviar para o front
+        String nomeCliente = (pedido.getCliente() != null) ? pedido.getCliente().getNome() : "Cliente não informado";
 
         return new PedidoResponseDTO(
-                //Colocando o id para aparecer no hostorico do front
                 pedido.getId(),
-                pedido.getCliente().getNome(),
+                nomeCliente,
                 pedido.getStatus(),
                 pedido.getEnderecoEntrega(),
                 pedidoItemResponseDTOs,
