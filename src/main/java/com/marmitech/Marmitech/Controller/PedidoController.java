@@ -14,7 +14,7 @@ import com.marmitech.Marmitech.Services.PedidoService;
 
 @RestController
 @RequestMapping("/api/pedido")
-@CrossOrigin(origins = "*")
+@CrossOrigin("*")
 public class PedidoController {
     @Autowired
     private PedidoService pedidoService;

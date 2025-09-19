@@ -14,7 +14,7 @@ import com.marmitech.Marmitech.Services.HistoricoCompraService;
 
 @RestController
 @RequestMapping("/historicoCompra")
-@CrossOrigin(origins = "*")
+@CrossOrigin("*")
 public class HistoricoCompraController {
 
     @Autowired

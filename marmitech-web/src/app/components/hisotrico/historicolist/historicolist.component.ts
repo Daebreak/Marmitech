@@ -43,7 +43,7 @@ export class HistoricolistComponent implements OnInit {
   carregarPedidos() {
     this.pedidoService.findAll().subscribe({
       next: (listaRecebida) => {
-        this.pedidos = listaRecebida; // Guarda a lista de pedidos recebida
+        this.pedidos = listaRecebida;
       },
       error: (erro) => {
         console.error('Erro ao buscar a lista de pedidos:', erro);
