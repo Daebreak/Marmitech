@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoItemResponseDTO;
 import com.marmitech.Marmitech.Entity.PedidoItem;
 import com.marmitech.Marmitech.Services.PedidoItemService;
 
 @RestController
 @RequestMapping("/pedidoItem")
+@CrossOrigin("*")
 public class PedidoItemController {
 
     @Autowired
@@ -64,9 +67,9 @@ public class PedidoItemController {
 
         
     @GetMapping("/findAll")
-    public ResponseEntity<List<PedidoItem>> findAll(){
+    public ResponseEntity<List<PedidoItemResponseDTO>> findAll(){
         try {
-            return new ResponseEntity<>(pedidoItemService.findAll(), HttpStatus.CREATED);
+            return new ResponseEntity<>(pedidoItemService.findAll(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }

@@ -13,8 +13,7 @@ import { HistoricodetailsComponent } from './components/hisotrico/historicodetai
 import { Cliente } from './models/cliente';
 import { ClientelistComponent } from './components/cliente/clientelist/clientelist.component';
 import { clienteDetailsComponent } from './components/cliente/clientedetails/clientedetails.component';
-
-
+import { PedidosItemdetailsComponent } from './components/pedidosItem/pedidos-itemdetails/pedidos-itemdetails.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -35,8 +34,9 @@ export const routes: Routes = [
             { path: 'historicos/:id', component: HistoricodetailsComponent },
             {path:'cliente',component:ClientelistComponent},
             {path:'cliente/new',component:clienteDetailsComponent},
-            {path:'cliente/edit/:id',component:clienteDetailsComponent}
-
-        ]
-    }
+            {path:'cliente/edit/:id',component:clienteDetailsComponent},
+            {path: 'pedidosItem', component: PedidosItemlistComponent},
+            {path: 'pedidosItem/new', component: PedidosItemdetailsComponent},
+            {path: 'pedidosItem/edit/:id', component: PedidosItemdetailsComponent}
+    ]}
 ];
