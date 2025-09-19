@@ -1,19 +1,19 @@
 export class Cliente {
-  id!: number;
-  nome!: string;
-  email!: string;
-  telefone!: string;
-  dataCadastro!: string;
+    id!: number;
+    nome!: string;
+    telefone!: string;
+    endereco!: string;
+    email!: string;
+    cpf!: string;
+    dataCadastro!: string;
 
-  // Construtor que recebe um objeto
-  /*constructor(objeto: Partial<Cliente>) {
-    Object.assign(this, objeto);
-  }*/
- constructor(data:any){
+     constructor(data:any){
   this.id = data.ClienteId;
   this.nome = data.nome;
   this.email = data.email;
   this.telefone = data.telefone;
+  this.endereco = data.endereco;
+  this.cpf = data.cpf;
   this.dataCadastro = data.dataCadastro;
  }
 }

@@ -14,6 +14,7 @@ import com.marmitech.Marmitech.Services.HistoricoCompraService;
 
 @RestController
 @RequestMapping("/historicoCompra")
+@CrossOrigin(origins = "*")
 public class HistoricoCompraController {
 
     @Autowired
@@ -57,7 +58,7 @@ public class HistoricoCompraController {
     }
 
 
-    @GetMapping("/findAll")
+    @GetMapping
     public ResponseEntity<List<HistoricoCompra>> findAll(){
         try {
             return new ResponseEntity<>(historicoCompraService.findAll(), HttpStatus.CREATED);

@@ -1,11 +1,7 @@
 package com.marmitech.Marmitech.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-
-
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,10 +16,6 @@ import java.util.List;
 import java.util.Set;
 import java.math.BigDecimal;
 
-@JsonIdentityInfo(
-  generator = ObjectIdGenerators.PropertyGenerator.class,
-  property = "id"
-)
 
 @Entity
 @Getter
@@ -36,17 +28,17 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String data_pedido;
+    private String dataPedido;
 
-    private BigDecimal valor_total;
+    private BigDecimal valorTotal;
 
     @NotNull
     @NotBlank(message = "status não pode ser null ou vazio")
     private String status;
 
     @NotNull
-    @NotBlank(message = "endereco_entrega não pode ser null ou vazio")
-    private String endereco_entrega;
+    @NotBlank(message = "enderecoEntrega não pode ser null ou vazio")
+    private String enderecoEntrega;
 
     //Pedido que sera atrelado ao usuario
     @ManyToOne
@@ -60,9 +52,12 @@ public class Pedido {
     
     //Pedido que sera atrelado ao historico
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<HistoricoCompra> historicos;
+    @JsonManagedReference("pedido-historico")/* add referencia para que o json n entre em loop e
+    permitindo que a lista de históricos seja incluída no objeto Pedido.*/
+    private List<HistoricoCompra> historicos = new ArrayList<>();
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("pedido-item")
     private Set<PedidoItem> pedidoItems = new HashSet<>();
 
     public void addItem(PedidoItem item) {
@@ -77,7 +72,5 @@ public class Pedido {
         historico.setPedido(this); // garante o vínculo
         historicos.add(historico);  
     }
-    
-    
 
 }
