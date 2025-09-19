@@ -11,12 +11,16 @@ import { CategoriasdetailsComponent } from './components/categorias/categoriasde
 import { PedidoslistComponent } from './components/pedidos/pedidoslist/pedidoslist.component';
 import { PedidosdetailsComponent } from './components/pedidos/pedidosdetails/pedidosdetails.component';
 import { PedidosItemlistComponent } from './components/pedidosItem/pedidos-itemlist/pedidos-itemlist.component';
+
+import { PedidosItemdetailsComponent } from './components/pedidosItem/pedidos-itemdetails/pedidos-itemdetails.component';
+
 import { HistoricolistComponent } from './components/hisotrico/historicolist/historicolist.component';
 import { HistoricodetailsComponent } from './components/hisotrico/historicodetails/historicodetails.component';
-import { Cliente } from './models/cliente';
+
+
 import { ClientelistComponent } from './components/cliente/clientelist/clientelist.component';
-import { clienteDetailsComponent } from './components/cliente/clientedetails/clientedetails.component';
-import { PedidosItemdetailsComponent } from './components/pedidosItem/pedidos-itemdetails/pedidos-itemdetails.component';
+import { ClientedetailsComponent } from './components/cliente/clientedetails/clientedetails.component';
+
 import { UsuariolistComponent } from './components/usuario/usuariolist/usuariolist.component';
 import { UsuariodetailsComponent } from './components/usuario/usuariodetails/usuariodetails.component';
 
@@ -37,15 +41,16 @@ export const routes: Routes = [
             { path: 'categorias/edit/:id', component: CategoriasdetailsComponent },
             { path: 'historicos', component: HistoricolistComponent },
             { path: 'historicos/:id', component: HistoricodetailsComponent },
-            {path:'cliente',component:ClientelistComponent},
-            {path:'cliente/new',component:clienteDetailsComponent},
-            {path:'cliente/edit/:id',component:clienteDetailsComponent},
-            {path: 'pedidosItem', component: PedidosItemlistComponent},
-            {path: 'pedidosItem/new', component: PedidosItemdetailsComponent},
-            {path: 'pedidosItem/edit/:id', component: PedidosItemdetailsComponent},
+            { path: 'cliente', component: ClientelistComponent },
+            { path: 'cliente/new', component: ClientedetailsComponent },
+            { path: 'cliente/edit/:id', component: ClientedetailsComponent },
+            { path: 'pedidosItem', component: PedidosItemlistComponent },
+            { path: 'pedidosItem/new', component: PedidosItemdetailsComponent },
+            { path: 'pedidosItem/edit/:id', component: PedidosItemdetailsComponent },
             { path: 'historico', component: HistoricolistComponent },
             { path: 'historico/new', component: HistoricodetailsComponent },
             { path: 'historico/edit/:id', component: HistoricodetailsComponent },
 
-    ]}
+        ]
+    }
 ];

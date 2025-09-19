@@ -30,4 +30,9 @@ export class ClienteService {
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.API}/delete/${id}`);
   }
+
+  // Funcao para vincular o cliente no pedido
+  findByNome(nome: string): Observable<Cliente[]> {
+    return this.http.get<Cliente[]>(`${this.API}/findByNome/${nome}`);
+  }
 }
