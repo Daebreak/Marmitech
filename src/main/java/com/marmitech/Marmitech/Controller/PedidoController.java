@@ -14,7 +14,7 @@ import com.marmitech.Marmitech.Services.PedidoService;
 
 @RestController
 @RequestMapping("/api/pedido")
-@CrossOrigin(origins = "*")
+@CrossOrigin("*")
 public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
@@ -34,7 +34,7 @@ public class PedidoController {
     public ResponseEntity<PedidoResponseDTO> findById(@PathVariable Integer id) {
         var result = pedidoService.findById( id );
         PedidoResponseDTO pedidoDto = PedidoResponseMapper.toDto( result );
-        return new ResponseEntity<>( pedidoDto, HttpStatus.FOUND );
+        return new ResponseEntity<>( pedidoDto, HttpStatus.OK );
     }
 
     @GetMapping("/findByStatus")
