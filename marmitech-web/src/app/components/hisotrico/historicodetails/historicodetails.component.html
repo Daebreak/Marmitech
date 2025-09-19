@@ -1,0 +1,48 @@
+<div class="container">
+    <div class="row mt-4">
+        <div class="card">
+            <div class="card-header">
+                <h3>Detalhes do Pedido</h3>
+            </div>
+            <div class="esquerda"> <button type="button" class="btn btn-primary " routerLink="/admin/historicos">
+                    Voltar
+                </button>
+            </div>
+            <div class="card-body ">
+
+                <div class="historico-info">
+                    <div class="mb-2">
+                        <label class="form-label">Historico Id: {{ historico.id }} </label>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">Status: {{ historico.status }}</label>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">Data do Pedido: {{ historico.dataPedido }}</label>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">Cliente: {{ historico.cliente }}</label>
+                    </div>
+                </div>
+
+                <div class="historico-pedido">
+                    <div class="mb-2">
+                        <label class="form-label">Produtos:</label>
+                        <p class="form-control-plaintext">{{ historico.produtos }}</p>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">Descricao:</label>
+                        <p class="form-control-plaintext">{{ historico.descricao }}</p>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
