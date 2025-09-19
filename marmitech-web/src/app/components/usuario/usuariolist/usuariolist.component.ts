@@ -129,6 +129,7 @@ export class UsuariolistComponent {
   }
   retornoDetalhes(usuario: Usuario) {
     if(usuario.id > 0) {
+      if(usuario.id > 0) {
         //let indice = this.lista.findIndex((c) => c.id === usuario.id);
        // this.lista[indice] = usuario;
 
@@ -163,4 +164,5 @@ export class UsuariolistComponent {
       this.modalRef.close();
     }
   }
+}
 }
