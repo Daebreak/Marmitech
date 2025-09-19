@@ -3,79 +3,45 @@ import { FormsModule } from '@angular/forms';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { Cliente } from '../../../models/cliente';
 import { ActivatedRoute, Router } from '@angular/router';
-import Swal from 'sweetalert2'
-import {clienteService } from '../../../service/cliente.service';
+import { ClienteService } from '../../../services/cliente.service';
+import Swal from 'sweetalert2';
+
 @Component({
-  selector: 'app-usuariodetails',
-  imports: [MdbFormsModule, FormsModule,clienteDetailsComponent],
+  selector: 'app-clientedetails',
+  imports: [FormsModule, MdbFormsModule],
   templateUrl: './clientedetails.component.html',
-  styleUrl: './clientedetails.component.scss',
-  standalone: true,
+  styleUrls: ['./clientedetails.component.scss'],
+  standalone: true
 })
-export class clienteDetailsComponent {
-  
+export class ClientedetailsComponent {
+  @Input() cliente: Cliente = new Cliente({
+    id: 0,
+    nome: '',
+    email: '',
+    telefone: '',
+    dataCadastro: ''
 
-  @Input("clienteEdit") clienteEdit: Cliente = new Cliente({});
-  @Output("retorno") retorno = new EventEmitter<any>();
- 
-  route = inject(ActivatedRoute);
+  });
+  @Output() retorno = new EventEmitter<Cliente>();
+
+  clienteService = inject(ClienteService);
   routerSaver = inject(Router);
- usuarioService = inject(Cliente);
-  clienteService: any;
-  cliente: any;
-  
- constructor() {
-    const id = this.route.snapshot.paramMap.get('id');
-    console.log(id);
+  route = inject(ActivatedRoute);
 
-    if (id) {
-      
-      this.clienteService.findById(parseInt(id)); 
-    }
-}
-  
-  
   salvar() {
     if (this.cliente.id > 0) {
       this.clienteService.update(this.cliente).subscribe({
-        next: (updatedCliente: Cliente) => {
-          Swal.fire({
-            title: 'Atualizado!',
-            icon: 'success',
-            confirmButtonText: 'OK',
-          });
-          this.cliente = updatedCliente;
-        },
-        error: (err: { message: any; }) => {
-          Swal.fire({
-            title: 'Erro ao atualizar pessoa',
-            text: err.message,
-            icon: 'error',
-            confirmButtonText: 'Fechar',
-          });
-        },
+        next: (updated) => Swal.fire('Atualizado', 'Cliente atualizado!', 'success').then(() => this.retorno.emit(updated)),
+        error: (err) => Swal.fire('Erro', err.message, 'error')
       });
     } else {
       this.clienteService.create(this.cliente).subscribe({
-        next: (createdCliente: Cliente) => {
-          Swal.fire({
-            title: 'Criado!',
-            icon: 'success',
-            confirmButtonText: 'OK',
-          });
-          this.cliente = createdCliente;
-        },
-        error: (err: { message: any; }) => {
-          Swal.fire({
-            title: 'Erro ao criar usuário',
-            text: err.message,
-            icon: 'error',
-            confirmButtonText: 'Fechar',
-          });
-        },
+        next: (created) => Swal.fire('Criado', 'Cliente criado!', 'success').then(() => {
+          this.retorno.emit(created);
+          this.routerSaver.navigate(['admin/cliente']);
+        }),
+        error: (err) => Swal.fire('Erro', err.message, 'error')
       });
-     this.routerSaver.navigate(['admin/cliente'], {state: { clienteNovo: this.cliente }});
     }
-    this.retorno.emit(this.cliente);
-  }
+  }
 }

@@ -14,10 +14,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/usuario")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class UsuarioController {
 
     @Autowired
-    private final UsuarioService usuarioService;
+    private  UsuarioService usuarioService;
 
 
     @PostMapping("/save")

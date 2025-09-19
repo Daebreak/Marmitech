@@ -1,19 +1,19 @@
 export class Cliente {
-    id!: number;
-    nome!: string;
-    telefone!: string;
-    endereco!: string;
-    email!: string;
-    cpf!: string;
-    dataCadastro!: string;
+ id: number;
+  nome: string;
+  email: string;
+  telefone: string;
+  cpfCnpj: string;
+  endereco: string;
+  dataCadastro: string;
 
-     constructor(data:any){
-  this.id = data.ClienteId;
-  this.nome = data.nome;
-  this.email = data.email;
-  this.telefone = data.telefone;
-  this.endereco = data.endereco;
-  this.cpf = data.cpf;
-  this.dataCadastro = data.dataCadastro;
- }
+  constructor(data: any) {
+    this.id = data.id;
+    this.nome = data.nome;
+    this.email = data.email;
+    this.telefone = data.telefone;
+    this.cpfCnpj = data.cpfCnpj;
+    this.endereco = data.endereco;
+    this.dataCadastro = data.dataCadastro;
+  }
 }

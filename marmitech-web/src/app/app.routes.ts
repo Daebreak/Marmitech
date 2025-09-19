@@ -1,10 +1,13 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './components/layout/login/login.component';
 import { PrincipalComponent } from './components/layout/principal/principal.component';
+
 import { ProdutoslistComponent } from './components/produtos/produtoslist/produtoslist.component';
 import { ProdutosdetailsComponent } from './components/produtos/produtosdetails/produtosdetails.component';
+
 import { CategoriaslistComponent } from './components/categorias/categoriaslist/categoriaslist.component';
 import { CategoriasdetailsComponent } from './components/categorias/categoriasdetails/categoriasdetails.component';
+
 import { PedidoslistComponent } from './components/pedidos/pedidoslist/pedidoslist.component';
 import { PedidosdetailsComponent } from './components/pedidos/pedidosdetails/pedidosdetails.component';
 import { PedidosItemlistComponent } from './components/pedidosItem/pedidos-itemlist/pedidos-itemlist.component';
@@ -14,6 +17,8 @@ import { Cliente } from './models/cliente';
 import { ClientelistComponent } from './components/cliente/clientelist/clientelist.component';
 import { clienteDetailsComponent } from './components/cliente/clientedetails/clientedetails.component';
 import { PedidosItemdetailsComponent } from './components/pedidosItem/pedidos-itemdetails/pedidos-itemdetails.component';
+import { UsuariolistComponent } from './components/usuario/usuariolist/usuariolist.component';
+import { UsuariodetailsComponent } from './components/usuario/usuariodetails/usuariodetails.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -37,6 +42,10 @@ export const routes: Routes = [
             {path:'cliente/edit/:id',component:clienteDetailsComponent},
             {path: 'pedidosItem', component: PedidosItemlistComponent},
             {path: 'pedidosItem/new', component: PedidosItemdetailsComponent},
-            {path: 'pedidosItem/edit/:id', component: PedidosItemdetailsComponent}
+            {path: 'pedidosItem/edit/:id', component: PedidosItemdetailsComponent},
+            { path: 'historico', component: HistoricolistComponent },
+            { path: 'historico/new', component: HistoricodetailsComponent },
+            { path: 'historico/edit/:id', component: HistoricodetailsComponent },
+
     ]}
 ];

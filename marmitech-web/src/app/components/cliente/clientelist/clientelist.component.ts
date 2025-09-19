@@ -1,22 +1,24 @@
 import { Component, inject, TemplateRef, ViewChild } from '@angular/core';
 import { Cliente } from '../../../models/cliente';
 import { RouterLink } from '@angular/router';
+import { ClienteService } from '../../../services/cliente.service';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
+import { ClientedetailsComponent } from '../clientedetails/clientedetails.component';
 import { MdbModalModule, MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
-import { clienteDetailsComponent } from '../clientedetails/clientedetails.component';
-import { clienteService } from '../../../service/cliente.service';
 
 @Component({
   selector: 'app-clientelist',
-  imports: [RouterLink, MdbModalModule, clienteDetailsComponent, DatePipe],
+  imports: [RouterLink, MdbModalModule, ClientedetailsComponent, DatePipe],
   templateUrl: './clientelist.component.html',
   styleUrl: './clientelist.component.scss',
   standalone: true,
 })
+  
+
 export class ClientelistComponent {
   lista: Cliente[] = [];
-  clienteService = inject(clienteService);
+  clienteService = inject(ClienteService);
 
   clienteEdit: Cliente = new Cliente({
     clienteId: 0,
@@ -103,6 +105,29 @@ export class ClientelistComponent {
   }
 
   retornoDetalhes(cliente: Cliente) {
+    if (cliente.id > 0) {
+      // Editando
+      this.clienteService.update(cliente).subscribe({
+        next: () => {
+          Swal.fire({
+            title: 'Sucesso!',
+            text: 'Cliente atualizado com sucesso.',
+            icon: 'success',
+            confirmButtonText: 'OK',
+          });
+        },
+        error: (err: { message: any }) => {
+          Swal.fire({
+            title: 'Erro ao atualizar cliente',
+            text: err.message,
+            icon: 'error',
+            confirmButtonText: 'Fechar',
+          });
+        },
+      });
+    }
+
     this.modalRef.close();
-  }
+  }
 }
+
