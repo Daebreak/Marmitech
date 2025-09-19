@@ -5,7 +5,7 @@
     <div class="col-lg-12 centralizar topo">
       <div class="card">
         <div class="card-body">
-          <h3>Cadastro de Clientes</h3>
+          <h3>Cadastrar Cliente</h3>
           <mdb-form-control>
             <input mdbInput type="text" id="nome" name="nome" class="form-control" [(ngModel)]="cliente.nome" />
             <label mdbLabel class="form-label" for="nome">Nome</label>
@@ -15,21 +15,30 @@
             <input mdbInput type="text" id="email" name="email" class="form-control" [(ngModel)]="cliente.email" />
             <label mdbLabel class="form-label" for="email">E-mail</label>
           </mdb-form-control>
-          <br />
-          <br />
+          <br/>
           <mdb-form-control>
-            <input mdbInput type="number" id="clienteid" name="clienteid" class="form-control"
-              [(ngModel)]="cliente.id" />
-            <label mdbLabel class="form-label" for="ID">ID</label>
+            <input mdbInput type="number" id="telefone" name="telefone" class="form-control"
+              [(ngModel)]="cliente.telefone" />
+            <label mdbLabel class="form-label" for="telefone">Telefone</label>
           </mdb-form-control>
-          <br />
+          <br/>
+            <mdb-form-control>
+            <input mdbInput type="number" id="cpfCnpj" name="cpfCnpj" class="form-control"
+              [(ngModel)]="cliente.cpfCnpj" />
+            <label mdbLabel class="form-label" for="cpfCnpj">CPF/CNPJ</label>
+          </mdb-form-control>
+          <br/>
+            <mdb-form-control>
+            <input mdbInput type="text" id="endereco" name="endreco" class="form-control"
+              [(ngModel)]="cliente.endereco" />
+            <label mdbLabel class="form-label" for="cpfCnpj">Endereço</label>
+          </mdb-form-control>
+          <br/>
           <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="salvar()">
             Salvar
           </button>
         </div>
       </div>
     </div>
-
-      
   </div>
 </div>
