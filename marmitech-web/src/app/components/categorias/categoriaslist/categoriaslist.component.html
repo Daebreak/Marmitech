@@ -23,10 +23,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let categoria of lista; let i = index">
+              
+              <tr>
+                @for(categoria of lista; track $index){
                 <td>{{ categoria.id }}</td>
                 <td>{{ categoria.nome }}</td>
                 <td>{{ categoria.descricao }}</td>
+                
                 <td class="direita">
                   <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="editById(categoria)">
                     Editar
@@ -35,6 +38,7 @@
                     Deletar
                   </button>
                 </td>
+              }
               </tr>
             </tbody>
           </table>

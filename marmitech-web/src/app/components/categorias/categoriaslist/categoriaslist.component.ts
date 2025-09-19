@@ -24,33 +24,18 @@ export class CategoriaslistComponent {
   @ViewChild('modalCategoriaDetalhe') modalCategoriaDetalhe!: TemplateRef<any>;
   modalRef!: MdbModalRef<any>;
 
-  constructor() {
-    // Exemplo inicial de categorias
-    this.lista.push(new Categoria({
-      id: 1,
-      nome: 'Categoria A',
-      descricao: 'Descrição da Categoria A'
-    }));
-
-
-    let categoriaNovo = history.state.categoriaNovo;
-    let categoriaEditada = history.state.categoriaEditada;
-    if (categoriaNovo) {
-      this.lista.push(categoriaNovo);
-    }
-    if (categoriaEditada) {
-      this.lista = this.lista.map(c => c.id === categoriaEditada.id ? categoriaEditada : c);
-    }
+  constructor(){
+    this.findAll()
   }
+
   findAll() {
     this.cateService.findAll().subscribe({
       next: (lista: Categoria[]) => {
-        console.log(lista);
         this.lista = lista;
       },
       error: (err) => {
         Swal.fire({
-          title: 'Erro ao carregar lista de usuários',
+          title: 'Erro ao carregar lista de Categorias',
           text: err.message,
           icon: 'error',
           confirmButtonText: 'Fechar',
