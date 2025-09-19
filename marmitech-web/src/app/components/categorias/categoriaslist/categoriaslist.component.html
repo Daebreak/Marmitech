@@ -23,7 +23,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let categoria of lista; let i = index">
+               @for (categoria of lista; track $index){
+              <tr>
                 <td>{{ categoria.id }}</td>
                 <td>{{ categoria.nome }}</td>
                 <td>{{ categoria.descricao }}</td>
@@ -36,6 +37,7 @@
                   </button>
                 </td>
               </tr>
+               }
             </tbody>
           </table>
         </div>
