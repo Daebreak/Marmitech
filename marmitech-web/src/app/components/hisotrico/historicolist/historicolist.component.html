@@ -12,17 +12,19 @@
                                 <th>Nome do Cliente</th>
                                 <th>Status</th>
                                 <th>Valor Total</th>
-                                <th>Data do Pedido</th>
+                                <th>Data Do Pedido</th>
                             </tr>
                         </thead>
                         <tbody>
                             @for (pedido of pedidos; track pedido.id) {
                             <tr>
-                                <td>{{ pedido.id }}</td>
+                                <a href="" routerLink="/admin/historicos/{{pedido.id}}">
+                                    {{ pedido.id }}
+                                </a>
                                 <td>{{ pedido.nomeCliente }}</td>
                                 <td>{{ pedido.status }}</td>
                                 <td>{{ pedido.valorTotal | currency:'BRL' }}</td>
-
+                                <td>{{ pedido.dataPedido | date:'dd/MM/yyyy' }}</td>
                             </tr>
                             }
                         </tbody>

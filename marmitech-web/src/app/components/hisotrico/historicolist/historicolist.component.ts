@@ -4,12 +4,12 @@ import { HistoricoCompras } from '../../../models/historico-compras';
 import { HistoricoComprasService } from '../../../services/historico-compras.service';
 import { Pedido } from '../../../models/pedido';
 import { PedidoService } from '../../../services/pedido.service';
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 
 
 @Component({
   selector: 'app-historicolist',
-  imports: [RouterLink, CurrencyPipe],
+  imports: [RouterLink, CurrencyPipe, DatePipe],
   templateUrl: './historicolist.component.html',
   styleUrl: './historicolist.component.scss'
 })

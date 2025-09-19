@@ -88,7 +88,7 @@ export class PedidoslistComponent implements OnInit {
     this.produtoService.findAll().subscribe({
       next: (produtosRecebidos: Produto[]) => {
         this.produtos = produtosRecebidos;
-        console.log('Produtos carregados:', this.produtos); // Verifique o console
+        console.log('Produtos carregados:', this.produtos);
       },
       error: (err: any) => {
         Swal.fire({
@@ -250,7 +250,6 @@ export class PedidoslistComponent implements OnInit {
       Swal.fire('Erro', 'O carrinho está vazio.', 'error');
       return;
     }
-    // A validação agora é muito mais simples!
     if (!this.clienteIdSelecionado) {
       Swal.fire('Erro', 'Por favor, selecione um cliente no menu.', 'error');
       return;
@@ -265,7 +264,6 @@ export class PedidoslistComponent implements OnInit {
       status: 'FILA',
       enderecoEntrega: 'Balcão',
       valorTotal: this.valorTotalPedido,
-      // Passa o objeto do cliente apenas com o ID selecionado
       cliente: { id: this.clienteIdSelecionado },
       pedidoItems: itensDoPedido,
     };
