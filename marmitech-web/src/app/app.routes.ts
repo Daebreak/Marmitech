@@ -15,8 +15,8 @@ import { PedidosItemlistComponent } from './components/pedidosItem/pedidos-iteml
 import { UsuariolistComponent } from './components/usuario/usuariolist/usuariolist.component';
 import { UsuariodetailsComponent } from './components/usuario/usuariodetails/usuariodetails.component';
 
-import { HistoricolistComponent } from './components/historico/historicolist/historicolist.component';
-import { HistoricodetailsComponent } from './components/historico/historicodetails/historicodetails.component';
+//import { HistoricolistComponent } from './components/historico/historicolist/historicolist.component';
+//import { HistoricodetailsComponent } from './components/historico/historicodetails/historicodetails.component';
 
 import { ClientelistComponent } from './components/cliente/clientelist/clientelist.component';
 import { ClientedetailsComponent } from './components/cliente/clientedetails/clientedetails.component';
@@ -45,10 +45,10 @@ export const routes: Routes = [
       { path: 'usuarios/new', component: UsuariodetailsComponent },
       { path: 'usuarios/edit/:id', component: UsuariodetailsComponent },
 
-      { path: 'historico', component: HistoricolistComponent },
+     /* { path: 'historico', component: HistoricolistComponent },
       { path: 'historico/new', component: HistoricodetailsComponent },
       { path: 'historico/edit/:id', component: HistoricodetailsComponent },
-
+ */
       { path: 'cliente', component: ClientelistComponent },
       { path: 'cliente/new', component: ClientedetailsComponent },
       { path: 'cliente/edit/:id', component: ClientedetailsComponent },

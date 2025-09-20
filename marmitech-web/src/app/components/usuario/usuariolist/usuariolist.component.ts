@@ -128,7 +128,7 @@ export class UsuariolistComponent {
     this.modalRef = this.modalService.open(this.modalUsuariosDetalhe);
   }
   retornoDetalhes(usuario: Usuario) {
-    if(usuario.id > 0) {
+   // if(usuario.id > 0) {
       if(usuario.id > 0) {
         //let indice = this.lista.findIndex((c) => c.id === usuario.id);
        // this.lista[indice] = usuario;
@@ -139,7 +139,9 @@ export class UsuariolistComponent {
                 title: 'Sucesso!',
                 text: 'Cliente atualizado com sucesso.',
                 icon: 'success',
-                confirmButtonText: 'OK',
+                //confirmButtonText: 'OK',
+              showConfirmButton: true,
+      showDenyButton: true,
               });
               this.modalRef.close();
             },
@@ -157,12 +159,11 @@ export class UsuariolistComponent {
       Swal.fire({
         title: 'Cadastrado com sucesso!',
         icon: 'success',
-        confirmButtonText: 'OK',
+       // confirmButtonText: 'OK',
         showConfirmButton: true,
         showDenyButton: true,
       });
       this.modalRef.close();
     }
   }
-}
 }
