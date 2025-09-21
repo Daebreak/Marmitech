@@ -24,10 +24,16 @@ export class HistoricoComprasService {
   deleteById(id: number): Observable<any> {
     return this.http.delete<HistoricoCompras>(`${this.API}/${id}`);
   }
+
   update(historico: HistoricoCompras): Observable<HistoricoCompras> {
     return this.http.put<HistoricoCompras>(`${this.API}/${historico.id}`, historico);
   }
+
   save(historico: HistoricoCompras): Observable<HistoricoCompras> {
     return this.http.post<HistoricoCompras>(this.API, historico);
+  }
+
+  findByData(data: string): Observable<HistoricoCompras[]> {
+    return this.http.get<HistoricoCompras[]>(`${this.API}/findByDataEvento`);
   }
 }

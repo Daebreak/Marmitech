@@ -43,4 +43,9 @@ public class HistoricoCompraController {
     public ResponseEntity<List<HistoricoCompra>> findAll() {
         return new ResponseEntity<>( historicoCompraService.findAll(), HttpStatus.OK );
     }
+
+    @GetMapping("/findByDataEvento")
+    public ResponseEntity<List<HistoricoCompra>> findByDataEvento(@RequestParam String dataEvento) {
+        return new ResponseEntity<>( historicoCompraService.findByDataEvento( dataEvento ), HttpStatus.OK );
+    }
 }

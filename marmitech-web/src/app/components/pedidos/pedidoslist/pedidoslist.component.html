@@ -1,10 +1,10 @@
 <div class="container">
     <div class="row topo p-3">
+
         <div class="col-lg-7">
             <div class="card h-100">
                 <div class="card-body">
 
-                    <!-- Aqui eh exibido as 4 categorias-->
                     @if (vistaAtual === 'categorias') {
                     <h2>Categorias</h2>
                     <div class="row">
@@ -20,11 +20,10 @@
                     </div>
                     }
 
-                    <!-- Aqui eh exibido os produtos da categoria selecionada-->
                     @if (vistaAtual === 'produtos') {
                     <div class="d-flex align-items-center mb-3">
                         <button class="btn btn-primary" (click)="voltarParaCategorias()">
-                            Voltar
+                            <i class="fas fa-arrow-left me-2"></i>Voltar
                         </button>
                     </div>
                     <div class="row">
@@ -33,19 +32,14 @@
                         <div class="col-md-6 mb-3">
                             <div class="card card-produto-item">
                                 <div class="card-body d-flex justify-content-between align-items-center py-2">
-
                                     <div>
                                         <h6 class="card-title mb-1">{{ produto.nome }}</h6>
                                         <strong>{{ produto.precoUnitario | currency:'BRL' }}</strong>
                                     </div>
-
-                                    <div>
-                                        <button class="btn btn-success btn-sm rounded-circle"
-                                            (click)="adicionarAoCarrinho(produto)">
-                                            <strong class="px-1">+</strong>
-                                        </button>
-                                    </div>
-
+                                    <button class="btn btn-success btn-sm rounded-circle"
+                                        (click)="adicionarAoCarrinho(produto)">
+                                        <strong class="px-1">+</strong>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -66,36 +60,41 @@
                     <div class="carrinho flex-grow-1">
                         @for(item of carrinho; track item.produto.id; let i = $index){
                         <div class="item-carrinho d-flex justify-content-between align-items-center mb-2">
-
                             <div>
-                                <span class="fw-bold">{{ item.produto.nome }}</span>
-                                <br>
+                                <span class="fw-bold">{{ item.produto.nome }}</span><br>
                                 <small class="text-muted">{{ item.quantidade }}x {{ item.produto.precoUnitario |
                                     currency:'BRL' }}</small>
                             </div>
-
                             <div class="d-flex align-items-center">
                                 <strong>{{ (item.produto.precoUnitario * item.quantidade) | currency:'BRL' }}</strong>
                                 <button class="btn btn-outline-danger btn-sm ms-3"
                                     (click)="removerDoCarrinho(i)">X</button>
                             </div>
-
                         </div>
                         }
                         @if (carrinho.length === 0) {
-                        <p class="text-muted text-center mt-4">O carrinho está vazio.</p>
+                        <p class="text-muted text-center my-4">O carrinho está vazio.</p>
                         }
                     </div>
 
                     <hr>
 
-                    <div class="total h3">
-                        <strong>Total: {{ valorTotalPedido }}</strong>
+                    <div class="d-flex justify-content-between align-items-center h3">
+                        <span>Total:</span>
+                        <strong>{{ valorTotalPedido | currency:'BRL' }}</strong>
                     </div>
 
                     <div class="detalhes-pedido mt-3">
                         <div class="form-group mb-2">
-                            <label for="cliente-select">Cliente:</label>
+                            <label class="form-label">Buscar Cliente:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Nome ou CPF/CNPJ"
+                                    [(ngModel)]="termoBuscaCliente" (keyup.enter)="buscarCliente()">
+                                <button class="btn btn-primary" (click)="buscarCliente()">Buscar</button>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="cliente-select" class="form-label">Cliente Selecionado:</label>
                             <select id="cliente-select" class="form-select" [(ngModel)]="clienteIdSelecionado">
                                 <option [ngValue]="null" disabled>-- Selecione um cliente --</option>
                                 @for (cliente of todosOsClientes; track cliente.id) {
@@ -103,19 +102,18 @@
                                 }
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label for="metodoPagamento" class="form-label">Método de Pagamento:</label>
+                            <select id="metodoPagamento" class="form-select">
+                                <option value="dinheiro">Dinheiro</option>
+                                <option value="cartao">Cartão de Crédito/Débito</option>
+                                <option value="pix">PIX</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <div class="pagamento">
-                        <label for="metodoPagamento" class="form-label">Método de Pagamento:</label>
-                        <select id="metodoPagamento" class="form-select">
-                            <option value="dinheiro">Dinheiro</option>
-                            <option value="cartao">Cartão de Crédito/Débito</option>
-                            <option value="pix">PIX</option>
-                        </select>
-                    </div>
-
-                    <div class="acoes mt-auto pt-3">
-                        <button class="btn btn-danger">Cancelar Pedido</button>
+                    <div class="acoes mt-auto pt-3 d-flex justify-content-between">
+                        <button class="btn btn-danger" (click)="limparCarrinho()">Cancelar Pedido</button>
                         <button class="btn btn-success" (click)="finalizarPedido()">Finalizar Pedido</button>
                     </div>
                 </div>
