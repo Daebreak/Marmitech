@@ -7,10 +7,16 @@ import java.util.function.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.marmitech.Marmitech.DTO.RequestDTO.PedidoItemRequestDTO;
 import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoItemResponseDTO;
+import com.marmitech.Marmitech.Entity.Pedido;
 import com.marmitech.Marmitech.Entity.PedidoItem;
+import com.marmitech.Marmitech.Entity.Produto;
+import com.marmitech.Marmitech.Mapper.RequestMapper.SaveProdutoItemMapping;
 import com.marmitech.Marmitech.Mapper.ResponseMapper.ProdutoItemResponseMapper;
 import com.marmitech.Marmitech.Repository.PedidoItemRepository;
+import com.marmitech.Marmitech.Repository.PedidoRepository;
+import com.marmitech.Marmitech.Repository.ProdutoRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -31,22 +37,64 @@ public class PedidoItemService {
     
     @Autowired
     private PedidoItemRepository pedidoItemRepository;
-
+    @Autowired
+    private PedidoRepository pedidoRepository;
+    @Autowired
+    private ProdutoRepository produtoRepository;
+    
     @Transactional
-    public PedidoItem save(PedidoItem novoPedidoItem){
-        return pedidoItemRepository.save(novoPedidoItem);
+    public PedidoItem save(PedidoItemResponseDTO novoPedidoItem){
+        PedidoItemRequestDTO requestDto = SaveProdutoItemMapping.toDto(novoPedidoItem);
+            
+        Pedido pedido = pedidoRepository.findById(requestDto.pedidoId())
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado com ID: " + requestDto.pedidoId()));
+        Produto produto = produtoRepository.findById(requestDto.produtoId())
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado com ID: " + requestDto.produtoId()));
+
+
+        PedidoItem pedidoItem = new PedidoItem();
+        pedidoItem.setPedido(pedido);
+        pedidoItem.setProduto(produto);
+        pedidoItem.setQuantidade(requestDto.quantidade());
+        pedidoItem.setPrecoUnitarioPedido(requestDto.precoUnitarioPedido());
+
+        BigDecimal preco = requestDto.precoUnitarioPedido();
+        if (preco == null) {
+            throw new IllegalArgumentException("O preço unitário não pode ser nulo.");
+        }
+        pedidoItem.setPrecoUnitarioPedido(preco);
+
+        BigDecimal subtotal = preco.multiply(new BigDecimal(requestDto.quantidade()));
+        pedidoItem.setSubtotal(subtotal);
+
+
+        return pedidoItemRepository.save(pedidoItem);
     }
 
     @Transactional
-    public PedidoItem update(PedidoItem atualizadoPedidoItem, int pedidoItemId){
+    public PedidoItem update(PedidoItemResponseDTO atualizadoPedidoItem, int pedidoItemId){
         
-        PedidoItem antigPedidoItem = pedidoItemRepository.findById(pedidoItemId).get();
+        PedidoItem antigPedidoItem = pedidoItemRepository.findById(pedidoItemId).orElseThrow(() -> new RuntimeException("PedidoItem not found with id: " + pedidoItemId));
+
+        if (atualizadoPedidoItem.pedidoId() != antigPedidoItem.getPedido().getId()) {
+            Pedido novoPedido = pedidoRepository.findById(atualizadoPedidoItem.pedidoId())
+                    .orElseThrow(() -> new RuntimeException("Novo Pedido não encontrado com ID: " + atualizadoPedidoItem.pedidoId()));
+            antigPedidoItem.setPedido(novoPedido);
+        }
+
+        if (atualizadoPedidoItem.produtoId() != antigPedidoItem.getProduto().getId()) {
+            Produto novoProduto = produtoRepository.findById(atualizadoPedidoItem.produtoId())
+                    .orElseThrow(() -> new RuntimeException("Novo Produto não encontrado com ID: " + atualizadoPedidoItem.produtoId()));
+            antigPedidoItem.setProduto(novoProduto);
+        }
+
+        antigPedidoItem.setPrecoUnitarioPedido(validator(atualizadoPedidoItem.precoUnitarioPedido(), antigPedidoItem.getPrecoUnitarioPedido(), this::isPrecoValido));
+        antigPedidoItem.setQuantidade(validator(atualizadoPedidoItem.quantidade(), antigPedidoItem.getQuantidade(), this::isNumeroValido));
         
-        atualizadoPedidoItem.setPrecoUnitarioPedido(validator(atualizadoPedidoItem.getPrecoUnitarioPedido(), antigPedidoItem.getPrecoUnitarioPedido(), this::isPrecoValido));
-        atualizadoPedidoItem.setQuantidade(validator(atualizadoPedidoItem.getQuantidade(), antigPedidoItem.getQuantidade(), this::isNumeroValido));
-        atualizadoPedidoItem.setSubtotal(validator(atualizadoPedidoItem.getSubtotal(), antigPedidoItem.getSubtotal(), this::isPrecoValido));
+        BigDecimal novoSubtotal = antigPedidoItem.getPrecoUnitarioPedido().multiply(new BigDecimal(antigPedidoItem.getQuantidade()));
+        antigPedidoItem.setSubtotal(novoSubtotal);
         
-        return pedidoItemRepository.save(atualizadoPedidoItem);
+        return pedidoItemRepository.save(antigPedidoItem);
     }
 
     @Transactional

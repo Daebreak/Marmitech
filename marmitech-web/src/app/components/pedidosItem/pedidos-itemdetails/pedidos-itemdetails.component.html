@@ -2,31 +2,35 @@
 <div class="container">
   <div class="row">
     
-    <div class="col-lg-12 centralizar topo">
+<div class="col-lg-12 centralizar topo">
       <div class="card">
         <div class="card-body">
-            <mdb-form-control>
-                <input mdbInput type="text" id="cliente" class="form-control" [(ngModel)]="pedidoItem.clienteNome"/>
-                <label mdbLabel class="form-label" for="cliente">Cliente</label>
-            </mdb-form-control>
+            <select class="form-select" id="pedidoSelect" [(ngModel)]="pedidoItem.pedidoId">
+              <option [value]="0" disabled>Selecione um pedido</option>
+              @for(pedido of pedidos; track pedido.id){
+                <option [ngValue]="pedido.id">{{ pedido.nomeCliente }}</option>
+              }
+            </select>
+        <br />
+            <select class="form-select" id="produtoSelect" [(ngModel)]="pedidoItem.produtoId">
+              <option [value]="0" disabled>Selecione um produto</option>
+              @for(produto of produtos; track produto.id){
+                <option [ngValue]="produto.id">{{ produto.nome }}</option>
+              }
+            </select>
         <br />
             <mdb-form-control>
-                <input mdbInput type="text" id="produto" class="form-control" [(ngModel)]="pedidoItem.produtoNome"/>
-                <label mdbLabel class="form-label" for="produto">Produto</label>
-            </mdb-form-control>
-        <br />
-            <mdb-form-control>
-                <input mdbInput type="text" id="quantidade" class="form-control" [(ngModel)]="pedidoItem.quantidade"/>
+                <input mdbInput type="number" id="quantidade" class="form-control" [(ngModel)]="pedidoItem.quantidade" (ngModelChange)="novoSubtotal()"/>
                 <label mdbLabel class="form-label" for="quantidade">Quantidade</label>
             </mdb-form-control>
         <br />
             <mdb-form-control>
-                <input mdbInput type="number" id="precoUnitario" class="form-control" [(ngModel)]="pedidoItem.precoUnitarioPedido"/>
+                <input mdbInput type="number" id="precoUnitario" class="form-control" [(ngModel)]="pedidoItem.precoUnitarioPedido" (ngModelChange)="novoSubtotal()"/>
                 <label mdbLabel class="form-label" for="precoUnitario">Preço Unitário</label>
             </mdb-form-control>
         <br />
             <mdb-form-control>
-                <input mdbInput type="number" id="subtotal" class="form-control" [(ngModel)]="pedidoItem.subtotal"/>
+                <input mdbInput type="number" id="subtotal" class="form-control" [(ngModel)]="pedidoItem.subtotal" [readonly]="true"/>
                 <label mdbLabel class="form-label" for="subtotal">Subtotal</label>
             </mdb-form-control>
         <br />
@@ -39,3 +43,4 @@
     
   </div>
 </div>
+<br />

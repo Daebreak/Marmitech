@@ -9,8 +9,7 @@ import { Produto } from '../models/produto';
 export class ProdutoService {
 
   http = inject(HttpClient);
-
-  API = "http://192.168.122.219:8080/api/produto";
+  API = 'http://192.168.122.219:8080/api/produto';
 
   constructor() { }
 

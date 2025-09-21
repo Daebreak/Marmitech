@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.marmitech.Marmitech.DTO.RequestDTO.PedidoItemRequestDTO;
 import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoItemResponseDTO;
 import com.marmitech.Marmitech.Entity.PedidoItem;
 import com.marmitech.Marmitech.Services.PedidoItemService;
@@ -29,16 +30,16 @@ public class PedidoItemController {
     private PedidoItemService pedidoItemService;
 
     @PostMapping("/save")
-    public ResponseEntity<PedidoItem> save(@RequestBody @Valid PedidoItem pedidoItem){
+    public ResponseEntity<PedidoItem> save(@RequestBody @Valid PedidoItemResponseDTO pedidoItem){
         try {
             return new ResponseEntity<>(pedidoItemService.save(pedidoItem), HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(pedidoItem, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(null , HttpStatus.BAD_REQUEST);
         }
     }
     
     @PutMapping("/update/{pedidoItemId}")
-    public ResponseEntity<PedidoItem> update(@RequestBody PedidoItem pedidoItem, @PathVariable int pedidoItemId){
+    public ResponseEntity<PedidoItem> update(@RequestBody PedidoItemResponseDTO pedidoItem, @PathVariable int pedidoItemId){
         try {
             return new ResponseEntity<>(pedidoItemService.update(pedidoItem, pedidoItemId), HttpStatus.CREATED);
         } catch (Exception e) {
