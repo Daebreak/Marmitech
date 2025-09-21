@@ -1,5 +1,6 @@
 package com.marmitech.Marmitech.Services;
 import com.marmitech.Marmitech.Entity.Categoria;
+import com.marmitech.Marmitech.Entity.Cliente;
 import com.marmitech.Marmitech.Repository.CategoriaRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,13 @@ public class CategoriaService {
 
     public Object save(@Valid Categoria categoria) {
         return categoriaRepository.save( categoria );
+    }
+    public Categoria findById(Integer id) {
+        return categoriaRepository.findById( id ).orElseThrow( RuntimeException::new );
+    }
+    public void delete(Integer id) {
+        var delete = findById( id );
+        categoriaRepository.delete(delete);
     }
 }
 

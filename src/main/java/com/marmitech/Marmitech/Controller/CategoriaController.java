@@ -37,5 +37,14 @@ public class CategoriaController {
             return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
         }
     }
+    @DeleteMapping("/delete/{id}" )
+    public ResponseEntity<Object> delete(@PathVariable Integer id) {
+        try {
+            categoriaService.delete( id );
+            return new ResponseEntity<>( null, HttpStatus.OK );
+        } catch (Exception ex) {
+            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
+        }
+    }
+    }
 
-}

@@ -89,12 +89,38 @@ export class CategoriaslistComponent {
     this.categoriaEdit = Object.assign({}, categoria); //clonando pra evitar referencia de objeto
     this.modalRef = this.modalService.open(this.modalCategoriaDetalhe);
   }
-  retornoDetalhes(categoria: Categoria) {
-    /* if( categoria.id > 0) {
-       let indice = this.lista.findIndex((c =>{ return c.id === categoria.id});
-       this.lista[indice] = categoria;
-   }*/
+// No .TS do componente da LISTA de categorias
 
-    this.modalRef.close();
+// ... inject(CategoriaService) ...
+
+retornoDetalhes(categoria: Categoria) {
+  if (!categoria.id) {
+    this.cateService.create(categoria).subscribe({
+      next: (novaCategoria) => {
+        // Sucesso! Adiciona na lista, fecha o modal, mostra o Swal.fire
+        this.lista.push(novaCategoria);
+        this.modalRef.close();
+        Swal.fire({ title: 'Cadastrado!', icon: 'success' });
+      },
+      error: (err) => {
+        // Deu erro, mostra mensagem de erro
+        Swal.fire({ title: 'Erro ao cadastrar', text: err.message, icon: 'error' });
+      }
+    });
+  } 
+  // Se tem ID, é uma atualização
+  else {
+    this.cateService.update(categoria).subscribe({
+      next: (categoriaAtualizada) => {
+        // Sucesso na atualização!
+        this.modalRef.close();
+        Swal.fire({ title: 'Atualizado!', icon: 'success' });
+      },
+      error: (err) => {
+        // Deu erro, mostra mensagem de erro
+        Swal.fire({ title: 'Erro ao atualizar', text: err.message, icon: 'error' });
+      }
+    });
   }
+}
 }
