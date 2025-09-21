@@ -55,7 +55,7 @@ export class CategoriaslistComponent {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.categoriaService.delete(categoria.id).subscribe({
+        this.cateService.delete(categoria.id).subscribe({
           next: () => {
             this.lista = this.lista.filter(c => c.id !== categoria.id);
           },

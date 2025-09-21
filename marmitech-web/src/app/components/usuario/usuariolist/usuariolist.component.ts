@@ -58,59 +58,36 @@ export class UsuariolistComponent {
   }
 
   deleteById(usuario: Usuario) {
-    if (!usuario.id){
-      Swal.fire({
-        title: 'Usuário sem ID',
-    
+  Swal.fire({
+        title: 'Confirma a exclusão do produto ' + usuario.nome + '?',
         icon: 'warning',
-      confirmButtonText: 'Fechar',
-     
-      cancelButtonText: 'Cancelar'
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.usuarioService.delete(usuario.id!).subscribe({
+            next: msg => {
+              Swal.fire(
+                'Excluído!',
+                'Produto ' + usuario.nome + ' excluído com sucesso.',
+                'success'
+              );
+              this.findAll();
+            },
+            error: err =>{
+              Swal.fire(
+                'Erro!',
+                'Houve um erro ao executar esta ação: ' + err.error,
+                'error'
+              );
+            }
+          })
+  
+        }
       });
-      return;
-    } else {
-       Swal.fire({
-        title: 'Você tem certeza?',
-        icon: 'warning',
-       
-        confirmButtonText: 'Sim, deletar!',
-        cancelButtonText: 'Cancelar',  
-       });
-    }/*.then((result) => {
-     if (result.isConfirmed) {
-        //let indice = this.lista.findIndex((c) => {*/
-
-    Swal.fire({
-      title: 'Você tem certeza?',
-      icon: 'warning',
-      showConfirmButton: true,
-      showDenyButton: true,
-      confirmButtonText: 'Sim, deletar!',
-      cancelButtonText: 'Cancelar',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        //let indice = this.lista.findIndex((c) => {
-        this.usuarioService.delete(usuario.id).subscribe({
-          next: () => {
-            this.lista = this.lista.filter((c) => c.id !== usuario.id);
-          },
-          error: (err) => {
-            Swal.fire({
-              title: 'Erro ao deletar usuário',
-              text: err.message,
-              icon: 'error',
-              confirmButtonText: 'Fechar',
-            });
-          },
-        });
-        //this.lista.splice(indice, 1);
-        Swal.fire({
-          title: 'Deletado com sucesso!',
-          icon: 'success',
-          confirmButtonText: 'OK',
-        });
-      }
-    });
   }
   new() {
     this.usuarioEdit = new Usuario({
@@ -128,42 +105,7 @@ export class UsuariolistComponent {
     this.modalRef = this.modalService.open(this.modalUsuariosDetalhe);
   }
   retornoDetalhes(usuario: Usuario) {
-   // if(usuario.id > 0) {
-      if(usuario.id > 0) {
-        //let indice = this.lista.findIndex((c) => c.id === usuario.id);
-       // this.lista[indice] = usuario;
-
-     this.usuarioService.update(usuario).subscribe({
-            next: () => {
-              Swal.fire({
-                title: 'Sucesso!',
-                text: 'Cliente atualizado com sucesso.',
-                icon: 'success',
-                //confirmButtonText: 'OK',
-              showConfirmButton: true,
-      showDenyButton: true,
-              });
-              this.modalRef.close();
-            },
-            error: (err) => {
-              Swal.fire({
-                title: 'Erro ao atualizar usuário',
-                text: err.message,
-                icon: 'error',
-                confirmButtonText: 'Fechar',
-              });
-            }
-     });
-    } else {
-      this.lista.push(usuario);
-      Swal.fire({
-        title: 'Cadastrado com sucesso!',
-        icon: 'success',
-       // confirmButtonText: 'OK',
-        showConfirmButton: true,
-        showDenyButton: true,
-      });
-      this.modalRef.close();
-    }
+    this.findAll();
+    this.modalRef.close();
   }
 }

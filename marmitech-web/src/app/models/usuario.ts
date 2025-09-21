@@ -1,12 +1,6 @@
 
 
 export class Usuario {
-    /*usuarioId: any;
-  static id: number;
-  static nome: string;
-    findAll() {
-      throw new Error('Method not implemented.');
-    }*/
     id!: number;
     nome!: string;
     email!: string;
@@ -21,7 +15,6 @@ export class Usuario {
         this.senha = data.senha;
         this.cargo = data.cargo;
         this.data_criacao = data.data_criacao;
-
     }
 
 }
