@@ -1,5 +1,4 @@
 package com.marmitech.Marmitech.Controller;
-
 import com.marmitech.Marmitech.Entity.Categoria;
 import com.marmitech.Marmitech.Services.CategoriaService;
 import jakarta.validation.Valid;
@@ -42,6 +41,15 @@ public class CategoriaController {
         try {
             categoriaService.delete( id );
             return new ResponseEntity<>( null, HttpStatus.OK );
+        } catch (Exception ex) {
+            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
+        }
+    }
+    @PutMapping("/update/{id}" )
+    public ResponseEntity<Categoria> update(@PathVariable Integer id, @RequestBody Categoria categoria) {
+        try {
+            var result = categoriaService.update(id, categoria);
+            return new ResponseEntity<>( result, HttpStatus.OK );
         } catch (Exception ex) {
             return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
         }

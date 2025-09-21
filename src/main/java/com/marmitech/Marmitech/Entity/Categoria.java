@@ -15,7 +15,7 @@ import lombok.*;
 public class Categoria {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @NotNull
     @NotBlank
     public String nome;
