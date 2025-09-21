@@ -14,7 +14,7 @@ export class CategoriaService {
     constructor() { }
 
     findAll(): Observable<Categoria[]> {
-        return this.http.get<Categoria[]>(`${this.API}/findAll`);
+        return this.http.get<Categoria[]>(`${this.API}/list`);
     }
 
     findById(id: number): Observable<Categoria> {

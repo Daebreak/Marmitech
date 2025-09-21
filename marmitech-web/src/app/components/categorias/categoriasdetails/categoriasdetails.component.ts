@@ -45,22 +45,6 @@ export class CategoriasdetailsComponent {
   }
 
   salvar() {
-    if(this.categoria.id) {
-      Swal.fire({
-        title: 'Atualizado!',
-        icon: 'success',
-        confirmButtonText: 'Sim',
-      });
-      this.routerSaver.navigate(['admin/categorias'], { state: { categoriaEditada: this.categoria } });
-    } else {
-      Swal.fire({
-        title: 'Cadastrado!',
-        icon: 'success',
-        confirmButtonText: 'Sim',
-      });
-      this.routerSaver.navigate(['admin/categorias'], { state: { categoriaNova: this.categoria } });
-    }
-
-    this.retorno.emit(this.categoria);
+  this.retorno.emit(this.categoria);
   }
 }

@@ -24,33 +24,18 @@ export class CategoriaslistComponent {
   @ViewChild('modalCategoriaDetalhe') modalCategoriaDetalhe!: TemplateRef<any>;
   modalRef!: MdbModalRef<any>;
 
-  constructor() {
-    // Exemplo inicial de categorias
-    this.lista.push(new Categoria({
-      id: 1,
-      nome: 'Categoria A',
-      descricao: 'Descrição da Categoria A'
-    }));
-
-
-    let categoriaNovo = history.state.categoriaNovo;
-    let categoriaEditada = history.state.categoriaEditada;
-    if (categoriaNovo) {
-      this.lista.push(categoriaNovo);
-    }
-    if (categoriaEditada) {
-      this.lista = this.lista.map(c => c.id === categoriaEditada.id ? categoriaEditada : c);
-    }
+  constructor(){
+    this.findAll()
   }
+
   findAll() {
     this.cateService.findAll().subscribe({
       next: (lista: Categoria[]) => {
-        console.log(lista);
         this.lista = lista;
       },
       error: (err) => {
         Swal.fire({
-          title: 'Erro ao carregar lista de usuários',
+          title: 'Erro ao carregar lista de Categorias',
           text: err.message,
           icon: 'error',
           confirmButtonText: 'Fechar',
@@ -104,12 +89,37 @@ export class CategoriaslistComponent {
     this.categoriaEdit = Object.assign({}, categoria); //clonando pra evitar referencia de objeto
     this.modalRef = this.modalService.open(this.modalCategoriaDetalhe);
   }
-  retornoDetalhes(categoria: Categoria) {
-    /* if( categoria.id > 0) {
-       let indice = this.lista.findIndex((c =>{ return c.id === categoria.id});
-       this.lista[indice] = categoria;
-   }*/
 
-    this.modalRef.close();
+// ... inject(CategoriaService) ...
+
+retornoDetalhes(categoria: Categoria) {
+  if (!categoria.id) {
+    this.cateService.create(categoria).subscribe({
+      next: (novaCategoria) => {
+        // Sucesso! Adiciona na lista, fecha o modal, mostra o Swal.fire
+        this.lista.push(novaCategoria);
+        this.modalRef.close();
+        Swal.fire({ title: 'Cadastrado!', icon: 'success' });
+      },
+      error: (err) => {
+        // Deu erro, mostra mensagem de erro
+        Swal.fire({ title: 'Erro ao cadastrar', text: err.message, icon: 'error' });
+      }
+    });
+  } 
+  // Se tem ID, é uma atualização
+  else {
+    this.cateService.update(categoria).subscribe({
+      next: (categoriaAtualizada) => {
+        // Sucesso na atualização!
+        this.modalRef.close();
+        Swal.fire({ title: 'Atualizado!', icon: 'success' });
+      },
+      error: (err) => {
+        // Deu erro, mostra mensagem de erro
+        Swal.fire({ title: 'Erro ao atualizar', text: err.message, icon: 'error' });
+      }
+    });
   }
+}
 }

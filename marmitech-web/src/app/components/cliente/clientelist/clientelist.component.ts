@@ -88,7 +88,7 @@ export class ClientelistComponent {
 
   new() {
     this.clienteEdit = new Cliente({
-      clienteId: 0,
+      id: 0,
       nome: '',
       email: '',
       telefone: '',
