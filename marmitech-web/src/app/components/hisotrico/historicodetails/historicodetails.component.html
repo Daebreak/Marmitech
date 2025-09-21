@@ -1,0 +1,48 @@
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <br>
+            <h3>Detalhes do Pedido</h3>
+            <a routerLink="/admin/historicos" class="btn btn-primary">Voltar</a>
+        </div>
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">ID do Pedido:</label>
+                        <p class="form-control-plaintext ps-2">{{ pedido.id }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Status:</label>
+                        <p class="form-control-plaintext ps-2">{{ pedido.status }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Data do Pedido:</label>
+                        <p class="form-control-plaintext ps-2">{{ pedido.dataPedido | date:'dd/MM/yyyy' }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Cliente:</label>
+                        <p class="form-control-plaintext ps-2">{{ pedido.nomeCliente }}</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Itens do Pedido:</label>
+                        <ul class="list-group list-group-flush">
+                            @for(item of pedido.pedidoItems; track item.produtoNome){
+                            <li class="list-group-item ps-2">{{ item.quantidade }}x {{ item.produtoNome }}</li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="mb-3">
+                        <h5 class="text-muted">Valor Total</h5>
+                        <p class="form-control-plaintext ps-2">{{ pedido.valorTotal | currency:'BRL' }}</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Histórico de Pedidos</h3>
+                    <br />
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="centralizar">
+                                <th>ID do Pedido</th>
+                                <th>Nome do Cliente</th>
+                                <th>Status</th>
+                                <th>Valor Total</th>
+                                <th>Data Do Pedido</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (pedido of pedidos; track pedido.id) {
+                            <tr>
+                                <a href="" routerLink="/admin/historicos/{{pedido.id}}">
+                                    {{ pedido.id }}
+                                </a>
+                                <td>{{ pedido.nomeCliente }}</td>
+                                <td>{{ pedido.status }}</td>
+                                <td>{{ pedido.valorTotal | currency:'BRL' }}</td>
+                                <td>{{ pedido.dataPedido | date:'dd/MM/yyyy' }}</td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

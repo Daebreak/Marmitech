@@ -7,12 +7,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 
 @RestController
 @RequestMapping("/api/cliente" )
+@CrossOrigin("*")
 @RequiredArgsConstructor
 public class ClienteController {
     private final ClienteService clienteService;
@@ -27,7 +27,7 @@ public class ClienteController {
         }
     }
 
-    @GetMapping("/findAll" )
+    @GetMapping
     public ResponseEntity<List<Cliente>> findAll() {
         try {
             var result = clienteService.findAll();

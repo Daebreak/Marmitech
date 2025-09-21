@@ -4,7 +4,7 @@ import com.marmitech.Marmitech.DTO.ResponseDTO.ProdutoListaDTO;
 import com.marmitech.Marmitech.Entity.Produto;
 
 public class ProdutoListaMapper {
-    public static ProdutoListaDTO toDto(Produto produto){
+    public static ProdutoListaDTO toDto(Produto produto) {
         return new ProdutoListaDTO(
             produto.getId(),
             produto.getNome(),

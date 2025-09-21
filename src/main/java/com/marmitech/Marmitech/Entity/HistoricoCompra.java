@@ -1,5 +1,6 @@
 package com.marmitech.Marmitech.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -21,11 +22,11 @@ public class HistoricoCompra {
 
     @NotNull
     @NotBlank(message = "data_evento não pode ser null ou vazio")
-    private String data_evento;
+    private String dataEvento;
 
     @NotNull
     @NotBlank(message = "tipo_evento não pode ser null ou vazio")
-    private String tipo_evento;
+    private String tipoEvento;
 
     @NotNull
     @NotBlank(message = "descricao não pode ser null ou vazio")
@@ -33,5 +34,6 @@ public class HistoricoCompra {
 
     @ManyToOne
     @JoinColumn(name = "pedido_id")
+    @JsonBackReference("pedido-historico")// referência na relação Pedido <-> HistoricoCompra. objeto historicoCompra seja incluido tambem no Pedido e vice versa
     private Pedido pedido;
 }
