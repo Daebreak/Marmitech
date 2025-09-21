@@ -31,48 +31,28 @@ public class PedidoItemController {
 
     @PostMapping("/save")
     public ResponseEntity<PedidoItem> save(@RequestBody @Valid PedidoItemResponseDTO pedidoItem){
-        try {
-            return new ResponseEntity<>(pedidoItemService.save(pedidoItem), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null , HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(pedidoItemService.save(pedidoItem), HttpStatus.CREATED);
     }
     
     @PutMapping("/update/{pedidoItemId}")
     public ResponseEntity<PedidoItem> update(@RequestBody PedidoItemResponseDTO pedidoItem, @PathVariable int pedidoItemId){
-        try {
-            return new ResponseEntity<>(pedidoItemService.update(pedidoItem, pedidoItemId), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(pedidoItemService.update(pedidoItem, pedidoItemId), HttpStatus.CREATED);
     }
 
     
     @DeleteMapping("/delete/{pedidoItemId}")
     public ResponseEntity<String> delete(@PathVariable int pedidoItemId){
-        try {
-            return new ResponseEntity<>(pedidoItemService.delete(pedidoItemId), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Erro ao deletar pedido item!", HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(pedidoItemService.delete(pedidoItemId), HttpStatus.CREATED);
     }
         
     @GetMapping("/findById/{pedidoItemId}")
     public ResponseEntity<PedidoItem> findById(@PathVariable int pedidoItemId){
-        try {
-            return new ResponseEntity<>(pedidoItemService.findById(pedidoItemId), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(pedidoItemService.findById(pedidoItemId), HttpStatus.CREATED);
     }
 
         
     @GetMapping("/findAll")
     public ResponseEntity<List<PedidoItemResponseDTO>> findAll(){
-        try {
-            return new ResponseEntity<>(pedidoItemService.findAll(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(pedidoItemService.findAll(), HttpStatus.OK);
     }
 }

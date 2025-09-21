@@ -5,6 +5,7 @@ import com.marmitech.Marmitech.DTO.ResponseDTO.ProdutoListaDTO;
 import com.marmitech.Marmitech.Entity.Produto;
 import com.marmitech.Marmitech.Mapper.RequestMapper.SaveProdutoMapping;
 import com.marmitech.Marmitech.Mapper.ResponseMapper.ProdutoListaMapper;
+import com.marmitech.Marmitech.Repository.PedidoItemRepository;
 import com.marmitech.Marmitech.Repository.ProdutoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ProdutoService {
+
+    private final PedidoItemRepository pedidoItemRepository;
 
     private final ProdutoRepository produtoRepository;
 
@@ -41,6 +44,11 @@ public class ProdutoService {
 
     public void delete(Integer id) {
         var delete = findById( id );
+
+        if (pedidoItemRepository.existsByProdutoId(id)) {
+        throw new IllegalStateException("Não é possível excluir o produto, pois ele já está associado a um ou mais pedidos.");
+    }
+
         produtoRepository.delete( delete );
     }
 
@@ -59,6 +67,12 @@ public class ProdutoService {
         }
         if (produto.getCategoria() != null || produto.getCategoria().isBlank()) {
             produtoUpdate.setCategoria( produto.getCategoria() );
+        }
+        if (produto.getEstoque() >= 0) {
+            produtoUpdate.setEstoque( produto.getEstoque() );
+        }
+        if (produto.getSku() != null || produto.getSku().isBlank()) {
+            produtoUpdate.setSku( produto.getSku() );
         }
     
         return produtoRepository.save( produtoUpdate );
