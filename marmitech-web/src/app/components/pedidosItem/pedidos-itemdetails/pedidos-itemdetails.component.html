@@ -6,14 +6,14 @@
       <div class="card">
         <form #pedidoItemForm="ngForm">
         <div class="card-body">
-            <select class="form-select" id="pedidoSelect" name="pedido" [(ngModel)]="pedidoItem.pedidoId" required>
+            <select class="form-select" id="pedidoSelect" name="pedido" [(ngModel)]="pedidoItem.pedidoId">
               <option [value]="0" disabled>Selecione um pedido</option>
               @for(pedido of pedidos; track pedido.id){
                 <option [ngValue]="pedido.id">{{ pedido.nomeCliente }}</option>
               }
             </select>
         <br />
-            <select class="form-select" id="produtoSelect" name="produto" [(ngModel)]="pedidoItem.produtoId" required>
+            <select class="form-select" id="produtoSelect" name="produto" [(ngModel)]="pedidoItem.produtoId">
               <option [value]="0" disabled>Selecione um produto</option>
               @for(produto of produtos; track produto.id){
                 <option [ngValue]="produto.id">{{ produto.nome }}</option>

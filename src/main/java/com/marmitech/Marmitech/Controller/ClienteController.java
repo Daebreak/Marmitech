@@ -27,7 +27,7 @@ public class ClienteController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/findAll")
     public ResponseEntity<List<Cliente>> findAll() {
         try {
             var result = clienteService.findAll();

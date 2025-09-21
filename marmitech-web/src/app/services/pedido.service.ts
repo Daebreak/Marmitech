@@ -3,13 +3,14 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Pedido } from '../models/pedido';
+import { environment } from '../../environments/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class PedidoService {
-  API = 'http://192.168.122.219:8080/api/pedido';
+  API = `${environment.apiUrl}/api/pedido`;
   http = inject(HttpClient);
 
   constructor() { }

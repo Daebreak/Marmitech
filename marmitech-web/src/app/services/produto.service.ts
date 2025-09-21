@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Produto } from '../models/produto';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { Produto } from '../models/produto';
 export class ProdutoService {
 
   http = inject(HttpClient);
-  API = 'http://192.168.122.219:8080/api/produto';
+  API = `${environment.apiUrl}/api/produto`;
 
   constructor() { }
 

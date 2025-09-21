@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Cliente } from '../models/cliente';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClienteService {
   private http = inject(HttpClient);
-  private API = 'http://localhost:8080/api/cliente';
+  private API = `${environment.apiUrl}/api/cliente`;
 
   constructor() { }
   findAll(): Observable<Cliente[]> {

@@ -15,6 +15,7 @@ import jakarta.transaction.Transactional;
 import com.marmitech.Marmitech.Repository.ProdutoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -80,7 +81,9 @@ public class PedidoService {
         throw new IllegalArgumentException("Endereço de entrega não pode ser nulo");
     }
 
-    return pedidoRepository.save(pedido);
+    Pedido pedidoSalvo = pedidoRepository.save(pedido);
+
+    return pedidoSalvo;
     }
 
     public List<PedidoResponseDTO> findAll() {
