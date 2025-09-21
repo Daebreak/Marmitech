@@ -22,48 +22,28 @@ public class HistoricoCompraController {
 
     @PostMapping("/save")
     public ResponseEntity<HistoricoCompra> save(@RequestBody @Valid HistoricoCompra historicoCompra){
-        try {
-            return new ResponseEntity<>(historicoCompraService.save(historicoCompra), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(historicoCompraService.save(historicoCompra), HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{historicoCompraId}")
     public ResponseEntity<HistoricoCompra> update(@RequestBody HistoricoCompra historicoCompra, @PathVariable int historicoCompraId){
-        try {
-            return new ResponseEntity<>(historicoCompraService.update(historicoCompra, historicoCompraId), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(historicoCompraService.update(historicoCompra, historicoCompraId), HttpStatus.CREATED);
     }
 
 
     @DeleteMapping("/delete/{historicoCompraId}")
     public ResponseEntity<String> delete(@PathVariable int historicoCompraId){
-        try {
-            return new ResponseEntity<>(historicoCompraService.delete(historicoCompraId), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Erro ao deletar historico de compra!", HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(historicoCompraService.delete(historicoCompraId), HttpStatus.CREATED);
     }
 
     @GetMapping("/findById/{historicoCompraId}")
     public ResponseEntity<HistoricoCompra> findById(@PathVariable int historicoCompraId){
-        try {
-            return new ResponseEntity<>(historicoCompraService.findById(historicoCompraId), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(historicoCompraService.findById(historicoCompraId), HttpStatus.CREATED);
     }
 
 
     @GetMapping
     public ResponseEntity<List<HistoricoCompra>> findAll(){
-        try {
-            return new ResponseEntity<>(historicoCompraService.findAll(), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(historicoCompraService.findAll(), HttpStatus.CREATED);
     }
 }
