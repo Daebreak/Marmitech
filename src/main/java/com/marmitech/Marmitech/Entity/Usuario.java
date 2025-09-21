@@ -36,7 +36,7 @@ public class Usuario {
     @NotBlank(message = "cargo não pode ser null ou vazio")
     private String cargo;
 
-    private LocalDate data_criacao;
+    private LocalDate data_criacao = LocalDate.now();
 
 
     //Um usuario(caixa) pode registrar varios pedidos

@@ -4,6 +4,7 @@ import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { Produto } from '../../../models/produto';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { ProdutoService } from '../../../services/produto.service';
 
 @Component({
   selector: 'app-produtosdetails',
@@ -23,6 +24,8 @@ export class ProdutosdetailsComponent {
     }
   }
   
+  produtoService = inject(ProdutoService);
+
   @Input("produto") produto: Produto = new Produto(
     { id: 0, 
       nome: '', 
@@ -36,36 +39,70 @@ export class ProdutosdetailsComponent {
   @Output("retorno") retorno = new EventEmitter<Produto>();
       
     findById(id: number) {
-      let produtoRetornado: Produto = new Produto({
-        id: id,
-        nome: 'Produto ' + id,
-        descricao: 'Descrição do Produto ' + id,
-        categoria: 'Categoria A',
-        dataCadastro: '2023-10-01',
-        precoUnitario: 100.00 * id,
-        estoque: 50 - id,
-        sku: 'SKU00' + id
-      });
-      this.produto = produtoRetornado;
+      this.produtoService.findById(id).subscribe(
+        {
+          next: produto => {
+            this.produto = produto;
+          },
+          error: err => {
+            Swal.fire(
+              'Erro!',
+              'Houve um erro ao executar esta ação: ' + err.error,
+              'error'
+            );
+          }
+        }
+      )
     }
 
     salvar() {
     if(this.produto.id) {
-      Swal.fire({
-        title: 'Atualizado!',
-        icon: 'success',
-        confirmButtonText: 'Sim',
-      })
-      this.routerSaver.navigate(['admin/produtos'], {state: { produtoEditado: this.produto }});
+      console.log('Enviando para atualização:', this.produto);
+      this.produtoService.update(this.produto).subscribe(
+        {
+          next: produto => {
+            Swal.fire(
+              'Atualizado!',
+              'Produto: ' + this.produto.nome + ' atualizado com sucesso.',
+              'success'
+            );      
+            this.routerSaver.navigate(['admin/produtos'], {state: { produtoEditado: this.produto }});   
+            this.retorno.emit(this.produto);
+          },
+          error: err => {
+            Swal.fire(
+              'Erro!',
+              'Houve um erro ao executar esta ação: ' + err.error,
+              'error'
+            );
+          }
+        }
+      )
+      
     } else {
-      Swal.fire({
-        title: 'Cadastrado!',
-        icon: 'success',
-        confirmButtonText: 'Sim',
-      })
-      this.routerSaver.navigate(['admin/produtos'], {state: { produtoNovo: this.produto }});
+
+      this.produtoService.save(this.produto).subscribe(
+        {
+          next: produto => {
+            Swal.fire(
+              'Salvo!',
+              'Produto: ' + this.produto.nome + ' atualizado com sucesso.',
+              'success'
+            );           
+          
+            this.routerSaver.navigate(['admin/produtos'], {state: { produtoNovo: this.produto }}); 
+            this.retorno.emit(this.produto);
+          },
+          error: err => {
+            Swal.fire(
+              'Erro!',
+              'Houve um erro ao executar esta ação: ' + err.error,
+              'error'
+            );
+          }
+        }
+      )
     }
 
-    this.retorno.emit(this.produto);
   }
 }

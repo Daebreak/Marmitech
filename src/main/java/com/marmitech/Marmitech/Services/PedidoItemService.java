@@ -7,7 +7,9 @@ import java.util.function.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoItemResponseDTO;
 import com.marmitech.Marmitech.Entity.PedidoItem;
+import com.marmitech.Marmitech.Mapper.ResponseMapper.ProdutoItemResponseMapper;
 import com.marmitech.Marmitech.Repository.PedidoItemRepository;
 
 import jakarta.transaction.Transactional;
@@ -58,7 +60,7 @@ public class PedidoItemService {
         return pedidoItemRepository.findById(pedidoId).get();
     }
 
-    public List<PedidoItem> findAll(){
-        return pedidoItemRepository.findAll();
+    public List<PedidoItemResponseDTO> findAll(){
+        return pedidoItemRepository.findAll().stream().map(ProdutoItemResponseMapper::toDto).toList();
     }
 }

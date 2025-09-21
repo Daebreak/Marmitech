@@ -34,7 +34,7 @@ public class PedidoController {
     public ResponseEntity<PedidoResponseDTO> findById(@PathVariable Integer id) {
         var result = pedidoService.findById( id );
         PedidoResponseDTO pedidoDto = PedidoResponseMapper.toDto( result );
-        return new ResponseEntity<>( pedidoDto, HttpStatus.FOUND );
+        return new ResponseEntity<>( pedidoDto, HttpStatus.OK );
     }
 
     @GetMapping("/findByStatus")

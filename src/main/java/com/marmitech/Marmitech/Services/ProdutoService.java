@@ -47,6 +47,19 @@ public class ProdutoService {
     public Produto update(Integer id, Produto produto) {
         Produto produtoUpdate = findById( id );
         produtoUpdate.setDataCadastro( LocalDate.now().toString() );
+
+        if (produto.getNome() != null || produto.getNome().isBlank()) {
+            produtoUpdate.setNome( produto.getNome() );
+        }
+        if (produto.getDescricao() != null || produto.getDescricao().isBlank()) {
+            produtoUpdate.setDescricao( produto.getDescricao() );
+        }
+        if (produto.getPrecoUnitario() != null && produto.getPrecoUnitario().compareTo(java.math.BigDecimal.ZERO) >= 0) {
+            produtoUpdate.setPrecoUnitario( produto.getPrecoUnitario() );
+        }
+        if (produto.getCategoria() != null || produto.getCategoria().isBlank()) {
+            produtoUpdate.setCategoria( produto.getCategoria() );
+        }
     
         return produtoRepository.save( produtoUpdate );
     }
