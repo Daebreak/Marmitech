@@ -49,7 +49,7 @@ public class Pedido {
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente; // quem comprou
-    
+
     //Pedido que sera atrelado ao historico
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("pedido-historico")/* add referencia para que o json n entre em loop e
@@ -61,16 +61,16 @@ public class Pedido {
     private Set<PedidoItem> pedidoItems = new HashSet<>();
 
     public void addItem(PedidoItem item) {
-        item.setPedido(this);
-        this.pedidoItems.add(item);
+        item.setPedido( this );
+        this.pedidoItems.add( item );
     }
 
     public void addHistorico(HistoricoCompra historico) {
-    if (historicos == null) {
-        historicos = new ArrayList<>();
-    }
-        historico.setPedido(this); // garante o vínculo
-        historicos.add(historico);  
+        if (historicos == null) {
+            historicos = new ArrayList<>();
+        }
+        historico.setPedido( this ); // garante o vínculo
+        historicos.add( historico );
     }
 
 }

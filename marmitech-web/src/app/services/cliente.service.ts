@@ -13,7 +13,7 @@ export class ClienteService {
 
   constructor() { }
   findAll(): Observable<Cliente[]> {
-    return this.http.get<Cliente[]>(`${this.API}/list`);
+    return this.http.get<Cliente[]>(`${this.API}/findAll`);
   }
 
   findById(id: number): Observable<Cliente> {
@@ -32,8 +32,12 @@ export class ClienteService {
     return this.http.delete<void>(`${this.API}/delete/${id}`);
   }
 
-  // Funcao para vincular o cliente no pedido
+  // Funcao para vincular o cliente no pedido - pesquisa por nome
   findByNome(nome: string): Observable<Cliente[]> {
     return this.http.get<Cliente[]>(`${this.API}/findByNome/${nome}`);
+  }
+  //Funcao para vincular o cliente no pedido - pesquisa por cpf ou cnpj
+  findByCpfCnpj(cpfCnpj: string): Observable<Cliente | null> {
+    return this.http.get<Cliente>(`${this.API}/findByCpfCnpj/${cpfCnpj}`);
   }
 }

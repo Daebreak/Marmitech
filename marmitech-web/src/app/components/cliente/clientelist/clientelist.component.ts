@@ -14,7 +14,7 @@ import { MdbModalModule, MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit
   styleUrl: './clientelist.component.scss',
   standalone: true,
 })
-  
+
 
 export class ClientelistComponent {
   lista: Cliente[] = [];
