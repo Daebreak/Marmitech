@@ -2,15 +2,16 @@ import { Component, inject, TemplateRef, ViewChild } from '@angular/core';
 import { Categoria } from '../../../models/categoria';
 import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
-import { MdbModalModule, MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { CategoriasdetailsComponent } from '../categoriasdetails/categoriasdetails.component';
+import { MdbModalModule, MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { CategoriaService } from '../../../services/categoria.service';
 
 @Component({
   selector: 'app-categoriaslist',
   imports: [RouterLink, MdbModalModule, CategoriasdetailsComponent],
   templateUrl: './categoriaslist.component.html',
-  styleUrls: ['./categoriaslist.component.scss'],
+  styleUrl: './categoriaslist.component.scss',
+  standalone: true,
 })
 export class CategoriaslistComponent {
   lista: Categoria[] = [];
@@ -33,7 +34,7 @@ export class CategoriaslistComponent {
       next: (lista: Categoria[]) => {
         this.lista = lista;
       },
-      error: (err) => {
+      error: (err: { message: any }) => {
         Swal.fire({
           title: 'Erro ao carregar lista de Categorias',
           text: err.message,
@@ -54,21 +55,19 @@ export class CategoriaslistComponent {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        //let indice = this.lista.findIndex((c) => {
-        this.cateService.delete(categoria.id).subscribe({
+        this.categoriaService.delete(categoria.id).subscribe({
           next: () => {
-            this.lista = this.lista.filter((c) => c.id !== categoria.id);
+            this.lista = this.lista.filter(c => c.id !== categoria.id);
           },
-          error: (err) => {
+          error: (err: { message: any }) => {
             Swal.fire({
-              title: 'Erro ao deletar usuário',
+              title: 'Erro ao deletar categoria',
               text: err.message,
               icon: 'error',
               confirmButtonText: 'Fechar',
             });
           },
         });
-        //this.lista.splice(indice, 1);
         Swal.fire({
           title: 'Deletado com sucesso!',
           icon: 'success',
@@ -77,6 +76,7 @@ export class CategoriaslistComponent {
       }
     });
   }
+
   new() {
     this.categoriaEdit = new Categoria({
       id: 0,
@@ -85,8 +85,9 @@ export class CategoriaslistComponent {
     });
     this.modalRef = this.modalService.open(this.modalCategoriaDetalhe);
   }
+
   editById(categoria: Categoria) {
-    this.categoriaEdit = Object.assign({}, categoria); //clonando pra evitar referencia de objeto
+    this.categoriaEdit = Object.assign({}, categoria);
     this.modalRef = this.modalService.open(this.modalCategoriaDetalhe);
   }
 
