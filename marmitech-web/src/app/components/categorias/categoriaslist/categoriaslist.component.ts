@@ -89,7 +89,6 @@ export class CategoriaslistComponent {
     this.categoriaEdit = Object.assign({}, categoria); //clonando pra evitar referencia de objeto
     this.modalRef = this.modalService.open(this.modalCategoriaDetalhe);
   }
-// No .TS do componente da LISTA de categorias
 
 // ... inject(CategoriaService) ...
 
