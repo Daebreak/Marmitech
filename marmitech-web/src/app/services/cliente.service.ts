@@ -12,7 +12,7 @@ export class ClienteService {
 
   constructor() { }
   findAll(): Observable<Cliente[]> {
-    return this.http.get<Cliente[]>(`${this.API}/findAll`);
+    return this.http.get<Cliente[]>(this.API);
   }
 
   findById(id: number): Observable<Cliente> {

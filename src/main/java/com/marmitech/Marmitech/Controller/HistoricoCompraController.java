@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 import com.marmitech.Marmitech.Entity.HistoricoCompra;
 import com.marmitech.Marmitech.Services.HistoricoCompraService;
 
@@ -21,49 +20,27 @@ public class HistoricoCompraController {
     private HistoricoCompraService historicoCompraService;
 
     @PostMapping("/save")
-    public ResponseEntity<HistoricoCompra> save(@RequestBody @Valid HistoricoCompra historicoCompra){
-        try {
-            return new ResponseEntity<>(historicoCompraService.save(historicoCompra), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<HistoricoCompra> save(@RequestBody @Valid HistoricoCompra historicoCompra) {
+        return new ResponseEntity<>( historicoCompraService.save( historicoCompra ), HttpStatus.CREATED );
     }
 
     @PutMapping("/update/{historicoCompraId}")
-    public ResponseEntity<HistoricoCompra> update(@RequestBody HistoricoCompra historicoCompra, @PathVariable int historicoCompraId){
-        try {
-            return new ResponseEntity<>(historicoCompraService.update(historicoCompra, historicoCompraId), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<HistoricoCompra> update(@RequestBody HistoricoCompra historicoCompra, @PathVariable int historicoCompraId) {
+        return new ResponseEntity<>( historicoCompraService.update( historicoCompra, historicoCompraId ), HttpStatus.OK );
     }
 
-
     @DeleteMapping("/delete/{historicoCompraId}")
-    public ResponseEntity<String> delete(@PathVariable int historicoCompraId){
-        try {
-            return new ResponseEntity<>(historicoCompraService.delete(historicoCompraId), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Erro ao deletar historico de compra!", HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<String> delete(@PathVariable int historicoCompraId) {
+        return new ResponseEntity<>( historicoCompraService.delete( historicoCompraId ), HttpStatus.OK );
     }
 
     @GetMapping("/findById/{historicoCompraId}")
-    public ResponseEntity<HistoricoCompra> findById(@PathVariable int historicoCompraId){
-        try {
-            return new ResponseEntity<>(historicoCompraService.findById(historicoCompraId), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<HistoricoCompra> findById(@PathVariable int historicoCompraId) {
+        return new ResponseEntity<>( historicoCompraService.findById( historicoCompraId ), HttpStatus.OK );
     }
 
-
     @GetMapping
-    public ResponseEntity<List<HistoricoCompra>> findAll(){
-        try {
-            return new ResponseEntity<>(historicoCompraService.findAll(), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<List<HistoricoCompra>> findAll() {
+        return new ResponseEntity<>( historicoCompraService.findAll(), HttpStatus.OK );
     }
 }
