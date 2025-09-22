@@ -1,3 +1,27 @@
 .table-striped {
     text-align: center;
 }
+
+.filter-container {
+    padding: 1vh;
+    margin-top: 2vh;
+    margin-bottom: 1vh;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375vh;
+    align-items: center;
+}
+
+.acoes {
+    display: flex;
+    align-items: flex-end;
+}
+
+.table>thead th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.pedido-vazio {
+    text-align: center;
+}

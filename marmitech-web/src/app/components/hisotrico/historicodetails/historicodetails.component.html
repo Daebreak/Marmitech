@@ -1,7 +1,6 @@
-<div class="container mt-4">
+<div class="container">
     <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <br>
+        <div class="card-header ">
             <h3>Detalhes do Pedido</h3>
             <a routerLink="/admin/historicos" class="btn btn-primary">Voltar</a>
         </div>
@@ -9,38 +8,37 @@
             <div class="row">
 
                 <div class="col-md-6">
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">ID do Pedido:</label>
-                        <p class="form-control-plaintext ps-2">{{ pedido.id }}</p>
+                    <div class="detalhes">
+                        <label class="form-label">ID do Pedido:</label>
+                        <p class="form-control-plaintext">{{ pedido.id }}</p>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Status:</label>
-                        <p class="form-control-plaintext ps-2">{{ pedido.status }}</p>
+                    <div class="detalhes">
+                        <label class="form-label">Status:</label>
+                        <p class="form-control-plaintext">{{ pedido.status }}</p>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Data do Pedido:</label>
-                        <p class="form-control-plaintext ps-2">{{ pedido.dataPedido | date:'dd/MM/yyyy' }}</p>
+                    <div class="detalhes">
+                        <label class="form-label">Data do Pedido:</label>
+                        <p class="form-control-plaintext">{{ pedido.dataPedido | date:'dd/MM/yyyy' }}</p>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Cliente:</label>
-                        <p class="form-control-plaintext ps-2">{{ pedido.nomeCliente }}</p>
+                    <div class="detalhes">
+                        <label class="form-label">Cliente:</label>
+                        <p class="form-control-plaintext">{{ pedido.nomeCliente }}</p>
                     </div>
                 </div>
 
                 <div class="col-md-6">
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Itens do Pedido:</label>
-                        <ul class="list-group list-group-flush">
+                    <div class="detalhes">
+                        <label class="form-label">Itens do Pedido:</label>
+                        <ul class="esquerda">
                             @for(item of pedido.pedidoItems; track item.produtoNome){
-                            <li class="list-group-item ps-2">{{ item.quantidade }}x {{ item.produtoNome }}</li>
+                            <li class="list-group-item">{{ item.quantidade }}x {{ item.produtoNome }}</li>
                             }
                         </ul>
                     </div>
-                    <div class="mb-3">
-                        <h5 class="text-muted">Valor Total</h5>
-                        <p class="form-control-plaintext ps-2">{{ pedido.valorTotal | currency:'BRL' }}</p>
+                    <div class="total">
+                        <h5>Valor Total</h5>
+                        <p class="form-control-plaintext">{{ pedido.valorTotal | currency:'BRL' }}</p>
                     </div>
-
                 </div>
             </div>
         </div>

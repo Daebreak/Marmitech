@@ -5,7 +5,7 @@
                 <div class="card-body">
                     <h3>Histórico de Pedidos</h3>
 
-                    <div class="row g-3 align-items-center my-3 p-3 bg-light border rounded">
+                    <div class="row g-3 filter-container">
                         <div class="col-md-5">
                             <label for="filtroData" class="form-label">Filtrar por Data do Pedido</label>
                             <input type="date" id="filtroData" class="form-control" [(ngModel)]="filtroData">
@@ -21,16 +21,16 @@
                                 <option value="CANCELADO">Cancelado</option>
                             </select>
                         </div>
-                        <div class="col-md-2 d-flex align-items-end">
+                        <div class="col-md-2 acoes">
                             <button class="btn btn-primary me-2" (click)="buscar()">Buscar</button>
                             <button class="btn btn-secondary" (click)="limparFiltros()">Limpar</button>
                         </div>
                     </div>
 
                     <br />
-                    <table class="table table-striped table-hover">
+                    <table class="table table-striped">
                         <thead>
-                            <tr class="centralizar">
+                            <tr>
                                 <th>ID do Pedido</th>
                                 <th>Nome do Cliente</th>
                                 <th>Status</th>
@@ -40,16 +40,16 @@
                         </thead>
                         <tbody>
                             @for (pedido of pedidos; track pedido.id) {
-                            <tr style="cursor: pointer;" routerLink="/admin/historicos/{{pedido.id}}">
-                                <td>#{{ pedido.id }}</td>
+                            <tr routerLink="/admin/historicos/{{pedido.id}}">
+                                <td>{{ pedido.id }}</td>
                                 <td>{{ pedido.nomeCliente }}</td>
                                 <td>
-                                    <span class="badge" [ngClass]="{
-                                            'bg-secondary': pedido.status === 'FILA',
-                                            'bg-info': pedido.status === 'PREPARANDO',
-                                            'bg-success': pedido.status === 'FINALIZADO' || pedido.status === 'ENTREGUE',
-                                            'bg-danger': pedido.status === 'CANCELADO'
-                                          }">
+                                    <span class="status" [ngClass]="{
+                                        'bg-secondary': pedido.status === 'FILA',
+                                        'bg-info': pedido.status === 'PREPARANDO',
+                                        'bg-success': pedido.status === 'FINALIZADO' || pedido.status === 'ENTREGUE',
+                                        'bg-danger': pedido.status === 'CANCELADO'
+                                        }">
                                         {{ pedido.status }}
                                     </span>
                                 </td>
@@ -58,7 +58,7 @@
                             </tr>
                             } @empty {
                             <tr>
-                                <td colspan="5" class="text-center">Nenhum pedido encontrado.</td>
+                                <td colspan="5" class="pedido-vazio">Nenhum pedido encontrado.</td>
                             </tr>
                             }
                         </tbody>
