@@ -23,7 +23,7 @@
                     <!-- Aqui eh exibido os produtos da categoria selecionada-->
                     @if (vistaAtual === 'produtos') {
                     <div class="d-flex align-items-center mb-3">
-                        <button class="btn btn-primary" (click)="voltarParaCategorias()">
+                        <button class="btn btn-primary btn-rounded" (click)="voltarParaCategorias()">
                             Voltar
                         </button>
                     </div>
@@ -40,7 +40,7 @@
                                     </div>
 
                                     <div>
-                                        <button class="btn btn-success btn-sm rounded-circle"
+                                        <button class="btn-add btn btn-success btn-sm rounded-square"
                                             (click)="adicionarAoCarrinho(produto)">
                                             <strong class="px-1">+</strong>
                                         </button>
@@ -114,9 +114,9 @@
                         </select>
                     </div>
 
-                    <div class="acoes mt-auto pt-3">
-                        <button class="btn btn-danger">Cancelar Pedido</button>
-                        <button class="btn btn-success" (click)="finalizarPedido()">Finalizar Pedido</button>
+                    <div class="container-acoes acoes mt-auto pt-3">
+                        <button class="btn-cancel btn btn-danger">Cancelar Pedido</button>
+                        <button class="btn-success btn btn-success" (click)="finalizarPedido()">Finalizar Pedido</button>
                     </div>
                 </div>
             </div>
