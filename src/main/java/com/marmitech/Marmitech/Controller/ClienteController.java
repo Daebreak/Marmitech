@@ -26,8 +26,7 @@ public class ClienteController {
             return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
         }
     }
-
-    @GetMapping
+    @GetMapping("/findAll")
     public ResponseEntity<List<Cliente>> findAll() {
         try {
             var result = clienteService.findAll();
