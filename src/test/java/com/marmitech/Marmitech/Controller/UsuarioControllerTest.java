@@ -39,39 +39,59 @@ void setUp() {
         usuarioRepository.save(usuario);
     }
  @Test
-    @DisplayName("Salvando um Usuario e retornando sucesso")
+    @DisplayName("Post: criar novo usuario")
     void teste01() {
         var usuarioSave = new Usuario();
-        usuarioSave.setNome("Gabi");
-        usuarioSave.setEmail("gabi@gabi.com");
-        usuarioSave.setSenha("123456");
+        usuarioSave.setNome("Ana");
+        usuarioSave.setEmail("ana@gabi.com");
+        usuarioSave.setSenha("An4_007");
         usuarioSave.setCargo("Caixa");
         usuarioSave.setData_criacao(LocalDate.of(2025, 1, 1));
      ResponseEntity<Usuario> response = restTemplate
-             .postForEntity("/api/usuario"
+             .postForEntity("/api/usuario/save"
                      , usuarioSave, Usuario.class);
+
+     assertEquals(HttpStatus.CREATED, response.getStatusCode());
+     assertNotNull(response.getBody());
+     assertEquals("Ana", response.getBody().getNome());
  }
   @Test
-    @DisplayName("...")
+    @DisplayName("Get: Listar todos os usuarios")
     void teste02(){
 
     }
 
     @Test
-    @DisplayName("...")
+    @DisplayName("Get :  Buscar usuário por ID")
     void teste03(){
 
     }
 
     @Test
-    @DisplayName("...")
+    @DisplayName("Put: atualizada")
     void teste04(){
 
     }
 
     @Test
-    @DisplayName("...")
+    @DisplayName("Delete: Excluir usuario por ID")
     void teste05(){
+
+    }
+    @Test
+    @DisplayName("POST: Login")
+    void teste06(){
+
+    }
+
+    @Test
+    @DisplayName("GET /findByCargo/{cargo}  Buscar usuário por cargo")
+    void teste07(){
+
+    }
+    @Test
+    @DisplayName("GET /findByNome/{nome} Buscar usuário por nome")
+    void teste08() {
 
     }
 }

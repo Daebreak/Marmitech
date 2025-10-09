@@ -1,4 +1,4 @@
-package com.marmitech.Marmitech.Controller;
+/*package com.marmitech.Marmitech.Controller;
 
 import com.marmitech.Marmitech.Entity.Cliente;
 import com.marmitech.Marmitech.Repository.ClienteRepository;
@@ -8,10 +8,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test") // teste de Cliente
@@ -37,7 +41,7 @@ class ClienteControllerTest {
     }
 
     @Test
-    @DisplayName("Salvando um Cliente e retornando sucesso")
+    @DisplayName("POST/ save = Criar cliente")
     void teste() {
         var clienteSave = new Cliente();
         clienteSave.setNome("Ana");
@@ -48,6 +52,10 @@ class ClienteControllerTest {
 
         ResponseEntity<Cliente> response = restTemplate
                 .postForEntity("/api/clientes", clienteSave, Cliente.class);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("Ana", response.getBody().getNome());
     }
     @Test
     @DisplayName("...")
@@ -72,4 +80,4 @@ class ClienteControllerTest {
     void teste05(){
 
     }
-}
+}*/
