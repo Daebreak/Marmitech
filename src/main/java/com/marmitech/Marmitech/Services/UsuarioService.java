@@ -22,8 +22,10 @@ public class UsuarioService {
     public Usuario save(Usuario usuario) {
         //Para pegar a data e hora automatica
         usuario.setData_criacao( LocalDate.now() );
+
         return usuarioRepository.save( usuario );
     }
+
 
     public List<Usuario> findAll() {
         return usuarioRepository.findAll();

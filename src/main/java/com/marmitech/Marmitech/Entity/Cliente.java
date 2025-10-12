@@ -43,4 +43,6 @@ public class Cliente {
 
     private String dataCadastro;
 
+
+    //private LocalDate dataCadastro = LocalDate.now();
 }

@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,6 +28,8 @@ class UsuarioControllerTest {
 
     @Autowired
       UsuarioRepository usuarioRepository;
+    @Autowired
+    private TestRestTemplate testRestTemplate;
 
     @BeforeEach
 void setUp() {
@@ -54,11 +58,25 @@ void setUp() {
      assertEquals(HttpStatus.CREATED, response.getStatusCode());
      assertNotNull(response.getBody());
      assertEquals("Ana", response.getBody().getNome());
+     assertEquals("ana@gabi.com", response.getBody().getEmail());
+     assertEquals("An4_007", response.getBody().getSenha());
+     assertEquals("Caixa", response.getBody().getCargo());
+     assertEquals(LocalDate.now(), response.getBody().getData_criacao());
+
+    // assertEquals(LocalDate.of(2025, 1, 1), response.getBody().getData_criacao());
  }
-  @Test
+
+
+
+        @Test
     @DisplayName("Get: Listar todos os usuarios")
     void teste02(){
-
+            ResponseEntity<Usuario[]> response = testRestTemplate.exchange(
+                    "/api/usuario/findAll",
+                    HttpMethod.GET,
+                    null,
+                    Usuario[].class);
+            assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
     @Test
