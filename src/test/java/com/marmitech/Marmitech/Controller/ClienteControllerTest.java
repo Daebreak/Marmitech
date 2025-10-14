@@ -60,7 +60,7 @@ class ClienteControllerTest {
         clienteSave.setTelefone("11888888888");
         clienteSave.setEndereco("Av. Brasil, 456");
         clienteSave.setCpfCnpj("111222333448");
-        clienteSave.setDataCadastro(String.valueOf(LocalDate.of(2025, 2, 1)));
+        clienteSave.setDataCadastro(String.valueOf(LocalDate.now()));
 
         ResponseEntity<Cliente> response = restTemplate
                 .postForEntity("/api/cliente/save", clienteSave, Cliente.class);
@@ -68,6 +68,8 @@ class ClienteControllerTest {
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals("Ana", response.getBody().getNome());
+
+
     }
     @Test
     @DisplayName("GET : Lista do Clientes")

@@ -35,7 +35,7 @@ public class UsuarioController {
     public ResponseEntity<List<Usuario>> findAll() {
         try {
             var result = usuarioService.findAll();
-            return new ResponseEntity<>( result, HttpStatus.CREATED );
+            return new ResponseEntity<>( result, HttpStatus.OK );
         } catch (Exception ex) {
             return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
         }

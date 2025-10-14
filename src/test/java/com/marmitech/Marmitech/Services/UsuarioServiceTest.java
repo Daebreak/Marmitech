@@ -1,5 +1,7 @@
 package com.marmitech.Marmitech.Services;
 
+import com.marmitech.Marmitech.Controller.UsuarioController;
+//import com.marmitech.Marmitech.Controller.UsuarioControllerTest;
 import com.marmitech.Marmitech.Entity.Usuario;
 import com.marmitech.Marmitech.Repository.UsuarioRepository;
 import org.junit.jupiter.api.Assertions;
@@ -9,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
@@ -32,6 +35,9 @@ public class UsuarioServiceTest {
 
     Usuario usuario;
 
+    @Autowired
+    private UsuarioController usuarioController;
+
     @BeforeEach
     void setUp() {
         usuarioRepository.deleteAll();
@@ -53,7 +59,7 @@ public class UsuarioServiceTest {
         novoUsuario.setEmail("ana@email.com");
         novoUsuario.setSenha("abcd");
         novoUsuario.setCargo("Gerente");
-        novoUsuario.setData_criacao(LocalDate.of(2025, 1, 1));
+        novoUsuario.setData_criacao(LocalDate.now());
 
 
         var responsee = usuarioService.save(novoUsuario);
@@ -64,17 +70,43 @@ public class UsuarioServiceTest {
         Assertions.assertEquals(HttpStatus.CREATED
                 , response.getStatusCode());
 
-
+       Assertions.assertNotNull(HttpStatus.BAD_REQUEST);
         //var response = usuarioService.save(novoUsuario);
      // String retorno= this.usuarioService.save();
        /*assertNotNull(response.getId());
         assertEquals("Ana", response.getNome());*/
     }
-   /* @Test
-    void cenario02() {
-        var usuario = new Usuario();
-        usuario.setNome(null);
+    @Test
+    void usuarioInvalidoSave() {
+//        var novoUsuario = new Usuario();
+//        novoUsuario.setNome("Gabi");
+//        novoUsuario.setEmail("gabi@gabi.com");
+//        novoUsuario.setSenha("123456");
+//        novoUsuario.setCargo("Caixa");
+//        novoUsuario.setData_criacao(LocalDate.now());
+//
+//        var responsee = usuarioService.save(novoUsuario);
+//      assertThrows(Exception.class, () -> {
+//          this.usuarioService.save(novoUsuario);
+//          //ResponseEntity<Usuario>response = usuarioService.save(novoUsuario);
+//      });
+//        Assertions.assertTrue(responsee.isPresent());
+//        Assertions.assertNotNull("Gabi",responsee,getNome());
+    }
+   @Test
+   void cenario02() {
+       var usuarios = usuarioService.findAll();
+     //  usuarios
 
-        assertThrows(Exception.class, () -> usuarioService.save(usuario));
-    }*/
+       Assertions.assertNotNull("Ana");
+       Assertions.assertTrue(usuarios.size() > 0);
+
+   }
+   @Test
+    void cenario03() {
+       var response =usuarioRepository.findById(usuario.getId());
+
+       Assertions.assertTrue(response.isPresent());
+       Assertions.assertNotNull("Gabi",response.get().getNome());
+   }
 }
