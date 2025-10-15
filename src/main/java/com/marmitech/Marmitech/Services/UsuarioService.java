@@ -38,6 +38,7 @@ public class UsuarioService {
     public void delete(Integer id) {
         var delete = findById( id );
         usuarioRepository.delete( delete );
+
     }
 
     public Usuario update(Integer id, Usuario usuario) {

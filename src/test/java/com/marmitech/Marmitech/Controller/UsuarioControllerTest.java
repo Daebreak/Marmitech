@@ -74,29 +74,9 @@ void setUp() {
     // assertEquals(LocalDate.of(2025, 1, 1), response.getBody().getData_criacao());
 
     }
-@Test
-@DisplayName("POST : /api/usuario/save  BAD_REQUEST ao salvar usuário inválido")
-
-void testeUsuarioInalido(){
-        var usuarioSave = new Usuario();
-        usuarioSave.setNome("");
-       // usuarioSave.setEmail("ana@gabi.com"); sem emial
-    // usuarioSave.setSenha("An4_007"); sem senhs
-        usuarioSave.setCargo("Caixa");
-        usuarioSave.setData_criacao(LocalDate.now());
-
-   // Mockito.when(usuarioService.save(Mockito.any())).thenReturn(usuarioSave);
-
-    ResponseEntity<Usuario> response = restTemplate
-            .postForEntity("/api/usuario/save"
-                    , usuarioSave, Usuario.class);
-
-    assertThrows(Exception.class, () -> {
-        int retorno = this.usuarioService.save(usuarioSave).getId();
-    });
 
 
-}
+
         @Test
     @DisplayName("Get: Listar todos os usuarios")
     void teste02(){

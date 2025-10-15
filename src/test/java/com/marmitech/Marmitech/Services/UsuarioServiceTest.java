@@ -1,58 +1,53 @@
 package com.marmitech.Marmitech.Services;
 
-import com.marmitech.Marmitech.Controller.UsuarioController;
-//import com.marmitech.Marmitech.Controller.UsuarioControllerTest;
 import com.marmitech.Marmitech.Entity.Usuario;
 import com.marmitech.Marmitech.Repository.UsuarioRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 public class UsuarioServiceTest {
 
-    @Autowired
-    private UsuarioService usuarioService;
-
-    @Autowired
-    TestRestTemplate restTemplate;
-
-    @Autowired
+    @Mock
     private UsuarioRepository usuarioRepository;
 
-    Usuario usuario;
+    @InjectMocks
+    private UsuarioService usuarioService;
 
-    @Autowired
-    private UsuarioController usuarioController;
-
+    private Usuario usuario;
+   // private Usuario usuarioUpdate;
     @BeforeEach
     void setUp() {
-        usuarioRepository.deleteAll();
-        var usuario = new Usuario();
+        usuario = new Usuario();
+        //usuarioUpdate = new Usuario();
+        usuario.setId(1);
         usuario.setNome("Gabi");
         usuario.setEmail("gabi@gabi.com");
         usuario.setSenha("123456");
         usuario.setCargo("Caixa");
         usuario.setData_criacao(LocalDate.of(2025, 1, 1));
-
-        this.usuario = usuarioRepository.save(usuario);
+       // usuarioUpdate.setEmail(null); teste de update para ver se ia dar verde( IFs)
     }
 
+    //  Testar o método save
     @Test
-    @DisplayName("Testando o método save da UsuarioService")
+    @DisplayName("Cenário 01 - Testar método save da UsuarioService")
     void cenario01() {
         var novoUsuario = new Usuario();
         novoUsuario.setNome("Ana");
@@ -61,52 +56,108 @@ public class UsuarioServiceTest {
         novoUsuario.setCargo("Gerente");
         novoUsuario.setData_criacao(LocalDate.now());
 
+        // Simula o comportamento do repository
+        when(usuarioRepository.save(any(Usuario.class))).thenAnswer(invocation -> {
+            Usuario u = invocation.getArgument(0);
+            u.setId(10); // simula ID gerado pelo banco
+            return u;
+        });
 
-        var responsee = usuarioService.save(novoUsuario);
-        ResponseEntity<Usuario> response = restTemplate
-                .postForEntity("/api/usuario/save"
-                        , novoUsuario, Usuario.class);
+        var usuarioSalvo = usuarioService.save(novoUsuario);
 
-        Assertions.assertEquals(HttpStatus.CREATED
-                , response.getStatusCode());
+        assertNotNull(usuarioSalvo);
+        assertEquals("Ana", usuarioSalvo.getNome());
+        assertTrue(usuarioSalvo.getId() > 0);
 
-       Assertions.assertNotNull(HttpStatus.BAD_REQUEST);
-        //var response = usuarioService.save(novoUsuario);
-     // String retorno= this.usuarioService.save();
-       /*assertNotNull(response.getId());
-        assertEquals("Ana", response.getNome());*/
+        verify(usuarioRepository, times(1)).save(any(Usuario.class));
     }
+
+    //  Testar findAll
     @Test
-    void usuarioInvalidoSave() {
-//        var novoUsuario = new Usuario();
-//        novoUsuario.setNome("Gabi");
-//        novoUsuario.setEmail("gabi@gabi.com");
-//        novoUsuario.setSenha("123456");
-//        novoUsuario.setCargo("Caixa");
-//        novoUsuario.setData_criacao(LocalDate.now());
-//
-//        var responsee = usuarioService.save(novoUsuario);
-//      assertThrows(Exception.class, () -> {
-//          this.usuarioService.save(novoUsuario);
-//          //ResponseEntity<Usuario>response = usuarioService.save(novoUsuario);
-//      });
-//        Assertions.assertTrue(responsee.isPresent());
-//        Assertions.assertNotNull("Gabi",responsee,getNome());
+    @DisplayName("Cenário 02 - Listar todos os usuários")
+    void cenario02() {
+        var usuario1 = new Usuario();
+        usuario1.setId(1);
+        usuario1.setNome("Ana");
+        usuario1.setEmail("ana@email.com");
+        usuario1.setSenha("abcd");
+        usuario1.setCargo("Gerente");
+        usuario1.setData_criacao(LocalDate.now());
+        var usuario2 = new Usuario();
+        usuario2.setId(2);
+        usuario2.setNome("Gabi");
+        usuario2.setEmail("gabi@gabi.com");
+        usuario2.setSenha("123456");
+        usuario2.setCargo("Caixa");
+        usuario2.setData_criacao(LocalDate.now());
+        List<Usuario> lista = Arrays.asList(usuario1, usuario2);
+
+        when(usuarioRepository.findAll()).thenReturn(lista);
+
+        var usuarios = usuarioService.findAll();
+
+        assertNotNull(usuarios);
+        assertEquals(2, usuarios.size());
+        assertEquals("Ana", usuarios.get(0).getNome());
+
+        verify(usuarioRepository, times(1)).findAll();
     }
-   @Test
-   void cenario02() {
-       var usuarios = usuarioService.findAll();
-     //  usuarios
 
-       Assertions.assertNotNull("Ana");
-       Assertions.assertTrue(usuarios.size() > 0);
-
-   }
-   @Test
+    // - Testar findById
+    @Test
+    @DisplayName("Cenário 03 - Buscar usuário por ID")
     void cenario03() {
-       var response =usuarioRepository.findById(usuario.getId());
+        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
 
-       Assertions.assertTrue(response.isPresent());
-       Assertions.assertNotNull("Gabi",response.get().getNome());
-   }
+        var resultado = usuarioService.findById(1);
+
+        assertNotNull(resultado);
+        assertEquals("Gabi", resultado.getNome());
+
+        verify(usuarioRepository, times(1)).findById(1);
+    }
+
+    //  Testar delete
+    @Test
+    @DisplayName("Cenário 04 - Deletar usuário pelo ID")
+    void cenario04() {
+        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
+
+        usuarioService.delete(1);
+
+        verify(usuarioRepository, times(1)).findById(1);
+        verify(usuarioRepository, times(1)).delete(usuario);
+    }
+
+    @Test
+    @DisplayName("Cenario 05 - ")
+    void cenario05() {
+
+
+        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
+        when(usuarioRepository.save(any())).thenReturn(usuario);
+
+        //usuarioService.update(1, usuario);
+
+
+        usuario.setNome(null);
+        usuario.setSenha(null);
+        usuario.setCargo(null);
+        usuario.setEmail(null);
+        usuario.setData_criacao(null);
+        usuarioService.update(1, usuario);
+
+
+
+        verify(usuarioRepository, times(1)).findById(1);
+
+        verify(usuarioRepository,atLeastOnce()).save(any());
+        assertNotNull(usuario);
+
+    }
+
+    void cenario06() {
+
+    }
+
 }
