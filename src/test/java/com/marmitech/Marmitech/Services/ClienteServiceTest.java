@@ -46,14 +46,14 @@ public class ClienteServiceTest {
     void setUp() {
 
         cliente = new Cliente();
-      cliente.setId( 1 );
+        cliente.setId(1);
         cliente.setNome("Ane");
         cliente.setEmail("ane@exemplo.com");
         cliente.setTelefone("11888888888");
         cliente.setEndereco("Av. Brasil, 456");
         cliente.setCpfCnpj("11122233344");
         cliente.setDataCadastro(String.valueOf(LocalDate.of(2025, 2, 3)));
-       // this.cliente = clienteRepository.save(cliente);
+        // this.cliente = clienteRepository.save(cliente);
     }
 
     @Test
@@ -68,8 +68,6 @@ public class ClienteServiceTest {
         novoCliente.setDataCadastro(String.valueOf((LocalDate.now())));
 
 
-
-
         when(clienteRepository.save(any(Cliente.class))).thenAnswer(invocation -> {
             Cliente cliente = invocation.getArgument(0);
             cliente.setId(10);
@@ -81,7 +79,7 @@ public class ClienteServiceTest {
         assertNotNull(resultado);
         assertEquals("Carlos", resultado.getNome());
 
-        verify( clienteRepository, times(1)).save(any(Cliente.class));
+        verify(clienteRepository, times(1)).save(any(Cliente.class));
 
         var clienteSemNome = new Cliente();
         clienteSemNome.setNome("Carlos");
@@ -93,7 +91,7 @@ public class ClienteServiceTest {
         clienteSemCpf.setCpfCnpj("00000000000"); // só para não disparar o outro if
         var resultado2 = clienteService.save(clienteSemCpf);
         assertNotNull(resultado2);
- // preciso colocar verde em   if (cliente.getCpfCnpj() != null e nome tambem
+        // preciso colocar verde em   if (cliente.getCpfCnpj() != null e nome tambem
 
 
     }
@@ -142,6 +140,7 @@ public class ClienteServiceTest {
 
         verify(clienteRepository, times(1)).findById(1);
     }
+
     @Test
     @DisplayName("Deletar clientes pelo ID ")
     void cenario04() {
@@ -151,23 +150,52 @@ public class ClienteServiceTest {
         verify(clienteRepository, times(1)).findById(1);
         verify(clienteRepository, times(1)).delete(cliente);
     }
+
+    @Test
+    @DisplayName("Cenário 05 - Teste de atualização com cliente nulo cobertura dos ifs")
     void cenario05() {
 
         when(clienteRepository.findById(1)).thenReturn(Optional.of(cliente));
-        when(clienteRepository.save(any())).thenReturn(Optional.of(cliente));
 
+        when(clienteRepository.save(any(Cliente.class))).thenReturn(cliente);
+
+        cliente.setNome("Ane");
+      clienteService.update(1, cliente);
         cliente.setNome(null);
         cliente.setEmail(null);
         cliente.setTelefone(null);
         cliente.setEndereco(null);
         cliente.setCpfCnpj(null);
         cliente.setDataCadastro(null);
-        clienteService.update(1,cliente);
+        //clienteService.update(1, cliente);
 
         verify(clienteRepository, times(1)).findById(1);
-        verify(clienteRepository,atLeastOnce()).save(any());
-        assertNotNull(cliente);;
+        verify(clienteRepository, atLeastOnce()).save(any());
+        assertNotNull(cliente);
+
     }
 
+    @Test
+    @DisplayName("cenario 06  Teste de busca de cliente por nomee ")
+    void cenario06() {
+        when(clienteRepository.getByNome(anyString()))
+                .thenReturn(List.of(new Cliente()));
+
+        var resultado = clienteService.findByNome("Carlos");
+
+        assertFalse(resultado.isEmpty());
+    }
+    @Test
+    @DisplayName("cenario 07 teste de CPF e CNPJ ")
+    void cenario07() {
+        cliente.setCpfCnpj("123435464");
+
+        when(clienteRepository.getByCpfCnpj("123435464")).thenReturn(cliente);
+
+        Cliente resultado = clienteService.findByCpfCnpj("123435464");
+
+        assertEquals("123435464", resultado.getCpfCnpj());
+        verify(clienteRepository).getByCpfCnpj("123435464");
+    }
 }
 

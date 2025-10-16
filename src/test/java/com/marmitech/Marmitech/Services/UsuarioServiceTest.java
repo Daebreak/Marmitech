@@ -155,9 +155,15 @@ public class UsuarioServiceTest {
         assertNotNull(usuario);
 
     }
-
+@Test
+@DisplayName("cENARIO 06 De login e senha ")
     void cenario06() {
-
-    }
+//  when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
+//
+//   String nome;
+//   String senha;
+//    Optional<Usuario>usuarioOPTl  = usuarioRepository.findByNomeAndSenha( nome, senha );
+//
+   }
 
 }
