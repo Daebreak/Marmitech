@@ -1,5 +1,6 @@
 package com.marmitech.Marmitech.Services;
 
+import com.marmitech.Marmitech.Entity.Cliente;
 import com.marmitech.Marmitech.Entity.Usuario;
 import com.marmitech.Marmitech.Repository.UsuarioRepository;
 import org.junit.jupiter.api.*;
@@ -165,5 +166,24 @@ public class UsuarioServiceTest {
 //    Optional<Usuario>usuarioOPTl  = usuarioRepository.findByNomeAndSenha( nome, senha );
 //
    }
+ @Test
+    @DisplayName("Cenario 07 de lista de usuarios do Cargos")
+    void cenario07() {
+     when(usuarioRepository.getByCargo(anyString())).thenReturn(List.of(new Usuario()));
 
+     var resultado = usuarioService.findByCargo("Caixa");
+
+     assertFalse(resultado.isEmpty());
+
+ }
+ @Test
+    @DisplayName("Cenario 08 teste de Nome")
+    void cenario08() {
+   usuario.setNome("Ana");
+  when(usuarioRepository.findByNome(anyString())).thenReturn(List.of(usuario));
+   var resultado = usuarioService.findByNome("Ana");
+
+  assertFalse(resultado.isEmpty());
+     assertEquals("Ana", resultado.get(0).getNome());
+ }
 }

@@ -20,5 +20,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     @Query("SELECT u FROM Usuario u WHERE u.cargo = :cargo")
     List<Usuario> getByCargo(@Param("cargo") String cargo);
 
+    List<Usuario> findByCargo(@NotNull @NotBlank(message = "cargo não pode ser null ou vazio") String cargo);
+
     //Optional<Object> findByEmail(@NotNull @NotBlank(message = "email não pode ser null ou vazio") String email);
 }

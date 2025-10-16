@@ -1,23 +1,13 @@
 package com.marmitech.Marmitech.Services;
 
 import com.marmitech.Marmitech.Entity.Cliente;
-import com.marmitech.Marmitech.Entity.Usuario;
 import com.marmitech.Marmitech.Repository.ClienteRepository;
-import com.marmitech.Marmitech.Repository.UsuarioRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -26,8 +16,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -81,6 +71,7 @@ public class ClienteServiceTest {
 
         verify(clienteRepository, times(1)).save(any(Cliente.class));
 
+        //nao pode duplicado
         var clienteSemNome = new Cliente();
         clienteSemNome.setNome("Carlos");
         var resultadoSemNome = clienteService.save(clienteSemNome);
@@ -88,7 +79,7 @@ public class ClienteServiceTest {
 
 
         var clienteSemCpf = new Cliente();
-        clienteSemCpf.setCpfCnpj("00000000000"); // só para não disparar o outro if
+        clienteSemCpf.setCpfCnpj(null); // só para não disparar o outro if
         var resultado2 = clienteService.save(clienteSemCpf);
         assertNotNull(resultado2);
         // preciso colocar verde em   if (cliente.getCpfCnpj() != null e nome tambem
@@ -160,8 +151,10 @@ public class ClienteServiceTest {
         when(clienteRepository.save(any(Cliente.class))).thenReturn(cliente);
 
         cliente.setNome("Ane");
-      clienteService.update(1, cliente);
+        clienteService.update(1, cliente);
+
         cliente.setNome(null);
+        //clienteService.update(null, null);
         cliente.setEmail(null);
         cliente.setTelefone(null);
         cliente.setEndereco(null);
@@ -178,13 +171,13 @@ public class ClienteServiceTest {
     @Test
     @DisplayName("cenario 06  Teste de busca de cliente por nomee ")
     void cenario06() {
-        when(clienteRepository.getByNome(anyString()))
-                .thenReturn(List.of(new Cliente()));
+        when(clienteRepository.getByNome(anyString())).thenReturn(List.of(new Cliente()));
 
         var resultado = clienteService.findByNome("Carlos");
 
         assertFalse(resultado.isEmpty());
     }
+
     @Test
     @DisplayName("cenario 07 teste de CPF e CNPJ ")
     void cenario07() {
