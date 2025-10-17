@@ -131,7 +131,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    @DisplayName("Cenario 05 - ")
+    @DisplayName("Cenario 05 -Up Atualizar pelo nome e id ")
     void cenario05() {
 
 
@@ -159,14 +159,52 @@ public class UsuarioServiceTest {
 @Test
 @DisplayName("cENARIO 06 De login e senha ")
     void cenario06() {
-//  when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
-//
-//   String nome;
-//   String senha;
-//    Optional<Usuario>usuarioOPTl  = usuarioRepository.findByNomeAndSenha( nome, senha );
-//
-   }
- @Test
+
+
+
+    usuario.setNome("Gabi");
+    usuario.setSenha("Admin");
+    usuario.setCargo("Caixa");
+
+    when(usuarioRepository.findByNomeAndSenha(anyString(), anyString()))
+            .thenReturn(Optional.empty());
+
+
+
+    RuntimeException exception = assertThrows(RuntimeException.class, ()
+            -> usuarioService.login("ga", "345"));
+    assertEquals("Usuario ou senha invalidos", exception.getMessage());
+
+
+when(usuarioRepository.findByNomeAndSenha("Gabi", "Admin")).thenReturn(Optional.of(usuario));
+assertDoesNotThrow(() -> usuarioService.login("Gabi", "Admin"));
+    assertEquals("Gabi", usuario.getNome());
+    assertEquals("Caixa",usuario.getCargo());
+
+
+    usuario.setNome("Ana");
+    usuario.setSenha("Admin");
+    usuario.setCargo("Cozinha");
+    when(usuarioRepository.findByNomeAndSenha("Ana", "Admin")).thenReturn(Optional.of(usuario));
+assertDoesNotThrow(() -> usuarioService.login("Ana", "Admin"));
+    assertEquals("Cozinha", usuario.getCargo());
+
+    //verifica se chamou corretamente
+    verify(usuarioRepository, times(1)).findByNomeAndSenha("ga", "345");
+    verify(usuarioRepository, times(1)).findByNomeAndSenha("Gabi", "Admin");
+    verify(usuarioRepository, times(1)).findByNomeAndSenha("Ana", "Admin");
+//nao pode colocar null
+    assertNotNull(usuario);
+
+
+
+
+
+
+}
+
+
+   @Test
     @DisplayName("Cenario 07 de lista de usuarios do Cargos")
     void cenario07() {
      when(usuarioRepository.getByCargo(anyString())).thenReturn(List.of(new Usuario()));

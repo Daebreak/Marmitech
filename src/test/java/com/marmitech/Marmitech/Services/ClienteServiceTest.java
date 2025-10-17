@@ -82,7 +82,7 @@ public class ClienteServiceTest {
         clienteSemCpf.setCpfCnpj(null); // só para não disparar o outro if
         var resultado2 = clienteService.save(clienteSemCpf);
         assertNotNull(resultado2);
-        // preciso colocar verde em   if (cliente.getCpfCnpj() != null e nome tambem
+
 
 
     }
