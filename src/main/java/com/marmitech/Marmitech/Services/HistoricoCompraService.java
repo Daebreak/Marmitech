@@ -36,27 +36,31 @@ public class HistoricoCompraService {
 
     @Transactional
     public HistoricoCompra update(HistoricoCompra novoHistoricoCompra, int historicoCompraId) {
-        HistoricoCompra antigoHistoricoCompra = historicoCompraRepository.findById( historicoCompraId ).get();
+        HistoricoCompra antigoHistoricoCompra = historicoCompraRepository.findById( historicoCompraId )
+                .orElseThrow( () -> new RuntimeException( "Historico com ID " + historicoCompraId + " não encontrado para atualização" ) );
 
-        //novoHistoricoCompra.setClienteId(validador(novoHistoricoCompra.getClienteId(), antigoHistoricoCompra.getClienteId(), this::isValidoNum));
-        //novoHistoricoCompra.setPedidoId(validador(novoHistoricoCompra.getPedidoId(), antigoHistoricoCompra.getPedidoId(), this::isValidoNum));
-        novoHistoricoCompra.setTipoEvento( validador( novoHistoricoCompra.getTipoEvento(), antigoHistoricoCompra.getTipoEvento(), this::isValidoString ) );
-        novoHistoricoCompra.setDataEvento( validador( novoHistoricoCompra.getDataEvento(), antigoHistoricoCompra.getDataEvento(), this::isValidoString ) );
-        novoHistoricoCompra.setDescricao( validador( novoHistoricoCompra.getDescricao(), antigoHistoricoCompra.getDescricao(), this::isValidoString ) );
-        novoHistoricoCompra.setId( historicoCompraId );
+        antigoHistoricoCompra.setTipoEvento( validador( novoHistoricoCompra.getTipoEvento(), antigoHistoricoCompra.getTipoEvento(), this::isValidoString ) );
+        antigoHistoricoCompra.setDataEvento( validador( novoHistoricoCompra.getDataEvento(), antigoHistoricoCompra.getDataEvento(), this::isValidoString ) );
+        antigoHistoricoCompra.setDescricao( validador( novoHistoricoCompra.getDescricao(), antigoHistoricoCompra.getDescricao(), this::isValidoString ) );
 
-        return novoHistoricoCompra;
+        return historicoCompraRepository.save( antigoHistoricoCompra );
     }
 
     @Transactional
     public String delete(int historicoCompraId) {
+        if (historicoCompraId <= 0) {
+            throw new IllegalArgumentException( "ID DO HISTORICO INVALIDO" );
+        }
         historicoCompraRepository.deleteById( historicoCompraId );
-
         return "Historico deletado com sucesso!";
     }
 
     public HistoricoCompra findById(int historicoCompraId) {
-        return historicoCompraRepository.findById( historicoCompraId ).get();
+        if (historicoCompraId <= 0) {
+            throw new IllegalArgumentException( "ID DO HISTORICO INVALIDO" );
+        }
+        return historicoCompraRepository.findById( historicoCompraId )
+                .orElseThrow( () -> new RuntimeException( "Historico com ID " + historicoCompraId + " não encontrado" ) );
     }
 
     public List<HistoricoCompra> findAll() {

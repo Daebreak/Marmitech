@@ -57,9 +57,10 @@ public class PedidoController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Pedido> update(@PathVariable Integer id, @RequestBody Pedido pedido) {
-        var result = pedidoService.findById( id );
-        return new ResponseEntity<>( result, HttpStatus.OK );
+    public ResponseEntity<PedidoResponseDTO> update(@PathVariable Integer id, @RequestBody Pedido pedido) {
+        Pedido updatedPedido = pedidoService.update( id, pedido );
+        PedidoResponseDTO pedidoDto = PedidoResponseMapper.toDto( updatedPedido );
+        return new ResponseEntity<>( pedidoDto, HttpStatus.OK );
     }
 
     @DeleteMapping("/delete/{id}")

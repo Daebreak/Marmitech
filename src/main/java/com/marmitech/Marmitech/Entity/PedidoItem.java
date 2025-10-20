@@ -1,9 +1,6 @@
 package com.marmitech.Marmitech.Entity;
 
-import java.math.BigDecimal;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,9 +21,9 @@ public class PedidoItem {
 
     private int quantidade;
 
-    private BigDecimal precoUnitarioPedido;
+    private Double precoUnitarioPedido;
 
-    private BigDecimal subtotal;
+    private Double subtotal;
 
     @ManyToOne
     @JoinColumn(name = "pedido_id")
