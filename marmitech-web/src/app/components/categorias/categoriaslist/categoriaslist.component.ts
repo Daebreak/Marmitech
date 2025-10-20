@@ -71,6 +71,8 @@ export class CategoriaslistComponent {
       icon: 'warning',
       showConfirmButton: true,
       showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       confirmButtonText: 'Sim, deletar!',
       cancelButtonText: 'Cancelar',
     }).then((result) => {
