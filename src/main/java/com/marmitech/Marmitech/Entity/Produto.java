@@ -1,15 +1,10 @@
 package com.marmitech.Marmitech.Entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -60,5 +55,7 @@ public class Produto {
     @JsonManagedReference("produto-item")/* referência na relação Produto <-> PedidoItem.
     permitindo que a lista de PedidoItem seja incluída a partir do Produto. */
     private Set<PedidoItem> pedidoItems = new HashSet<>();
-
+//    @ManyToOne
+//    @JoinColumn(name = "categoria_id")
+//    private Categoria categoriia;
 }

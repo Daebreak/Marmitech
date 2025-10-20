@@ -134,14 +134,15 @@ public class UsuarioServiceTest {
     @DisplayName("Cenario 05 -Up Atualizar pelo nome e id ")
     void cenario05() {
 
- //usuario.setNome("Gabi");
- //usuario.setId(1);
+ usuario.setNome("Gabi");
+ usuario.setId(1);
  usuario.setEmail("gabi@gabi.com");
 
         when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
-       when(usuarioRepository.findByNome("Gabi"));
-//when(usuarioRepository.findByEmail("gabiexemplo,com")),(usuario));
-       // when(usuarioRepository.save(any())).thenReturn(usuario);
+
+
+        //when(usuarioRepository.findByEmail("gabiexemplo,com")),(usuario));
+       when(usuarioRepository.save(any())).thenReturn(usuario);
 
         //usuarioService.update(1, usuario);
 
