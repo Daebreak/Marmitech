@@ -33,6 +33,7 @@ export class CategoriasdetailsComponent {
     categoriaServices = inject(CategoriaService);
 
   salvar() {
+<<<<<<< HEAD
     if (this.categoria.id > 0) {
       // 🟠 Atualizar categoria existente
       this.categoriaService.update(this.categoria).subscribe({
@@ -82,5 +83,8 @@ export class CategoriasdetailsComponent {
       this.routerSaver.navigate(['admin/categorias'], {state: { categoriaNovo: this.categoria }});
     }
     this.retorno.emit(this.categoria);
+=======
+  this.retorno.emit(this.categoria);
+>>>>>>> marinaTest
   }
 }

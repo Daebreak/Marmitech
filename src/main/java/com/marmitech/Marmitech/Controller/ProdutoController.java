@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,54 +23,36 @@ public class ProdutoController {
 
     @PostMapping("/save")
     public ResponseEntity<ProdutoListaDTO> save(@RequestBody @Valid ProdutoSaveDTO produtoDto) {
-        try {
-            ProdutoListaDTO produto = produtoService.save( produtoDto );
-            return new ResponseEntity<>( produto, HttpStatus.CREATED );
-        } catch (Exception ex) {
-            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
-        }
+        ProdutoListaDTO produto = produtoService.save( produtoDto );
+        return new ResponseEntity<>( produto, HttpStatus.CREATED );
     }
 
     @GetMapping("/findAll")
     public ResponseEntity<List<ProdutoListaDTO>> findAll() {
-        try {
-            return new ResponseEntity<>( produtoService.findAll(), HttpStatus.OK );
-        } catch (Exception ex) {
-            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
-        }
+        return new ResponseEntity<>( produtoService.findAll(), HttpStatus.OK );
+
     }
 
     @GetMapping("findById/{id}")
     public ResponseEntity<ProdutoListaDTO> findById(@PathVariable Integer id) {
-        try {
-            var result = produtoService.findById( id );
+        var result = produtoService.findById( id );
 
-            ProdutoListaDTO produtoDto = ProdutoListaMapper.toDto(result);
+        ProdutoListaDTO produtoDto = ProdutoListaMapper.toDto(result);
 
-            return new ResponseEntity<>( produtoDto, HttpStatus.OK );
-        } catch (Exception ex) {
-            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
-        }
+        return new ResponseEntity<>( produtoDto, HttpStatus.OK );
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Produto> update(@PathVariable Integer id, @RequestBody Produto produto) {
-        try {
-            var result = produtoService.update( id, produto );
-            return new ResponseEntity<>( result, HttpStatus.OK );
-        } catch (Exception ex) {
-            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
-        }
+        var result = produtoService.update( id, produto );
+        return new ResponseEntity<>( result, HttpStatus.OK );
+
     }
 
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        try {
-            produtoService.delete( id );
-            return new ResponseEntity<>( null, HttpStatus.OK );
-        } catch (Exception ex) {
-            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
-        }
+        produtoService.delete( id );
+        return new ResponseEntity<>( null, HttpStatus.OK );
     }
 
 }

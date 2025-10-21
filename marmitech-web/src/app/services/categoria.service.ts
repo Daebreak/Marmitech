@@ -2,18 +2,19 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Categoria } from '../models/categoria';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class CategoriaService {
     private http = inject(HttpClient);
-    private API = 'http://localhost:8080/api/categoria';
+    private API = `${environment.apiUrl}/api/categoria`;
 
     constructor() { }
 
     findAll(): Observable<Categoria[]> {
-        return this.http.get<Categoria[]>(`${this.API}/findAll`);
+        return this.http.get<Categoria[]>(`${this.API}/list`);
     }
 
     findById(id: number): Observable<Categoria> {

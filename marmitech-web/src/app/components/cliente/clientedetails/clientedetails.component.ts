@@ -28,17 +28,39 @@ export class ClientedetailsComponent {
   routerSaver = inject(Router);
   route = inject(ActivatedRoute);
 
+  constructor() {
+    const id = this.route.snapshot.paramMap.get('id');
+    console.log(id);
+    if (id) {
+      this.findById(parseInt(id));
+    }
+  }
+
+  findById(id: number) {
+    this.clienteService.findById(id).subscribe({
+      next: (cliente) => {
+        this.cliente = cliente;
+      },
+      error: (err) => {
+        Swal.fire('Erro!', 'Houve um erro ao executar esta ação: ' + err.error, 'error');
+      }
+    });
+  }
+
   salvar() {
     if (this.cliente.id > 0) {
       this.clienteService.update(this.cliente).subscribe({
-        next: (updated) => Swal.fire('Atualizado', 'Cliente atualizado!', 'success').then(() => this.retorno.emit(updated)),
+        next: updated => {Swal.fire('Atualizado', 'Cliente atualizado!', 'success'); 
+          this.routerSaver.navigate(['admin/cliente'], { state: { updatedCliente: updated } });
+          this.retorno.emit(updated);
+        },
         error: (err) => Swal.fire('Erro', err.message, 'error')
       });
     } else {
       this.clienteService.create(this.cliente).subscribe({
         next: (created) => Swal.fire('Criado', 'Cliente criado!', 'success').then(() => {
           this.retorno.emit(created);
-          this.routerSaver.navigate(['admin/cliente']);
+          this.routerSaver.navigate(['admin/cliente'], { state: { newCliente: created } });
         }),
         error: (err) => Swal.fire('Erro', err.message, 'error')
       });

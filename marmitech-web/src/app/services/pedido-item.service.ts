@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PedidoItem } from '../models/pedido-item';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class PedidoItemService {
 
   http = inject(HttpClient);
 
-  API = "http://192.168.122.219:8080/pedidoItem";
+  API = `${environment.apiUrl}/pedidoItem`;
 
   constructor() { }
 

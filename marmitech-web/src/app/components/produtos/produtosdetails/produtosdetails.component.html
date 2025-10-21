@@ -4,46 +4,43 @@
     
     <div class="col-lg-12 centralizar topo">
       <div class="card">
+        <form #produtoForm="ngForm">
         <div class="card-body">
             <mdb-form-control>
-                <input mdbInput type="text" id="nome" class="form-control" [(ngModel)]="produto.nome"/>
+                <input mdbInput type="text" id="nome" name="nome" class="form-control" [(ngModel)]="produto.nome" required/>
                 <label mdbLabel class="form-label" for="nome">Nome</label>
             </mdb-form-control>
         <br />
             <mdb-form-control>
-                <input mdbInput type="text" id="descricao" class="form-control" [(ngModel)]="produto.descricao"/>
+                <input mdbInput type="text" id="descricao" name="descricao" class="form-control" [(ngModel)]="produto.descricao" required/>
                 <label mdbLabel class="form-label" for="descricao">Descrição</label>
             </mdb-form-control>
         <br />
             <mdb-form-control>
-                <input mdbInput type="text" id="categoria" class="form-control" [(ngModel)]="produto.categoria"/>
+                <input mdbInput type="text" id="categoria" name="categoria" class="form-control" [(ngModel)]="produto.categoria" required/>
                 <label mdbLabel class="form-label" for="categoria">Categoria</label>
             </mdb-form-control>
         <br />
             <mdb-form-control>
-                <input mdbInput type="number" id="precoUnitario" class="form-control" [(ngModel)]="produto.precoUnitario"/>
+                <input mdbInput type="number" id="precoUnitario" name="precoUnitario" class="form-control" [(ngModel)]="produto.precoUnitario" required min="0"/>
                 <label mdbLabel class="form-label" for="precoUnitario">Preço Unitário</label>
             </mdb-form-control>
         <br />
             <mdb-form-control>
-                <input mdbInput type="number" id="estoque" class="form-control" [(ngModel)]="produto.estoque"/>
+                <input mdbInput type="number" id="estoque" name="estoque" class="form-control" [(ngModel)]="produto.estoque" required min="0"/>
                 <label mdbLabel class="form-label" for="estoque">Estoque</label>
             </mdb-form-control>
         <br />
             <mdb-form-control>
-                <input mdbInput type="text" id="sku" class="form-control" [(ngModel)]="produto.sku"/>
+                <input mdbInput type="text" id="sku" name="sku" class="form-control" [(ngModel)]="produto.sku" required min="0"/>
                 <label mdbLabel class="form-label" for="sku">SKU</label>
             </mdb-form-control>
         <br />
-            <mdb-form-control>
-                <input mdbInput type="text" id="dataCadastro" class="form-control" [(ngModel)]="produto.dataCadastro"/>
-                <label mdbLabel class="form-label" for="dataCadastro">Data de Cadastro</label>
-            </mdb-form-control>        
-        <br />
-          <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="salvar()">
+          <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="salvar()" [disabled]="!produtoForm.valid">
             Salvar 
         </button>
         </div>
+        </form>    
       </div>
     </div>
     

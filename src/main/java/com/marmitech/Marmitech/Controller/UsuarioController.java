@@ -23,66 +23,50 @@ public class UsuarioController {
 
     @PostMapping("/save")
     public ResponseEntity<Usuario> save(@RequestBody @Valid Usuario usuario) {
-
-            var result = usuarioService.save( usuario );
-            return new ResponseEntity<>( result, HttpStatus.CREATED );
-
+        var result = usuarioService.save( usuario );
+        return new ResponseEntity<>( result, HttpStatus.CREATED );
     }
 
     @GetMapping("/findAll")
     public ResponseEntity<List<Usuario>> findAll() {
-
-            var result = usuarioService.findAll();
-            return new ResponseEntity<>( result, HttpStatus.OK );
-
+        var result = usuarioService.findAll();
+        return new ResponseEntity<>( result, HttpStatus.CREATED );
     }
 
     @GetMapping("findById/{id}")
     public ResponseEntity<Usuario> findById(@PathVariable Integer id) {
-
-            var result = usuarioService.findById( id );
-            return new ResponseEntity<>( result, HttpStatus.OK );
-
+        var result = usuarioService.findById( id );
+        return new ResponseEntity<>( result, HttpStatus.OK );
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Usuario> update(@PathVariable Integer id, @RequestBody Usuario usuario) {
-
-            var result = usuarioService.update( id, usuario );
-            return new ResponseEntity<>( result, HttpStatus.OK );
-
+        var result = usuarioService.update( id, usuario );
+        return new ResponseEntity<>( result, HttpStatus.OK );
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
-
-            usuarioService.delete( id );
-            return new ResponseEntity<>( HttpStatus.OK );
-
+        usuarioService.delete( id );
+        return new ResponseEntity<>( HttpStatus.OK );
     }
 
     @PostMapping("/login")
     public ResponseEntity<Void> login(@RequestParam String nome, @RequestParam String senha) {
-
-            usuarioService.login( nome, senha );
-            return new ResponseEntity<>( HttpStatus.ACCEPTED );
-
+        usuarioService.login( nome, senha );
+        return new ResponseEntity<>( HttpStatus.ACCEPTED );
     }
 
     @GetMapping("/findByCargo/{cargo}")
     public ResponseEntity<List<Usuario>> findByCargo(@PathVariable String cargo) {
-
-            var result = usuarioService.findByCargo( cargo );
-            return new ResponseEntity<>( result, HttpStatus.OK );
-
+        var result = usuarioService.findByCargo( cargo );
+        return new ResponseEntity<>( result, HttpStatus.OK );
     }
 
     @GetMapping("/findByNome/{nome}")
     public ResponseEntity<List<Usuario>> findByNome(@PathVariable String nome) {
-
-            var result = usuarioService.findByNome( nome );
-            return new ResponseEntity<>( result, HttpStatus.OK );
-
+        var result = usuarioService.findByNome( nome );
+        return new ResponseEntity<>( result, HttpStatus.OK );
     }
 
 }

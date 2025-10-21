@@ -1,163 +1,88 @@
 import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { MdbModalModule, MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
-import { Pedido } from '../../../models/pedido';
-import { PedidoService } from '../../../services/pedido.service';
-import { Produto } from '../../../models/produto';
-import { ProdutoService } from '../../../services/produto.service';
-import { Router } from '@angular/router';
-import { Cliente } from '../../../models/cliente';
-import { ClienteService } from '../../../services/cliente.service';
 
-import { FormsModule } from '@angular/forms';
+import { Pedido } from '../../../models/pedido';
+import { Produto } from '../../../models/produto';
+import { Cliente } from '../../../models/cliente';
+
+import { PedidoService } from '../../../services/pedido.service';
+import { ProdutoService } from '../../../services/produto.service';
+import { ClienteService } from '../../../services/cliente.service';
 
 @Component({
   selector: 'app-pedidoslist',
-  imports: [MdbModalModule, CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MdbModalModule],
   templateUrl: './pedidoslist.component.html',
-  styleUrl: './pedidoslist.component.scss',
+  styleUrls: ['./pedidoslist.component.scss'],
 })
-
 export class PedidoslistComponent implements OnInit {
 
-  constructor() { }
-  lista: Pedido[] = [];
+  private pedidoService = inject(PedidoService);
+  private produtoService = inject(ProdutoService);
+  private clienteService = inject(ClienteService);
+  private modalService = inject(MdbModalService);
+  private router = inject(Router);
 
+
+  vistaAtual: 'categorias' | 'produtos' = 'categorias';
   categorias = [
     { nome: 'Marmitas' },
     { nome: 'Bebidas' },
     { nome: 'Sobremesas' },
     { nome: 'Outros' }
   ];
-
   produtos: Produto[] = [];
-
-  vistaAtual: 'categorias' | 'produtos' = 'categorias';
-  produtosDaCategoria: any[] = [];
+  produtosDaCategoria: Produto[] = [];
   categoriaSelecionada: any = null;
 
 
-  carrinho: { produto: any, quantidade: number }[] = [];
+  carrinho: { produto: Produto, quantidade: number }[] = [];
   valorTotalPedido: number = 0;
 
-  modalService = inject(MdbModalService);
-  @ViewChild('modalPedidoDetalhe') modalPedidoDetalhe!: TemplateRef<any>;
-  @ViewChild('modalCategorias') modalCategorias!: TemplateRef<any>;
-  modalRef!: MdbModalRef<any>;
 
-  pedidoService = inject(PedidoService);
-  produtoService = inject(ProdutoService);
+  todosOsClientes: Cliente[] = [];
+  clienteIdSelecionado: number | null = null;
+  termoBuscaCliente: string = '';
 
-
-
-  pedidoEdit: Pedido = new Pedido(
-    {
-      id: 0,
-      nomeCliente: '',
-      status: '',
-      enderecoEntrega: '',
-      pedidoItems: [],
-      valorTotal: 0
-    });
-
-
+  constructor() { }
 
   ngOnInit(): void {
-    this.findAllPedidos();
-    this.findAllProdutos();
+    this.carregarDadosIniciais();
+  }
+
+
+  carregarDadosIniciais() {
+    this.carregarTodosProdutos();
     this.carregarTodosClientes();
   }
 
-  findAllPedidos() {
-    this.pedidoService.findAll().subscribe({
-      next: (listaRecebida: Pedido[]) => {
-        this.lista = listaRecebida;
-      },
-      error: (err: any) => {
-        Swal.fire({
-          title: 'Erro ao buscar pedidos',
-          text: 'Houve um problema ao se comunicar com o servidor.',
-          icon: 'error'
-        });
-        console.error('Erro ao buscar pedido:', err);
-      }
-    });
-  }
-  findAllProdutos() {
+  carregarTodosProdutos() {
     this.produtoService.findAll().subscribe({
-      next: (produtosRecebidos: Produto[]) => {
+      next: (produtosRecebidos) => {
         this.produtos = produtosRecebidos;
-        console.log('Produtos carregados:', this.produtos);
       },
-      error: (err: any) => {
-        Swal.fire({
-          title: 'Erro ao buscar produtos',
-          icon: 'error'
-        });
+      error: (err) => {
         console.error('Erro ao buscar produtos:', err);
+        Swal.fire('Erro', 'Houve um problema ao carregar os produtos.', 'error');
       }
     });
   }
 
-  editById(pedido: Pedido) {
-    this.pedidoEdit = Object.assign({}, pedido);
-    this.modalRef = this.modalService.open(this.modalPedidoDetalhe);
-  }
-
-  new() {
-    this.pedidoEdit = new Pedido(
-      {
-        id: 0,
-        nomeCliente: '',
-        status: '',
-        enderecoEntrega: '',
-        pedidoItems: [],
-        valorTotal: 0
-      });
-    this.modalRef = this.modalService.open(this.modalPedidoDetalhe);
-  }
-
-
-  retornoDetalhe(pedido: Pedido) {
-    if (pedido.id) {
-      this.lista = this.lista.map(p => p.id === pedido.id ? pedido : p);
-    } else {
-      pedido.id = this.lista.length + 1;
-      this.lista.push(pedido);
-    }
-    this.modalRef.close();
-  }
-
-
-  deleteById(pedido: Pedido) {
-    Swal.fire({
-      title: 'Confirma o cancelamento do pedido ?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sim',
-      cancelButtonText: 'Não'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.pedidoService.delete(pedido.id).subscribe({
-          next: () => {
-            this.lista = this.lista.filter(p => p.id !== pedido.id);
-            Swal.fire(
-              'Excluído!',
-              'Pedido excluído com sucesso.',
-              'success'
-            );
-          },
-          error: (err) => {
-            Swal.fire('Erro!', 'Não foi possível excluir o pedido.', 'error');
-            console.error(err);
-          }
-        });
+  carregarTodosClientes() {
+    this.clienteService.findAll().subscribe({
+      next: (clientes) => {
+        this.todosOsClientes = clientes;
+      },
+      error: (err) => {
+        console.error('Erro ao carregar a lista de clientes:', err);
       }
     });
   }
+
 
   selecionarCategoria(categoria: any) {
     this.categoriaSelecionada = categoria;
@@ -173,20 +98,21 @@ export class PedidoslistComponent implements OnInit {
     this.produtosDaCategoria = [];
   }
 
-  adicionarAoCarrinho(produto: any) {
-    // Procura se o item já existe no carrinho
+
+  adicionarAoCarrinho(produto: Produto) {
     const itemExistente = this.carrinho.find(item => item.produto.id === produto.id);
 
     if (itemExistente) {
-      // Se existe, apenas incrementa a quantidade
       itemExistente.quantidade++;
     } else {
-      // Se não existe, adiciona o novo produto com quantidade 1
       this.carrinho.push({ produto: produto, quantidade: 1 });
     }
-
     this.calcularTotal();
-    console.log('Carrinho atual:', this.carrinho);
+  }
+
+  removerDoCarrinho(index: number) {
+    this.carrinho.splice(index, 1);
+    this.calcularTotal();
   }
 
   calcularTotal() {
@@ -195,63 +121,58 @@ export class PedidoslistComponent implements OnInit {
     }, 0);
   }
 
-  removerDoCarrinho(index: number) {
-    this.carrinho.splice(index, 1);
-    this.calcularTotal();
-  }
-
-
-  termoBuscaCliente: string = '';
-  clientesEncontrados: Cliente[] = [];
-  clienteSelecionado: Cliente | null = null;
-
-  observacaoPedido: string = '';
-
-  router = inject(Router);
-  clienteService = inject(ClienteService);
-
-  todosOsClientes: Cliente[] = []; // Para guardar a lista do dropdown
-  clienteIdSelecionado: number | null = null; // Para guardar o ID do cliente escolhido
-
-  carregarTodosClientes() {
-    this.clienteService.findAll().subscribe({
-      next: (clientes) => {
-        this.todosOsClientes = clientes;
-      },
-      error: (err) => console.error('Erro ao carregar a lista de clientes:', err)
-    });
-  }
-
-  buscarCliente() {
-    if (this.termoBuscaCliente.trim() === '') {
-      this.clientesEncontrados = [];
-      return;
-    }
-    this.clienteService.findByNome(this.termoBuscaCliente).subscribe({
-      next: (clientes) => {
-        this.clientesEncontrados = clientes;
-        if (clientes.length === 0) {
-          alert('Nenhum cliente encontrado com este nome.');
-        }
-      },
-      error: (err) => console.error('Erro ao buscar clientes:', err)
-    });
-  }
-
-  selecionarCliente(cliente: Cliente) {
-    this.clienteSelecionado = cliente;
-    console.log('MOMENTO DA SELEÇÃO - clienteSelecionado é:', this.clienteSelecionado);
-    this.clientesEncontrados = [];
+  limparCarrinho() {
+    this.carrinho = [];
+    this.valorTotalPedido = 0;
+    this.clienteIdSelecionado = null;
     this.termoBuscaCliente = '';
   }
 
+
+  buscarCliente() {
+    if (!this.termoBuscaCliente || this.termoBuscaCliente.trim() === '') {
+      Swal.fire('Atenção', 'Digite um nome ou CPF/CNPJ para buscar.', 'warning');
+      return;
+    }
+
+    const buscaPorCpf = /^\d+$/.test(this.termoBuscaCliente);
+
+    if (buscaPorCpf) {
+      this.clienteService.findByCpfCnpj(this.termoBuscaCliente).subscribe({
+        next: (cliente) => this.handleResultadoBusca(cliente ? [cliente] : []),
+        error: (err) => this.handleErroBusca('CPF/CNPJ', err)
+      });
+    } else {
+      this.clienteService.findByNome(this.termoBuscaCliente).subscribe({
+        next: (clientes) => this.handleResultadoBusca(clientes),
+        error: (err) => this.handleErroBusca('nome', err)
+      });
+    }
+  }
+
+  private handleResultadoBusca(clientes: Cliente[]) {
+    if (clientes && clientes.length > 0) {
+      const clienteEncontrado = clientes[0];
+      this.clienteIdSelecionado = clienteEncontrado.id;
+      Swal.fire('Sucesso', `Cliente "${clienteEncontrado.nome}" encontrado e selecionado!`, 'success');
+    } else {
+      Swal.fire('Não encontrado', 'Nenhum cliente encontrado com o termo informado.', 'info');
+    }
+  }
+
+  private handleErroBusca(tipo: string, err: any) {
+    console.error(`Erro ao buscar por ${tipo}:`, err);
+    Swal.fire('Erro', `Ocorreu um problema ao buscar o cliente por ${tipo}.`, 'error');
+  }
+
+
   finalizarPedido() {
     if (this.carrinho.length === 0) {
-      Swal.fire('Erro', 'O carrinho está vazio.', 'error');
+      Swal.fire('Carrinho Vazio', 'Adicione itens ao carrinho antes de finalizar.', 'warning');
       return;
     }
     if (!this.clienteIdSelecionado) {
-      Swal.fire('Erro', 'Por favor, selecione um cliente no menu.', 'error');
+      Swal.fire('Cliente não selecionado', 'Por favor, selecione um cliente para o pedido.', 'warning');
       return;
     }
 
@@ -270,21 +191,13 @@ export class PedidoslistComponent implements OnInit {
 
     this.pedidoService.save(novoPedido).subscribe({
       next: (pedidoSalvo) => {
-        Swal.fire('Sucesso!', `Pedido #${pedidoSalvo.id} finalizado!`, 'success');
+        Swal.fire('Sucesso!', `Pedido #${pedidoSalvo.id} finalizado com sucesso!`, 'success');
         this.limparCarrinho();
       },
       error: (err) => {
-        console.log(err);
-        Swal.fire('Erro!', 'Não foi possível finalizar o pedido.', 'error');
+        console.error('Erro ao finalizar pedido:', err);
+        Swal.fire('Erro!', 'Não foi possível finalizar o pedido. Verifique o console para mais detalhes.', 'error');
       }
     });
   }
-
-  limparCarrinho() {
-    this.carrinho = [];
-    this.valorTotalPedido = 0;
-    this.observacaoPedido = '';
-    this.clienteIdSelecionado = null;
-  }
-
 }

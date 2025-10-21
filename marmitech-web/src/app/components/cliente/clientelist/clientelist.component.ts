@@ -14,7 +14,7 @@ import { MdbModalModule, MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit
   styleUrl: './clientelist.component.scss',
   standalone: true,
 })
-  
+
 
 export class ClientelistComponent {
   lista: Cliente[] = [];
@@ -69,6 +69,7 @@ export class ClientelistComponent {
         this.clienteService.delete(cliente.id).subscribe({
           next: () => {
             this.lista = this.lista.filter(c => c.id !== cliente.id);
+            this.findAll();
           },
           error: (err: { message: any }) => {
             Swal.fire({
@@ -90,7 +91,7 @@ export class ClientelistComponent {
 
   new() {
     this.clienteEdit = new Cliente({
-      clienteId: 0,
+      id: 0,
       nome: '',
       email: '',
       telefone: '',
@@ -107,28 +108,7 @@ export class ClientelistComponent {
   }
 
   retornoDetalhes(cliente: Cliente) {
-    if (cliente.id > 0) {
-      // Editando
-      this.clienteService.update(cliente).subscribe({
-        next: () => {
-          Swal.fire({
-            title: 'Sucesso!',
-            text: 'Cliente atualizado com sucesso.',
-            icon: 'success',
-            confirmButtonText: 'OK',
-          });
-        },
-        error: (err: { message: any }) => {
-          Swal.fire({
-            title: 'Erro ao atualizar cliente',
-            text: err.message,
-            icon: 'error',
-            confirmButtonText: 'Fechar',
-          });
-        },
-      });
-    }
-
+    this.findAll();
     this.modalRef.close();
   }
 }

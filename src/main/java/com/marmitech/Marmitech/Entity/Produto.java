@@ -37,9 +37,9 @@ public class Produto {
     @NotBlank(message = "descricao não pode ser null ou vazio")
     private String descricao;
 
-    @NotNull(message = "preco_unitario não pode ser null ou vazio")
+    @NotNull(message = "precoUnitario não pode ser null ou vazio")
     @Min(1)
-    private BigDecimal precoUnitario;
+    private Double precoUnitario;
 
     @NotNull(message = "estoque não pode ser null ou vazio")
     @Min(1)

@@ -17,7 +17,7 @@ export class LoginComponent {
 
   logar() {
     if (this.usuario === 'admin' && this.senha === 'admin') {
-      this.router.navigate(['admin/produtos']);
+      this.router.navigate(['admin/pedidos']);
     } else {
       alert('Usuário ou senha incorretos!');
     }

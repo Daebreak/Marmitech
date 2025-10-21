@@ -39,42 +39,28 @@ public class PedidoController {
 
     @GetMapping("/findByStatus")
     public ResponseEntity<List<Pedido>> findByStatus(@RequestParam String status) {
-        try {
-            List<Pedido> result = pedidoService.findByStatus( status );
+        List<Pedido> result = pedidoService.findByStatus( status );
+        return new ResponseEntity<>( result, HttpStatus.FOUND );
 
-            return new ResponseEntity<>( result, HttpStatus.FOUND );
-        } catch (Exception ex) {
-            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
-        }
     }
 
     @GetMapping("/findByProdutoNome")
     public ResponseEntity<List<Pedido>> findByProdutoNome(@RequestParam String nomeProduto) {
-        try {
-            List<Pedido> result = pedidoService.findByProdutoNome( nomeProduto );
-
-            return new ResponseEntity<>( result, HttpStatus.FOUND );
-        } catch (Exception ex) {
-            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
-        }
+        List<Pedido> result = pedidoService.findByProdutoNome( nomeProduto );
+        return new ResponseEntity<>( result, HttpStatus.FOUND );
     }
-
 
     @GetMapping("/findByProduto")
     public ResponseEntity<List<Pedido>> findByProduto(@RequestParam int produtoId) {
-        try {
-            List<Pedido> result = pedidoService.findByProduto( produtoId );
-
-            return new ResponseEntity<>( result, HttpStatus.FOUND );
-        } catch (Exception ex) {
-            return new ResponseEntity<>( null, HttpStatus.BAD_REQUEST );
-        }
+        List<Pedido> result = pedidoService.findByProduto( produtoId );
+        return new ResponseEntity<>( result, HttpStatus.FOUND );
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Pedido> update(@PathVariable Integer id, @RequestBody Pedido pedido) {
-        var result = pedidoService.findById( id );
-        return new ResponseEntity<>( result, HttpStatus.OK );
+    public ResponseEntity<PedidoResponseDTO> update(@PathVariable Integer id, @RequestBody Pedido pedido) {
+        Pedido updatedPedido = pedidoService.update( id, pedido );
+        PedidoResponseDTO pedidoDto = PedidoResponseMapper.toDto( updatedPedido );
+        return new ResponseEntity<>( pedidoDto, HttpStatus.OK );
     }
 
     @DeleteMapping("/delete/{id}")

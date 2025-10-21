@@ -1,6 +1,12 @@
 import { Component, inject, TemplateRef, ViewChild } from '@angular/core';
 import { Categoria } from '../../../models/categoria';
 import { RouterLink } from '@angular/router';
+<<<<<<< HEAD
+=======
+import Swal from 'sweetalert2';
+import { CategoriasdetailsComponent } from '../categoriasdetails/categoriasdetails.component';
+import { MdbModalModule, MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
+>>>>>>> marinaTest
 import { CategoriaService } from '../../../services/categoria.service';
 import Swal from 'sweetalert2';
 import {
@@ -14,7 +20,11 @@ import { CategoriasdetailsComponent } from '../categoriasdetails/categoriasdetai
   selector: 'app-categoriaslist',
   imports: [RouterLink, MdbModalModule, CategoriasdetailsComponent],
   templateUrl: './categoriaslist.component.html',
+<<<<<<< HEAD
   styleUrls: ['./categoriaslist.component.scss'],
+=======
+  styleUrl: './categoriaslist.component.scss',
+>>>>>>> marinaTest
   standalone: true,
 })
 export class CategoriaslistComponent {
@@ -33,20 +43,30 @@ export class CategoriaslistComponent {
   modalRef!: MdbModalRef<any>;
   /*************************************************** */
 
+<<<<<<< HEAD
   constructor() {
     this.findAll();
   }
 
   // 🟢 Buscar todas as categorias
+=======
+  constructor(){
+    this.findAll()
+  }
+
+>>>>>>> marinaTest
   findAll() {
     this.categoriaService.findAll().subscribe({
       next: (lista: Categoria[]) => {
-        console.log(lista);
         this.lista = lista;
       },
-      error: (err) => {
+      error: (err: { message: any }) => {
         Swal.fire({
+<<<<<<< HEAD
           title: 'Erro ao carregar lista de categorias',
+=======
+          title: 'Erro ao carregar lista de Categorias',
+>>>>>>> marinaTest
           text: err.message,
           icon: 'error',
           confirmButtonText: 'Fechar',
@@ -77,6 +97,7 @@ export class CategoriaslistComponent {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
+<<<<<<< HEAD
         this.categoriaService.delete(categoria.id).subscribe({
           next: () => {
             this.lista = this.lista.filter((c) => c.id !== categoria.id);
@@ -85,8 +106,13 @@ export class CategoriaslistComponent {
               icon: 'success',
               confirmButtonText: 'OK',
             });
+=======
+        this.cateService.delete(categoria.id).subscribe({
+          next: () => {
+            this.lista = this.lista.filter(c => c.id !== categoria.id);
+>>>>>>> marinaTest
           },
-          error: (err) => {
+          error: (err: { message: any }) => {
             Swal.fire({
               title: 'Erro ao deletar categoria',
               text: err.message,
@@ -95,11 +121,22 @@ export class CategoriaslistComponent {
             });
           },
         });
+<<<<<<< HEAD
+=======
+        Swal.fire({
+          title: 'Deletado com sucesso!',
+          icon: 'success',
+          confirmButtonText: 'OK',
+        });
+>>>>>>> marinaTest
       }
     });
   }
 
+<<<<<<< HEAD
   // 🆕 Nova categoria
+=======
+>>>>>>> marinaTest
   new() {
     this.categoriaEdit = new Categoria({
       id: 0,
@@ -109,6 +146,7 @@ export class CategoriaslistComponent {
     this.modalRef = this.modalService.open(this.modalCategoriaDetalhe);
   }
 
+<<<<<<< HEAD
   // ✏️ Editar categoria
   editById(categoria: Categoria) {
     this.categoriaEdit = Object.assign({}, categoria); // Clona o objeto
@@ -161,5 +199,43 @@ export class CategoriaslistComponent {
         },
       });
     }
+=======
+  editById(categoria: Categoria) {
+    this.categoriaEdit = Object.assign({}, categoria);
+    this.modalRef = this.modalService.open(this.modalCategoriaDetalhe);
   }
+
+// ... inject(CategoriaService) ...
+
+retornoDetalhes(categoria: Categoria) {
+  if (!categoria.id) {
+    this.cateService.create(categoria).subscribe({
+      next: (novaCategoria) => {
+        // Sucesso! Adiciona na lista, fecha o modal, mostra o Swal.fire
+        this.lista.push(novaCategoria);
+        this.modalRef.close();
+        Swal.fire({ title: 'Cadastrado!', icon: 'success' });
+      },
+      error: (err) => {
+        // Deu erro, mostra mensagem de erro
+        Swal.fire({ title: 'Erro ao cadastrar', text: err.message, icon: 'error' });
+      }
+    });
+  } 
+  // Se tem ID, é uma atualização
+  else {
+    this.cateService.update(categoria).subscribe({
+      next: (categoriaAtualizada) => {
+        // Sucesso na atualização!
+        this.modalRef.close();
+        Swal.fire({ title: 'Atualizado!', icon: 'success' });
+      },
+      error: (err) => {
+        // Deu erro, mostra mensagem de erro
+        Swal.fire({ title: 'Erro ao atualizar', text: err.message, icon: 'error' });
+      }
+    });
+>>>>>>> marinaTest
+  }
+}
 }

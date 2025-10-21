@@ -1,15 +1,16 @@
-// pedido.service.ts
+// app/services/pedido.service.ts
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Pedido } from '../models/pedido';
+import { environment } from '../../environments/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class PedidoService {
-  API = 'http://localhost:8080/api/pedido';
+  API = `${environment.apiUrl}/api/pedido`;
   http = inject(HttpClient);
 
   constructor() { }
@@ -34,4 +35,8 @@ export class PedidoService {
     return this.http.put<Pedido>(`${this.API}/update/${pedido.id}`, pedido);
   }
 
+  findByStatus(status: string): Observable<Pedido[]> {
+    let params = new HttpParams().set('status', status);
+    return this.http.get<Pedido[]>(`${this.API}/findByStatus`, { params });
+  }
 }

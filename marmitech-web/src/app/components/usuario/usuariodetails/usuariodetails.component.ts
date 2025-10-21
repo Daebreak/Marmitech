@@ -14,7 +14,8 @@ import Swal from 'sweetalert2'
   standalone: true,
 })
 export class UsuariodetailsComponent {
-  //usuarioId: number | undefined;
+
+  
 
   @Input("usuario") usuario: Usuario = new Usuario({
     id: 0,
@@ -28,20 +29,34 @@ export class UsuariodetailsComponent {
  
   route = inject(ActivatedRoute);
   routerSaver = inject(Router);
- usuarioService = inject(UsuariosService);
-  
- constructor() {
-    /*const id = this.route.snapshot.paramMap.get('id');
-    console.log(id);*/
-    //if (id) {
-      //this.findById(parseInt(id));
-  //}
-  }
   usuarioServices = inject(UsuariosService);
+
+
+ constructor() {
+    const id = this.route.snapshot.paramMap.get('id');
+    console.log(id);
+    if (id) {
+      this.findById(parseInt(id));
+    }
+  }
   
-  
-  
-  
+  findById(id: number) {
+    this.usuarioServices.findById(id).subscribe(
+      {
+        next: usuario => {
+          this.usuario = usuario;
+        },
+        error: err => {
+          Swal.fire(
+            'Erro!',
+            'Houve um erro ao executar esta ação: ' + err.error,
+            'error'
+          );
+        }
+      }
+    )
+  }
+
   salvar() {
     if (this.usuario.id > 0) {
       this.usuarioServices.update(this.usuario).subscribe({
@@ -51,7 +66,8 @@ export class UsuariodetailsComponent {
             icon: 'success',
             confirmButtonText: 'OK',
           });
-          this.usuario = updatedUsuario;
+          this.routerSaver.navigate(['admin/usuarios'], {state: { produtoEditado: this.usuario }});   
+          this.retorno.emit(this.usuario);
         },
         error: (err) => {
           Swal.fire({
@@ -70,7 +86,8 @@ export class UsuariodetailsComponent {
             icon: 'success',
             confirmButtonText: 'OK',
           });
-          this.usuario = createdUsuario;
+          this.routerSaver.navigate(['admin/usuarios'], {state: { produtoEditado: this.usuario }});   
+          this.retorno.emit(this.usuario);
         },
         error: (err) => {
           Swal.fire({
@@ -81,8 +98,6 @@ export class UsuariodetailsComponent {
           });
         },
       });
-     this.routerSaver.navigate(['admin/usuarios'], {state: { usuarioNovo: this.usuario }});
     }
-    this.retorno.emit(this.usuario);
   }
 }

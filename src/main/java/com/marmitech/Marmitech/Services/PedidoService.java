@@ -26,7 +26,7 @@ import java.time.LocalDate;
 public class PedidoService {
     @Autowired
     private PedidoRepository pedidoRepository;
-    
+
     @Autowired
     private UsuarioRepository usuarioRepository;
 
@@ -38,64 +38,50 @@ public class PedidoService {
 
     @Transactional
     public Pedido save(Pedido pedido) {
-    pedido.setDataPedido(LocalDate.now().toString());
+        pedido.setDataPedido( LocalDate.now().toString() );
 
-    // Associa o pedido a cada item do pedido
-    for (PedidoItem item : pedido.getPedidoItems()) {
-        // Busca a entidade 'Produto' gerida pelo JPA para evitar o erro "detached entity"
-        Produto produto = produtoRepository.findById(item.getProduto().getId())
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado: " + item.getProduto().getId()));
+        // Associa o pedido a cada item do pedido
+        for (PedidoItem item : pedido.getPedidoItems()) {
+            // Busca a entidade 'Produto' gerida pelo JPA para evitar o erro "detached entity"
+            Produto produto = produtoRepository.findById( item.getProduto().getId() )
+                    .orElseThrow( () -> new RuntimeException( "Produto não encontrado: " + item.getProduto().getId() ) );
 
-        item.setProduto(produto); // Define o produto gerido no item
-        item.setPedido(pedido); // Estabelece a referência de volta para o pedido (lado "dono" da relação)
-    }
+            item.setProduto( produto ); // Define o produto gerido no item
+            item.setPedido( pedido ); // Estabelece a referência de volta para o pedido (lado "dono" da relação)
+        }
 
-    for (HistoricoCompra hist : pedido.getHistoricos()) {
-        hist.setPedido(pedido);
-    }
+        for (HistoricoCompra hist : pedido.getHistoricos()) {
+            hist.setPedido( pedido );
+        }
 
-    if (pedido.getUsuario() != null && pedido.getUsuario().getId() > 0) { // Corrigido para > 0
-        var usuario = usuarioRepository.findById(pedido.getUsuario().getId())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-        pedido.setUsuario(usuario);
-    }
+        if (pedido.getUsuario() != null && pedido.getUsuario().getId() > 0) { // Corrigido para > 0
+            var usuario = usuarioRepository.findById( pedido.getUsuario().getId() )
+                    .orElseThrow( () -> new RuntimeException( "Usuário não encontrado" ) );
+            pedido.setUsuario( usuario );
+        }
 
-    if (pedido.getCliente() != null && pedido.getCliente().getId() > 0) { // Corrigido para > 0
-        var cliente = clienteRepository.findById(pedido.getCliente().getId())
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
-        pedido.setCliente(cliente);
-    }
+        if (pedido.getCliente() != null && pedido.getCliente().getId() > 0) { // Corrigido para > 0
+            var cliente = clienteRepository.findById( pedido.getCliente().getId() )
+                    .orElseThrow( () -> new RuntimeException( "Cliente não encontrado" ) );
+            pedido.setCliente( cliente );
+        }
 
-    // Validações
-    if (pedido.getDataPedido() == null) {
-        throw new IllegalArgumentException("Data do pedido não pode ser nulo");
-    }
-    if (pedido.getValorTotal() == null) {
-        throw new IllegalArgumentException("O valor não pode ser nulo ");
-    }
-    if (pedido.getStatus() == null) {
-        throw new IllegalArgumentException("Status nao pode ser nulo");
-    }
-    if (pedido.getEnderecoEntrega() == null) {
-        throw new IllegalArgumentException("Endereço de entrega não pode ser nulo");
-    }
-
-    return pedidoRepository.save(pedido);
+        return pedidoRepository.save( pedido );
     }
 
     public List<PedidoResponseDTO> findAll() {
         return pedidoRepository
-        .findAll()
-        .stream()
-        .map(PedidoResponseMapper::toDto)
-        .toList();
+                .findAll()
+                .stream()
+                .map( PedidoResponseMapper::toDto )
+                .toList();
     }
 
     public Pedido findById(Integer id) {
-        if (id < 0){
-            throw new IllegalArgumentException("ID DO PEDIDO INVALIDO");
+        if (id < 0) {
+            throw new IllegalArgumentException( "ID DO PEDIDO INVALIDO" );
         }
-        return pedidoRepository.findById( id ).orElseThrow( RuntimeException::new );
+        return pedidoRepository.findById( id ).orElseThrow( () -> new RuntimeException( "Pedido com ID " + id + " não encontrado" ) );
     }
 
     public List<Pedido> findByStatus(String status) {
@@ -104,7 +90,7 @@ public class PedidoService {
 
     public List<Pedido> findByProduto(int produtoId) {
         Produto produto = new Produto();
-        produto.setId(produtoId);
+        produto.setId( produtoId );
 
         return pedidoRepository.findByPedidoItemsProduto( produto );
     }
@@ -123,9 +109,5 @@ public class PedidoService {
     public void delete(Integer id) {
         var delete = findById( id );
         pedidoRepository.delete( delete );
-        if ( id < 0){
-            throw new IllegalArgumentException("ID DO PEDIDO INVALIDO");
-        }
-
     }
 }

@@ -34,6 +34,7 @@ public class HistoricoCompra {
 
     @ManyToOne
     @JoinColumn(name = "pedido_id")
-    @JsonBackReference("pedido-historico")// referência na relação Pedido <-> HistoricoCompra. objeto historicoCompra seja incluido tambem no Pedido e vice versa
+    @JsonBackReference("pedido-historico")
+    //referência na relação Pedido <-> HistoricoCompra. objeto historicoCompra seja incluido tambem no Pedido e vice versa
     private Pedido pedido;
 }
