@@ -122,7 +122,7 @@ public class UsuarioServiceTest {
     @Test
     @DisplayName("Cenário 04 - Deletar usuário pelo ID")
     void cenario04() {
-        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
+        Mockito.when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
 
         usuarioService.delete(1);
 

@@ -1,102 +1,130 @@
 package com.marmitech.Marmitech.Controller;
 
 import com.marmitech.Marmitech.Entity.Cliente;
-import com.marmitech.Marmitech.Entity.Usuario;
 import com.marmitech.Marmitech.Repository.ClienteRepository;
-import com.marmitech.Marmitech.Services.ClienteService;
-import com.marmitech.Marmitech.Services.ClienteServiceTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test") // teste de Cliente
+@ActiveProfiles("test")
 class ClienteControllerTest {
-    @Autowired
-    TestRestTemplate restTemplate;
-    @Autowired
-    private ClienteService clienteService;
 
     @Autowired
-    ClienteRepository clienteRepository;
+    private TestRestTemplate restTemplate;
 
-    Cliente cliente;
     @Autowired
-    private TestRestTemplate testRestTemplate;
+    private ClienteRepository clienteRepository;
+
+    private Cliente cliente;
 
     @BeforeEach
     void setUp() {
         clienteRepository.deleteAll();
 
-        var cliente = new Cliente();
+        cliente = new Cliente();
         cliente.setNome("Maria");
         cliente.setEmail("maria@exemplo.com");
         cliente.setTelefone("11999999999");
         cliente.setEndereco("Rua das Flores, 123");
         cliente.setCpfCnpj("111222333000");
-        cliente.setDataCadastro(String.valueOf(LocalDate.of(2025, 1, 1)));
-        this.cliente = clienteRepository.save(cliente);
-
+        cliente.setDataCadastro(LocalDate.of(2025, 1, 1).toString());
+        clienteRepository.save(cliente);
     }
 
+    //  CENÁRIO 1 - POST
     @Test
-    @DisplayName("POST/ save = Criar cliente")
-    void teste() {
-        var clienteSave = new Cliente();
-        clienteSave.setNome("Ana");
-        clienteSave.setEmail("ana@exemplo.com");
-        clienteSave.setTelefone("11888888888");
-        clienteSave.setEndereco("Av. Brasil, 456");
-        clienteSave.setCpfCnpj("111222333448");
-        clienteSave.setDataCadastro(String.valueOf(LocalDate.now()));
+    @DisplayName("POST /save - Criar cliente com sucesso")
+    void deveCriarCliente() {
+        Cliente novo = new Cliente();
+        novo.setNome("Ana");
+        novo.setEmail("ana@exemplo.com");
+        novo.setTelefone("11888888888");
+        novo.setEndereco("Av. Brasil, 456");
+        novo.setCpfCnpj("111222333448");
+        novo.setDataCadastro(LocalDate.now().toString());
 
-        ResponseEntity<Cliente> response = restTemplate
-                .postForEntity("/api/cliente/save", clienteSave, Cliente.class);
+        ResponseEntity<Cliente> response = restTemplate.postForEntity("/api/cliente/save", novo, Cliente.class);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals("Ana", response.getBody().getNome());
-
-
     }
+
+    // CENÁRIO 2 - GET /findAll
     @Test
-    @DisplayName("GET : Lista do Clientes")
-    void teste02(){
-        ResponseEntity<Cliente[]> response = testRestTemplate.exchange(
-                "/api/cliente/findAll",
-                HttpMethod.GET,
-                null,
-                Cliente[].class);
+    @DisplayName("GET /findAll - Deve listar todos os clientes")
+    void deveListarClientes() {
+        ResponseEntity<Cliente[]> response = restTemplate.getForEntity("/api/cliente/findAll", Cliente[].class);
+
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(response.getBody().length > 0);
     }
 
+    // CENÁRIO 3 - GET /findById/{id}
     @Test
-    @DisplayName("...")
-    void teste03(){
+    @DisplayName("GET /findById - Buscar cliente por ID existente")
+    void deveBuscarPorId() {
+        ResponseEntity<Cliente> response = restTemplate.getForEntity("/api/cliente/findById/" + cliente.getId(), Cliente.class);
 
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("Maria", response.getBody().getNome());
     }
 
+    // CENÁRIO 4 - PUT /update/{id}
     @Test
-    @DisplayName("...")
-    void teste04(){
+    @DisplayName("PUT /update - Atualizar cliente existente")
+    void deveAtualizarCliente() {
+        cliente.setEndereco("Rua Atualizada, 999");
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Cliente> request = new HttpEntity<>(cliente, headers);
+
+        ResponseEntity<Cliente> response = restTemplate.exchange(
+                "/api/cliente/update/" + cliente.getId(),
+                HttpMethod.PUT,
+                request,
+                Cliente.class
+        );
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("Rua Atualizada, 999", response.getBody().getEndereco());
     }
 
-    @Test
-    @DisplayName("...")
-    void teste05(){
 
+
+    //  CENÁRIO 6 - GET /findByNome/{nome}
+    @Test
+    @DisplayName("GET /findByNome - Buscar cliente pelo nome")
+    void deveBuscarPorNome() {
+        ResponseEntity<Cliente[]> response = restTemplate.getForEntity("/api/cliente/findByNome/Maria", Cliente[].class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().length > 0);
+    }
+
+    // CENÁRIO 7 - GET /findByCpfCnpj/{cpf}
+    @Test
+    @DisplayName("GET /findByCpfCnpj - Buscar cliente pelo CPF/CNPJ")
+    void deveBuscarPorCpfCnpj() {
+        ResponseEntity<Cliente> response = restTemplate.getForEntity("/api/cliente/findByCpfCnpj/" + cliente.getCpfCnpj(), Cliente.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(cliente.getCpfCnpj(), response.getBody().getCpfCnpj());
     }
 }

@@ -6,4 +6,6 @@ import com.marmitech.Marmitech.Entity.PedidoItem;
 
 public interface PedidoItemRepository extends JpaRepository<PedidoItem, Integer>{
 
+    boolean existsByProdutoId(Integer produtoId);
+
 }
