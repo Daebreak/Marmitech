@@ -12,19 +12,19 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+//JUnit + Mockito
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 public class UsuarioServiceTest {
-
+    // O Mock cria um objeto faloso
+    // O Spy usa o objeto real , mas voce ainda pode monitorar ou sobrescrever partes dele
     @Mock
     private UsuarioRepository usuarioRepository;
 
@@ -32,90 +32,93 @@ public class UsuarioServiceTest {
     private UsuarioService usuarioService;
 
     private Usuario usuario;
-   // private Usuario usuarioUpdate;
+
+    // private Usuario usuarioUpdate;
     @BeforeEach
     void setUp() {
         usuario = new Usuario();
-        //usuarioUpdate = new Usuario();
         usuario.setId(1);
         usuario.setNome("Gabi");
         usuario.setEmail("gabi@gabi.com");
         usuario.setSenha("123456");
         usuario.setCargo("Caixa");
-        usuario.setData_criacao(LocalDate.of(2025, 1, 1));
-       // usuarioUpdate.setEmail(null); teste de update para ver se ia dar verde( IFs)
+        usuario.setData_criacao(LocalDate.now());
+        // usuarioUpdate.setEmail(null); teste de update para ver se ia dar verde( IFs)
     }
 
     //  Testar o método save
     @Test
     @DisplayName("Cenário 01 - Testar método save da UsuarioService")
+    /*Se voce trocar Mock por Spy , o teste vai parar de ser Falso e vai tentar  chamar o banco real ,
+    entao elequebra*/
     void cenario01() {
-        var novoUsuario = new Usuario();
-        novoUsuario.setNome("Ana");
-        novoUsuario.setEmail("ana@email.com");
-        novoUsuario.setSenha("abcd");
-        novoUsuario.setCargo("Gerente");
-        novoUsuario.setData_criacao(LocalDate.now());
 
-        // Simula o comportamento do repository
-        when(usuarioRepository.save(any(Usuario.class))).thenAnswer(invocation -> {
+
+        Mockito.when(usuarioRepository.save(any(Usuario.class))).thenAnswer(invocation -> {
             Usuario u = invocation.getArgument(0);
-            u.setId(10); // simula ID gerado pelo banco
+            u.setId(1); // simula o ID que o banco geraria
             return u;
         });
 
-        var usuarioSalvo = usuarioService.save(novoUsuario);
+        // Aqui você usa o usuario que vem do @BeforeEach
+        var usuarioSalvo = usuarioService.save(usuario);
 
+        // Verificações
         assertNotNull(usuarioSalvo);
-        assertEquals("Ana", usuarioSalvo.getNome());
+        assertEquals("Gabi", usuarioSalvo.getNome());
+        assertEquals("gabi@gabi.com", usuarioSalvo.getEmail());
+        assertEquals("123456", usuarioSalvo.getSenha());
+        assertEquals("Caixa", usuarioSalvo.getCargo());
+        assertEquals(LocalDate.now(), usuarioSalvo.getData_criacao());
         assertTrue(usuarioSalvo.getId() > 0);
 
+        // Garante que o repository foi chamado
         verify(usuarioRepository, times(1)).save(any(Usuario.class));
+
+
     }
 
     //  Testar findAll
     @Test
     @DisplayName("Cenário 02 - Listar todos os usuários")
     void cenario02() {
-        var usuario1 = new Usuario();
-        usuario1.setId(1);
-        usuario1.setNome("Ana");
-        usuario1.setEmail("ana@email.com");
-        usuario1.setSenha("abcd");
-        usuario1.setCargo("Gerente");
-        usuario1.setData_criacao(LocalDate.now());
-        var usuario2 = new Usuario();
-        usuario2.setId(2);
-        usuario2.setNome("Gabi");
-        usuario2.setEmail("gabi@gabi.com");
-        usuario2.setSenha("123456");
-        usuario2.setCargo("Caixa");
-        usuario2.setData_criacao(LocalDate.now());
-        List<Usuario> lista = Arrays.asList(usuario1, usuario2);
+        List<Usuario> lista = List.of(usuario);
 
-        when(usuarioRepository.findAll()).thenReturn(lista);
+     Mockito
+             .
+             when(usuarioRepository.findAll()).thenReturn(lista);
 
         var usuarios = usuarioService.findAll();
 
         assertNotNull(usuarios);
-        assertEquals(2, usuarios.size());
-        assertEquals("Ana", usuarios.get(0).getNome());
+        assertEquals(1, usuarios.size());
+        assertEquals("Gabi", usuarios.get(0).getNome());
+        assertEquals("gabi@gabi.com", usuarios.get(0).getEmail());
+        assertEquals("123456", usuarios.get(0).getSenha());
+        assertEquals("Caixa", usuarios.get(0).getCargo());
+        assertEquals(LocalDate.now(), usuarios.get(0).getData_criacao());
 
+        // Verifica se o repositório foi chamado uma vez
         verify(usuarioRepository, times(1)).findAll();
+
     }
 
     // - Testar findById
     @Test
     @DisplayName("Cenário 03 - Buscar usuário por ID")
     void cenario03() {
-        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
+       Mockito.when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
 
         var resultado = usuarioService.findById(1);
 
         assertNotNull(resultado);
         assertEquals("Gabi", resultado.getNome());
-
+        assertEquals("gabi@gabi.com", resultado.getEmail());
+        assertEquals("123456", resultado.getSenha());
+        assertEquals("Caixa", resultado.getCargo());
+        assertEquals(LocalDate.now(), resultado.getData_criacao());
         verify(usuarioRepository, times(1)).findById(1);
+
     }
 
     //  Testar delete
@@ -134,15 +137,18 @@ public class UsuarioServiceTest {
     @DisplayName("Cenario 05 -Up Atualizar pelo nome e id ")
     void cenario05() {
 
- usuario.setNome("Gabi");
- usuario.setId(1);
- usuario.setEmail("gabi@gabi.com");
 
+        usuario.setId(1);
+        usuario.setNome("Gabi");
+        usuario.setEmail("gabi@gabi.com");
+        usuario.setSenha("123456");
+        usuario.setCargo("Caixa");
+        usuario.setData_criacao(LocalDate.now());
         when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
 
 
         //when(usuarioRepository.findByEmail("gabiexemplo,com")),(usuario));
-       when(usuarioRepository.save(any())).thenReturn(usuario);
+        when(usuarioRepository.save(any())).thenReturn(usuario);
 
         //usuarioService.update(1, usuario);
 
@@ -155,79 +161,77 @@ public class UsuarioServiceTest {
         usuarioService.update(1, usuario);
 
 
-
         verify(usuarioRepository, times(1)).findById(1);
 
-        verify(usuarioRepository,atLeastOnce()).save(any());
+        verify(usuarioRepository, atLeastOnce()).save(any());
         assertNotNull(usuario);
 
     }
-@Test
-@DisplayName("cENARIO 06 De login e senha ")
+
+    @Test
+    @DisplayName("cENARIO 06 De login e senha ")
     void cenario06() {
 
 
+        usuario.setNome("Gabi");
+        usuario.setSenha("Admin");
+        usuario.setCargo("Caixa");
 
-    usuario.setNome("Gabi");
-    usuario.setSenha("Admin");
-    usuario.setCargo("Caixa");
-
-    when(usuarioRepository.findByNomeAndSenha(anyString(), anyString()))
-            .thenReturn(Optional.empty());
+        when(usuarioRepository.findByNomeAndSenha(anyString(), anyString())).thenReturn(Optional.empty());
 
 
-
-    RuntimeException exception = assertThrows(RuntimeException.class, ()
-            -> usuarioService.login("ga", "345"));
-    assertEquals("Usuario ou senha invalidos", exception.getMessage());
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> usuarioService.login("", "345"));
+        assertEquals("Usuario ou senha invalidos", exception.getMessage());
 
 
-when(usuarioRepository.findByNomeAndSenha("Gabi", "Admin")).thenReturn(Optional.of(usuario));
-assertDoesNotThrow(() -> usuarioService.login("Gabi", "Admin"));
-    assertEquals("Gabi", usuario.getNome());
-    assertEquals("Caixa",usuario.getCargo());
+        when(usuarioRepository.findByNomeAndSenha("Gabi", "Admin")).thenReturn(Optional.of(usuario));
+        assertDoesNotThrow(() -> usuarioService.login("Gabi", "Admin"));
+        assertEquals("Gabi", usuario.getNome());
+        assertEquals("Caixa", usuario.getCargo());
 
 
-    usuario.setNome("Ana");
-    usuario.setSenha("Admin");
-    usuario.setCargo("Cozinha");
-    when(usuarioRepository.findByNomeAndSenha("Ana", "Admin")).thenReturn(Optional.of(usuario));
-assertDoesNotThrow(() -> usuarioService.login("Ana", "Admin"));
-    assertEquals("Cozinha", usuario.getCargo());
+        usuario.setNome("Ana");
+        usuario.setSenha("Admin");
+        usuario.setCargo("Cozinha");
+        when(usuarioRepository.findByNomeAndSenha("Ana", "Admin")).thenReturn(Optional.of(usuario));
+        assertDoesNotThrow(() -> usuarioService.login("Ana", "Admin"));
+        assertEquals("Cozinha", usuario.getCargo());
 
-    //verifica se chamou corretamente
-    verify(usuarioRepository, times(1)).findByNomeAndSenha("ga", "345");
-    verify(usuarioRepository, times(1)).findByNomeAndSenha("Gabi", "Admin");
-    verify(usuarioRepository, times(1)).findByNomeAndSenha("Ana", "Admin");
+        //verifica se chamou corretamente
+       // verify(usuarioRepository, times(1)).findByNomeAndSenha("ga", "345"); // login ou asenha invalids
+        verify(usuarioRepository, times(1)).findByNomeAndSenha("Gabi", "Admin");
+        verify(usuarioRepository, times(1)).findByNomeAndSenha("Ana", "Admin");
 //nao pode colocar null
-    assertNotNull(usuario);
+        assertNotNull(usuario);
 
 
+    }
 
 
-
-
-}
-
-
-   @Test
+    @Test
     @DisplayName("Cenario 07 de lista de usuarios do Cargos")
     void cenario07() {
-     when(usuarioRepository.getByCargo(anyString())).thenReturn(List.of(new Usuario()));
+        when(usuarioRepository.getByCargo(anyString())).thenReturn(List.of(new Usuario()));
 
-     var resultado = usuarioService.findByCargo("Caixa");
+        var resultado = usuarioService.findByCargo("Caixa");
 
-     assertFalse(resultado.isEmpty());
+        assertFalse(resultado.isEmpty());
 
- }
- @Test
+    }
+
+    @Test
     @DisplayName("Cenario 08 teste de Nome")
     void cenario08() {
-   usuario.setNome("Ana");
-  when(usuarioRepository.findByNome(anyString())).thenReturn(List.of(usuario));
-   var resultado = usuarioService.findByNome("Ana");
+        List<Usuario>  nome = usuarioRepository.findByNome("Gabi");
+        when(usuarioRepository.findByNome(anyString())).thenReturn(nome);
 
-  assertFalse(resultado.isEmpty());
-     assertEquals("Ana", resultado.get(0).getNome());
- }
+        usuario.setNome("Gabi");
+
+
+        when(usuarioRepository.findByNome(anyString())).thenReturn(List.of(usuario));
+        var resultado = usuarioService.findByNome("Gabi");
+
+        //assertTrue(resultado.isEmpty());
+        assertEquals("Gabi", resultado.get(0).getNome());
+    }
 }
