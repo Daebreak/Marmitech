@@ -1,23 +1,28 @@
 package com.marmitech.Marmitech.Entity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 public class Categoria {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @NotNull
     @NotBlank
+    //@Column(unique = true)
     public String nome;
     public String descricao;
+//Uma categoria 1 para  produtos
+    @OneToMany(mappedBy = "categoria")
+    @JsonIgnore
+    private List<Produto> produtos;
 }

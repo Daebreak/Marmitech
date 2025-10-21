@@ -22,8 +22,10 @@ public class UsuarioService {
     public Usuario save(Usuario usuario) {
         //Para pegar a data e hora automatica
         usuario.setData_criacao( LocalDate.now() );
+
         return usuarioRepository.save( usuario );
     }
+
 
     public List<Usuario> findAll() {
         return usuarioRepository.findAll();
@@ -36,6 +38,7 @@ public class UsuarioService {
     public void delete(Integer id) {
         var delete = findById( id );
         usuarioRepository.delete( delete );
+
     }
 
     public Usuario update(Integer id, Usuario usuario) {

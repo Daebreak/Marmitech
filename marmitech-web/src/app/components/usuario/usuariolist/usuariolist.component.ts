@@ -84,9 +84,10 @@ export class UsuariolistComponent {
       title: 'Você tem certeza?',
       icon: 'warning',
       showConfirmButton: true,
-      showDenyButton: true,
+      //showDenyButton: true,
       confirmButtonText: 'Sim, deletar!',
       cancelButtonText: 'Cancelar',
+       showCancelButton: true
     }).then((result) => {
       if (result.isConfirmed) {
         //let indice = this.lista.findIndex((c) => {
