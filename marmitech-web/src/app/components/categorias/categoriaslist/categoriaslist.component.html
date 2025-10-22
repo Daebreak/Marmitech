@@ -11,40 +11,6 @@
               Nova
             </button>
           </div>
-<<<<<<< HEAD
-=======
-          <br />
-
-          <table class="table table-striped">
-            <thead>
-              <tr class="centralizar">
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Descrição</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              
-              <tr>
-                @for(categoria of lista; track $index){
-                <td>{{ categoria.id }}</td>
-                <td>{{ categoria.nome }}</td>
-                <td>{{ categoria.descricao }}</td>
-                
-                <td class="direita">
-                  <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="editById(categoria)">
-                    Editar
-                  </button>
-                  <button type="button" class="btn btn-danger btn-rounded" mdbRipple (click)="deleteById(categoria)">
-                    Deletar
-                  </button>
-                </td>
-              }
-              </tr>
-            </tbody>
-          </table>
->>>>>>> marinaTest
         </div>
         <br />
         <table class="table table-striped">
@@ -63,18 +29,16 @@
               <td>{{ categoria.nome }}</td>
               <td>{{ categoria.descricao }}</td>
               <div>
-              <td>
-                <div class="botoes">
-                <button type="button" class=" btn btn-primary btn-rounded" mdbRipple
-                  (click)="editById(categoria)">
-                  Editar
-                </button>
-                <button type="button" class=" btn btn-danger btn-rounded" mdbRipple
-                  (click)="deleteById(categoria)">
-                  Deletar
-                </button>
-                </div>
-              </td>
+                <td>
+                  <div class="botoes">
+                    <button type="button" class=" btn btn-primary btn-rounded" mdbRipple (click)="editById(categoria)">
+                      Editar
+                    </button>
+                    <button type="button" class=" btn btn-danger btn-rounded" mdbRipple (click)="deleteById(categoria)">
+                      Deletar
+                    </button>
+                  </div>
+                </td>
               </div>
             </tr>
             }

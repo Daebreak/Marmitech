@@ -1,30 +1,21 @@
 import { Component, inject, TemplateRef, ViewChild } from '@angular/core';
-import { Categoria } from '../../../models/categoria';
+import { Categoria } from '../../../models/categoria'; // Assumindo que Categoria é a interface/classe correta
 import { RouterLink } from '@angular/router';
-<<<<<<< HEAD
-=======
 import Swal from 'sweetalert2';
 import { CategoriasdetailsComponent } from '../categoriasdetails/categoriasdetails.component';
-import { MdbModalModule, MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
->>>>>>> marinaTest
 import { CategoriaService } from '../../../services/categoria.service';
-import Swal from 'sweetalert2';
 import {
   MdbModalModule,
   MdbModalRef,
-  MdbModalService,
+  MdbModalService
 } from 'mdb-angular-ui-kit/modal';
-import { CategoriasdetailsComponent } from '../categoriasdetails/categoriasdetails.component';
+
 
 @Component({
   selector: 'app-categoriaslist',
   imports: [RouterLink, MdbModalModule, CategoriasdetailsComponent],
   templateUrl: './categoriaslist.component.html',
-<<<<<<< HEAD
-  styleUrls: ['./categoriaslist.component.scss'],
-=======
   styleUrl: './categoriaslist.component.scss',
->>>>>>> marinaTest
   standalone: true,
 })
 export class CategoriaslistComponent {
@@ -43,18 +34,10 @@ export class CategoriaslistComponent {
   modalRef!: MdbModalRef<any>;
   /*************************************************** */
 
-<<<<<<< HEAD
   constructor() {
-    this.findAll();
-  }
-
-  // 🟢 Buscar todas as categorias
-=======
-  constructor(){
     this.findAll()
   }
 
->>>>>>> marinaTest
   findAll() {
     this.categoriaService.findAll().subscribe({
       next: (lista: Categoria[]) => {
@@ -62,11 +45,7 @@ export class CategoriaslistComponent {
       },
       error: (err: { message: any }) => {
         Swal.fire({
-<<<<<<< HEAD
-          title: 'Erro ao carregar lista de categorias',
-=======
           title: 'Erro ao carregar lista de Categorias',
->>>>>>> marinaTest
           text: err.message,
           icon: 'error',
           confirmButtonText: 'Fechar',
@@ -87,7 +66,7 @@ export class CategoriaslistComponent {
     }
 
     Swal.fire({
-      title: 'Você tem certeza?',
+      title: `Confirma a exclusão da categoria ${categoria.nome}?`,
       icon: 'warning',
       showConfirmButton: true,
       showCancelButton: true,
@@ -97,20 +76,17 @@ export class CategoriaslistComponent {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-<<<<<<< HEAD
-        this.categoriaService.delete(categoria.id).subscribe({
+        this.categoriaService.delete(categoria.id!).subscribe({ // Use ! para garantir que o ID existe aqui
           next: () => {
+            // 1. Remove o item da lista local
             this.lista = this.lista.filter((c) => c.id !== categoria.id);
+
             Swal.fire({
               title: 'Deletado com sucesso!',
               icon: 'success',
               confirmButtonText: 'OK',
             });
-=======
-        this.cateService.delete(categoria.id).subscribe({
-          next: () => {
-            this.lista = this.lista.filter(c => c.id !== categoria.id);
->>>>>>> marinaTest
+            // Não precisa de findAll() aqui, pois já manipulamos a lista local
           },
           error: (err: { message: any }) => {
             Swal.fire({
@@ -119,24 +95,15 @@ export class CategoriaslistComponent {
               icon: 'error',
               confirmButtonText: 'Fechar',
             });
+            // Opcional: chamar findAll() em caso de erro para re-sincronizar a lista.
+            // this.findAll(); 
           },
         });
-<<<<<<< HEAD
-=======
-        Swal.fire({
-          title: 'Deletado com sucesso!',
-          icon: 'success',
-          confirmButtonText: 'OK',
-        });
->>>>>>> marinaTest
       }
     });
   }
 
-<<<<<<< HEAD
   // 🆕 Nova categoria
-=======
->>>>>>> marinaTest
   new() {
     this.categoriaEdit = new Categoria({
       id: 0,
@@ -146,26 +113,30 @@ export class CategoriaslistComponent {
     this.modalRef = this.modalService.open(this.modalCategoriaDetalhe);
   }
 
-<<<<<<< HEAD
   // ✏️ Editar categoria
   editById(categoria: Categoria) {
-    this.categoriaEdit = Object.assign({}, categoria); // Clona o objeto
+    this.categoriaEdit = Object.assign({}, categoria); // Clona o objeto para evitar referência
     this.modalRef = this.modalService.open(this.modalCategoriaDetalhe);
   }
 
-  // 🔁 Retorno de criação ou atualização
+  // 🔁 Retorno de criação ou atualização (Lógica Otimizada)
   retornoDetalhes(categoria: Categoria) {
-    if (categoria.id > 0) {
+    if (categoria.id && categoria.id > 0) {
       // Atualizar categoria existente
       this.categoriaService.update(categoria).subscribe({
-        next: () => {
+        next: (categoriaAtualizada: Categoria) => {
+          // 1. Atualiza a lista localmente
+          const index = this.lista.findIndex(c => c.id === categoriaAtualizada.id);
+          if (index !== -1) {
+            this.lista[index] = categoriaAtualizada;
+          }
+
           Swal.fire({
             title: 'Sucesso!',
             text: 'Categoria atualizada com sucesso.',
             icon: 'success',
             confirmButtonText: 'OK',
           });
-          this.findAll(); // Atualiza lista sem duplicar
           this.modalRef.close();
         },
         error: (err) => {
@@ -180,13 +151,15 @@ export class CategoriaslistComponent {
     } else {
       // Criar nova categoria
       this.categoriaService.create(categoria).subscribe({
-        next: () => {
+        next: (novaCategoria: Categoria) => {
+          // 1. Adiciona o novo item à lista local (resolve a duplicação se o backend estiver OK)
+          this.lista.push(novaCategoria);
+
           Swal.fire({
             title: 'Cadastrado com sucesso!',
             icon: 'success',
             confirmButtonText: 'OK',
           });
-          this.findAll(); // Recarrega lista — não duplica
           this.modalRef.close();
         },
         error: (err) => {
@@ -199,43 +172,5 @@ export class CategoriaslistComponent {
         },
       });
     }
-=======
-  editById(categoria: Categoria) {
-    this.categoriaEdit = Object.assign({}, categoria);
-    this.modalRef = this.modalService.open(this.modalCategoriaDetalhe);
   }
-
-// ... inject(CategoriaService) ...
-
-retornoDetalhes(categoria: Categoria) {
-  if (!categoria.id) {
-    this.cateService.create(categoria).subscribe({
-      next: (novaCategoria) => {
-        // Sucesso! Adiciona na lista, fecha o modal, mostra o Swal.fire
-        this.lista.push(novaCategoria);
-        this.modalRef.close();
-        Swal.fire({ title: 'Cadastrado!', icon: 'success' });
-      },
-      error: (err) => {
-        // Deu erro, mostra mensagem de erro
-        Swal.fire({ title: 'Erro ao cadastrar', text: err.message, icon: 'error' });
-      }
-    });
-  } 
-  // Se tem ID, é uma atualização
-  else {
-    this.cateService.update(categoria).subscribe({
-      next: (categoriaAtualizada) => {
-        // Sucesso na atualização!
-        this.modalRef.close();
-        Swal.fire({ title: 'Atualizado!', icon: 'success' });
-      },
-      error: (err) => {
-        // Deu erro, mostra mensagem de erro
-        Swal.fire({ title: 'Erro ao atualizar', text: err.message, icon: 'error' });
-      }
-    });
->>>>>>> marinaTest
-  }
-}
 }

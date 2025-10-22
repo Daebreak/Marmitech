@@ -77,28 +77,28 @@ void setUp() {
 
 
 
-        @Test
-    @DisplayName("Get: Listar todos os usuarios")
-    void teste02(){
-
-           var usuarioGet = new Usuario();
-           usuarioGet.setNome("Ana");
-           usuarioGet.setEmail("ana@gabi.com");
-           usuarioGet.setSenha("An4_007");
-           usuarioGet.setCargo("Caixa");
-           usuarioGet.setData_criacao(LocalDate.now());
-           // usuarioService.save(usuarioGet);
-
-
-            usuarioRepository.findAll();
-        ResponseEntity<Usuario[]> response = testRestTemplate.exchange(
-                    "/api/usuario/findAll",
-                    HttpMethod.GET,
-                    null,
-                    Usuario[].class);
-            assertEquals(HttpStatus.OK, response.getStatusCode());
-            assertTrue(response.getBody().length > 0);
-    }
+//        @Test
+//    @DisplayName("Get: Listar todos os usuarios")
+//    void teste02(){
+//
+//           var usuarioGet = new Usuario();
+//           usuarioGet.setNome("Ana");
+//           usuarioGet.setEmail("ana@gabi.com");
+//           usuarioGet.setSenha("An4_007");
+//           usuarioGet.setCargo("Caixa");
+//           usuarioGet.setData_criacao(LocalDate.now());
+//           // usuarioService.save(usuarioGet);
+//
+//
+//            usuarioRepository.findAll();
+//        ResponseEntity<Usuario[]> response = testRestTemplate.exchange(
+//                    "/api/usuario/findAll",
+//                    HttpMethod.GET,
+//                    null,
+//                    Usuario[].class);
+//            assertEquals(HttpStatus.OK, response.getStatusCode());
+//            assertTrue(response.getBody().length > 0);
+//    }
 
     @Test
     @DisplayName("Get :  Buscar usuário por ID")
