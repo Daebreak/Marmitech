@@ -104,7 +104,25 @@ class ClienteControllerTest {
         assertEquals("Rua Atualizada, 999", response.getBody().getEndereco());
     }
 
+    // CENÁRIO 5 - DELETE /delete/{id}
+    @Test
+    @DisplayName("DELETE /delete/{id} - Deletar cliente existente com sucesso")
+    void deveDeletarCliente() {
+        // envia requisição DELETE para o endpoint
+        ResponseEntity<Void> response = restTemplate.exchange(
+                "/api/cliente/delete/" + cliente.getId(),
+                HttpMethod.DELETE,
+                null,
+                Void.class
+        );
 
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+
+        boolean existe = clienteRepository.findById(cliente.getId()).isPresent();
+        assertFalse(existe, "O cliente ainda existe no banco após o delete!");
+    }
 
     //  CENÁRIO 6 - GET /findByNome/{nome}
     @Test

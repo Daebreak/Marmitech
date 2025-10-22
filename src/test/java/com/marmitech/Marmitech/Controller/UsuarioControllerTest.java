@@ -6,37 +6,33 @@ import com.marmitech.Marmitech.Services.UsuarioService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.time.LocalDate;
-import java.util.List;
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-@SpringBootTest
+import static org.mockito.ArgumentMatchers.any;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post; // ✅ CORRETO
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 @WebMvcTest(UsuarioController.class)
 @ActiveProfiles("test")
 class UsuarioControllerTest {
 
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private UsuarioService usuarioService;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     Usuario usuario;
 
@@ -52,11 +48,25 @@ class UsuarioControllerTest {
     }
 
     @Test
-    @DisplayName("01 - POST ")
+    @DisplayName("01 - POST /save")
     void cenario01() throws Exception {
+        Mockito.when(usuarioService.save(any(Usuario.class))).thenReturn(usuario);
 
-        usuario.setNome("Marmitech");
-        var result = usuarioService.save( usuario );
-        when(usuarioService.save(usuario),ResponseEntity<usuario>( result, HttpStatus.CREATED );
+        // transforma o objeto em JSON
+        String usuarioJson = objectMapper.writeValueAsString(usuario);
+
+        // executa o POST simulando a requisição HTTP
+        mockMvc.perform(post("/api/usuario/save")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(usuarioJson))
+                        .andDo(print())
+                        .andExpect(status().isCreated())
+                        .andExpect(jsonPath("$.id").value(1))
+                        .andExpect(jsonPath("$.nome").value("Marmitech"))
+                        .andExpect(jsonPath("$.email").value("marmitech@gmail.com"))
+                        .andExpect(jsonPath("$.cargo").value("Caixa"))
+                        .andExpect(jsonPath("$.data_criacao").value(LocalDate.now().toString()));
+
+
     }
 }
