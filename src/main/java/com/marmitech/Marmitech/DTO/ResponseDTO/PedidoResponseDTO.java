@@ -1,6 +1,5 @@
 package com.marmitech.Marmitech.DTO.ResponseDTO;
 
-import java.math.BigDecimal;
 import java.util.Set;
 import lombok.Builder;
 
@@ -12,7 +11,7 @@ public record PedidoResponseDTO(
         String status,
         String enderecoEntrega,
         Set<PedidoItemResponseDTO> pedidoItems,
-        BigDecimal valorTotal,
+        Double valorTotal,
         String dataPedido
 ) {
 }

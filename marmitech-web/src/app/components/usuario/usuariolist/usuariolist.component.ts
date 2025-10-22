@@ -58,37 +58,42 @@ export class UsuariolistComponent {
   }
 
   deleteById(usuario: Usuario) {
-  Swal.fire({
-        title: 'Confirma a exclusão do produto ' + usuario.nome + '?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sim',
-        cancelButtonText: 'Não'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.usuarioService.delete(usuario.id!).subscribe({
-            next: msg => {
-              Swal.fire(
-                'Excluído!',
-                'Produto ' + usuario.nome + ' excluído com sucesso.',
-                'success'
-              );
-              this.findAll();
-            },
-            error: err =>{
-              Swal.fire(
-                'Erro!',
-                'Houve um erro ao executar esta ação: ' + err.error,
-                'error'
-              );
-            }
-          })
-  
-        }
-      });
+    // 1. Apresenta o SweetAlert para confirmação
+    Swal.fire({
+      title: `Confirma a exclusão do usuário ${usuario.nome}?`, // Corrigido para "usuário"
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sim, excluir!',
+      cancelButtonText: 'Não, cancelar',
+    }).then((result) => {
+      // 2. Verifica se o usuário confirmou a ação
+      if (result.isConfirmed) {
+        // 3. Se confirmado, chama o serviço de exclusão
+        this.usuarioService.delete(usuario.id!).subscribe({
+          next: () => {
+            // 4. Sucesso na exclusão: Notifica o usuário e recarrega a lista
+            Swal.fire(
+              'Excluído!',
+              `Usuário ${usuario.nome} excluído com sucesso.`, // Corrigido para "Usuário"
+              'success'
+            );
+            this.findAll(); // Recarrega a lista para remover o item da view
+          },
+          error: (err) => {
+            // 5. Erro na exclusão: Notifica o usuário
+            Swal.fire(
+              'Erro!',
+              `Houve um erro ao executar esta ação: ${err.message || err.error}`,
+              'error'
+            );
+          },
+        });
+      }
+    });
   }
+
   new() {
     this.usuarioEdit = new Usuario({
       id: 0,
@@ -109,3 +114,4 @@ export class UsuariolistComponent {
     this.modalRef.close();
   }
 }
+

@@ -34,7 +34,7 @@ public class Cliente {
     private String telefone;
 
     @NotNull
-    @NotBlank(message = "cpf_cnpj não pode ser null ou vazio")
+    @NotBlank(message = "cpf|cnpj não pode ser null ou vazio")
     private String cpfCnpj;
 
     @NotNull
@@ -43,4 +43,6 @@ public class Cliente {
 
     private String dataCadastro;
 
+
+    //private LocalDate dataCadastro = LocalDate.now();
 }

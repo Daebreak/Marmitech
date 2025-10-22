@@ -1,6 +1,8 @@
 package com.marmitech.Marmitech.Repository;
 
 import com.marmitech.Marmitech.Entity.Usuario;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,4 +20,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     @Query("SELECT u FROM Usuario u WHERE u.cargo = :cargo")
     List<Usuario> getByCargo(@Param("cargo") String cargo);
 
+    List<Usuario> findByCargo(@NotNull @NotBlank(message = "cargo não pode ser null ou vazio") String cargo);
+
+    //Optional<Object> findByEmail(@NotNull @NotBlank(message = "email não pode ser null ou vazio") String email);
 }

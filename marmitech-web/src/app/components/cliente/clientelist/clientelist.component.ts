@@ -59,9 +59,11 @@ export class ClientelistComponent {
       title: 'Você tem certeza?',
       icon: 'warning',
       showConfirmButton: true,
-      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       confirmButtonText: 'Sim, deletar!',
-      cancelButtonText: 'Cancelar',
+      cancelButtonText: 'Nao',
     }).then((result) => {
       if (result.isConfirmed) {
         this.clienteService.delete(cliente.id).subscribe({

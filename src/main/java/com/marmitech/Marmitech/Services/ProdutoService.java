@@ -22,20 +22,20 @@ public class ProdutoService {
     private final ProdutoRepository produtoRepository;
 
     public ProdutoListaDTO save(ProdutoSaveDTO produto) {
-        Produto novoProduto = SaveProdutoMapping.toEntity(produto);
+        Produto novoProduto = SaveProdutoMapping.toEntity( produto );
 
         novoProduto.setDataCadastro( LocalDate.now().toString() );
-        
+
         Produto salvoProduto = produtoRepository.save( novoProduto );
 
-        return ProdutoListaMapper.toDto(salvoProduto); 
+        return ProdutoListaMapper.toDto( salvoProduto );
     }
 
     public List<ProdutoListaDTO> findAll() {
         return produtoRepository.findAll()
-        .stream()
-        .map(ProdutoListaMapper::toDto)
-        .toList();
+                .stream()
+                .map( ProdutoListaMapper::toDto )
+                .toList();
     }
 
     public Produto findById(Integer id) {
@@ -45,9 +45,9 @@ public class ProdutoService {
     public void delete(Integer id) {
         var delete = findById( id );
 
-        if (pedidoItemRepository.existsByProdutoId(id)) {
-        throw new IllegalStateException("Não é possível excluir o produto, pois ele já está associado a um ou mais pedidos.");
-    }
+        if (pedidoItemRepository.existsByProdutoId( id )) {
+            throw new IllegalStateException( "Não é possível excluir o produto, pois ele já está associado a um ou mais pedidos." );
+        }
 
         produtoRepository.delete( delete );
     }
@@ -56,25 +56,19 @@ public class ProdutoService {
         Produto produtoUpdate = findById( id );
         produtoUpdate.setDataCadastro( LocalDate.now().toString() );
 
-        if (produto.getNome() != null || produto.getNome().isBlank()) {
+        if (produto.getNome() != null && !produto.getNome().isBlank()) {
             produtoUpdate.setNome( produto.getNome() );
         }
-        if (produto.getDescricao() != null || produto.getDescricao().isBlank()) {
+        if (produto.getDescricao() != null && !produto.getDescricao().isBlank()) {
             produtoUpdate.setDescricao( produto.getDescricao() );
         }
-        if (produto.getPrecoUnitario() != null && produto.getPrecoUnitario().compareTo(java.math.BigDecimal.ZERO) >= 0) {
+        if (produto.getPrecoUnitario() != null && produto.getPrecoUnitario() >= 0) {
             produtoUpdate.setPrecoUnitario( produto.getPrecoUnitario() );
         }
-        if (produto.getCategoria() != null || produto.getCategoria().isBlank()) {
+        if (produto.getCategoria() != null && !produto.getCategoria().isBlank()) {
             produtoUpdate.setCategoria( produto.getCategoria() );
         }
-        if (produto.getEstoque() >= 0) {
-            produtoUpdate.setEstoque( produto.getEstoque() );
-        }
-        if (produto.getSku() != null || produto.getSku().isBlank()) {
-            produtoUpdate.setSku( produto.getSku() );
-        }
-    
+
         return produtoRepository.save( produtoUpdate );
     }
 }

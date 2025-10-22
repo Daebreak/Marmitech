@@ -3,6 +3,7 @@ package com.marmitech.Marmitech.Entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -14,8 +15,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.math.BigDecimal;
-
 
 @Entity
 @Getter
@@ -30,7 +29,9 @@ public class Pedido {
 
     private String dataPedido;
 
-    private BigDecimal valorTotal;
+    @NotNull(message = "O valor total não pode ser nulo")
+    @DecimalMin(value = "0.01", message = "O valor total deve ser maior que zero")
+    private Double valorTotal;
 
     @NotNull
     @NotBlank(message = "status não pode ser null ou vazio")
