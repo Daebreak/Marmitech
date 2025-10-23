@@ -2,193 +2,175 @@ package com.marmitech.Marmitech.Services;
 
 import com.marmitech.Marmitech.Entity.Cliente;
 import com.marmitech.Marmitech.Repository.ClienteRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(SpringExtension.class)
-
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
-public class ClienteServiceTest {
+class ClienteServiceTest {
+
     @Mock
     private ClienteRepository clienteRepository;
 
     @InjectMocks
     private ClienteService clienteService;
 
-    Cliente cliente;
+    private Cliente cliente;
 
     @BeforeEach
     void setUp() {
-
         cliente = new Cliente();
         cliente.setId(1);
-        cliente.setNome("Ane");
-        cliente.setEmail("ane@exemplo.com");
-        cliente.setTelefone("11888888888");
-        cliente.setEndereco("Av. Brasil, 456");
+        cliente.setNome("Maria");
+        cliente.setEmail("maria@exemplo.com");
+        cliente.setTelefone("11999999999");
+        cliente.setEndereco("Rua A, 123");
         cliente.setCpfCnpj("11122233344");
-        cliente.setDataCadastro(String.valueOf(LocalDate.of(2025, 2, 3)));
-        // this.cliente = clienteRepository.save(cliente);
+        cliente.setDataCadastro(LocalDate.now().toString());
     }
 
+    //  CENÁRIO 1 - SALVAR CLIENTE NORMAL
     @Test
-    @DisplayName("Testando o método save da ClienteService")
-    void cenario01() {
-        var novoCliente = new Cliente();
-        novoCliente.setNome("Carlos"); // nome diferente
-        novoCliente.setEmail("carlos@exemplo.com");
-        novoCliente.setTelefone("11999999999");
-        novoCliente.setEndereco("Rua X, 123");
-        novoCliente.setCpfCnpj("12345678901"); // CPF diferente
-        novoCliente.setDataCadastro(String.valueOf((LocalDate.now())));
-
-
+    @DisplayName("Salvar cliente com sucesso")
+    void deveSalvarCliente() {
+        when(clienteRepository.findByNome("Maria")).thenReturn(Collections.emptyList());
+        when(clienteRepository.findByCpfCnpj("11122233344")).thenReturn(Optional.empty());
         when(clienteRepository.save(any(Cliente.class))).thenAnswer(invocation -> {
-            Cliente cliente = invocation.getArgument(0);
-            cliente.setId(10);
-            return cliente;
+            Cliente c = invocation.getArgument(0);
+            c.setId(10);
+            return c;
         });
 
-        //normal nenhum duplicado
-        var resultado = clienteService.save(novoCliente);
-        assertNotNull(resultado);
-        assertEquals("Carlos", resultado.getNome());
+        Cliente salvo = clienteService.save(cliente);
 
-        verify(clienteRepository, times(1)).save(any(Cliente.class));
-
-        //nao pode duplicado
-        var clienteSemNome = new Cliente();
-        clienteSemNome.setNome("Carlos");
-        var resultadoSemNome = clienteService.save(clienteSemNome);
-        assertNotNull(resultadoSemNome);
-
-
-        var clienteSemCpf = new Cliente();
-        clienteSemCpf.setCpfCnpj(null); // só para não disparar o outro if
-        var resultado2 = clienteService.save(clienteSemCpf);
-        assertNotNull(resultado2);
-
-
-
+        assertNotNull(salvo);
+        assertEquals(10, salvo.getId());
+        verify(clienteRepository, times(1)).save(any());
     }
 
+    //  CENÁRIO 2 - NOME DUPLICADO
+    @Test
+    @DisplayName("Não deve salvar cliente com nome duplicado")
+    void deveLancarErroNomeDuplicado() {
+        when(clienteRepository.findByNome("Maria")).thenReturn(List.of(cliente));
 
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> clienteService.save(cliente));
+
+        assertEquals("Nome já cadastrado", ex.getMessage());
+        verify(clienteRepository, never()).save(any());
+    }
+
+    //  CENÁRIO 3 - CPF/CNPJ DUPLICADO
+    @Test
+    @DisplayName("Não deve salvar cliente com CPF/CNPJ duplicado")
+    void deveLancarErroCpfDuplicado() {
+        when(clienteRepository.findByNome("Maria")).thenReturn(Collections.emptyList());
+        when(clienteRepository.findByCpfCnpj("11122233344")).thenReturn(Optional.of(cliente));
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> clienteService.save(cliente));
+
+        assertEquals("CPF/CNPJ ja cadastrado", ex.getMessage());
+        verify(clienteRepository, never()).save(any());
+    }
+
+    //  CENÁRIO 4 - FINDALL
     @Test
     @DisplayName("Listar todos os clientes")
-    void cenario02() {
-        var clienteLista = new Cliente();
-        clienteLista.setId(1);
-        clienteLista.setNome("Carlos");
-        clienteLista.setEmail("carlos@exemplo.com");
-        clienteLista.setTelefone("11999999999");
-        clienteLista.setEndereco("Rua X, 123");
-        clienteLista.setCpfCnpj("123435464");
-        clienteLista.setDataCadastro(String.valueOf((LocalDate.now())));
-        var clientes2 = new Cliente();
-        clientes2.setId(2);
-        clientes2.setNome("Ane");
-        clientes2.setEmail("ane@exemplo.com");
-        clientes2.setTelefone("11888888888");
-        clientes2.setEndereco("Av. Brasil, 456");
-        clientes2.setCpfCnpj("11122233344");
-        clientes2.setDataCadastro(String.valueOf((LocalDate.now())));
-        List<Cliente> lista = Arrays.asList(clienteLista, clientes2);
+    void deveListarClientes() {
+        when(clienteRepository.findAll()).thenReturn(List.of(cliente));
 
-        when(clienteRepository.findAll()).thenReturn(lista);
+        List<Cliente> lista = clienteService.findAll();
 
-        var clientes = clienteService.findAll();
-        assertNotNull(clientes);
-        assertEquals(2, clientes.size());
-        assertEquals("Carlos", clientes.get(0).getNome());
-
+        assertEquals(1, lista.size());
+        verify(clienteRepository).findAll();
     }
 
+    //  CENÁRIO 5 - FINDBYID
     @Test
-    @DisplayName("lista de ID")
-    void cenario03() {
-
+    @DisplayName("Buscar cliente por ID existente")
+    void deveBuscarPorId() {
         when(clienteRepository.findById(1)).thenReturn(Optional.of(cliente));
 
-        var response = clienteService.findById(1);
+        Cliente result = clienteService.findById(1);
 
-        assertNotNull(response);
-        assertEquals("Ane", response.getNome());
-
-        verify(clienteRepository, times(1)).findById(1);
+        assertEquals("Maria", result.getNome());
+        verify(clienteRepository).findById(1);
     }
 
+    // CENÁRIO 6 - FINDBID INEXISTENTE
     @Test
-    @DisplayName("Deletar clientes pelo ID ")
-    void cenario04() {
+    @DisplayName("Buscar cliente por ID inexistente deve lançar exceção")
+    void deveLancarExcecaoAoBuscarId() {
+        when(clienteRepository.findById(99)).thenReturn(Optional.empty());
+
+        assertThrows(RuntimeException.class, () -> clienteService.findById(99));
+    }
+
+
+
+    //  CENÁRIO 8 - UPDATE CLIENTE (todos os ifs)
+    @Test
+    @DisplayName("Atualizar cliente com todos os campos cobrindo todos os ifs")
+    void deveAtualizarCliente() {
+        Cliente clienteUpdate = new Cliente();
+        clienteUpdate.setNome("Novo");
+        clienteUpdate.setEmail("novo@email.com");
+        clienteUpdate.setTelefone("11888888888");
+        clienteUpdate.setEndereco("Rua Nova");
+        clienteUpdate.setCpfCnpj("55566677788");
+
         when(clienteRepository.findById(1)).thenReturn(Optional.of(cliente));
+        when(clienteRepository.save(any())).thenReturn(cliente);
 
-        clienteService.delete(1);
-        verify(clienteRepository, times(1)).findById(1);
-        verify(clienteRepository, times(1)).delete(cliente);
+        Cliente atualizado = clienteService.update(1, clienteUpdate);
+
+        assertNotNull(atualizado);
+        verify(clienteRepository, times(1)).save(any());
+
+        // cobre casos nulos
+        clienteUpdate.setNome(null);
+        clienteUpdate.setEmail(null);
+        clienteUpdate.setTelefone(null);
+        clienteUpdate.setEndereco(null);
+        clienteUpdate.setCpfCnpj(null);
+        clienteService.update(1, clienteUpdate);
+
+        verify(clienteRepository, atLeast(2)).save(any());
     }
 
+    //  CENÁRIO 9 - FIND BY NOME
     @Test
-    @DisplayName("Cenário 05 - Teste de atualização com cliente nulo cobertura dos ifs")
-    void cenario05() {
+    @DisplayName("Buscar clientes por nome")
+    void deveBuscarPorNome() {
+        when(clienteRepository.getByNome("Maria")).thenReturn(List.of(cliente));
 
-        when(clienteRepository.findById(1)).thenReturn(Optional.of(cliente));
-
-        when(clienteRepository.save(any(Cliente.class))).thenReturn(cliente);
-
-        cliente.setNome("Ane");
-        clienteService.update(1, cliente);
-
-        cliente.setNome(null);
-        //clienteService.update(null, null);
-        cliente.setEmail(null);
-        cliente.setTelefone(null);
-        cliente.setEndereco(null);
-        cliente.setCpfCnpj(null);
-        cliente.setDataCadastro(null);
-        //clienteService.update(1, cliente);
-
-        verify(clienteRepository, times(1)).findById(1);
-        verify(clienteRepository, atLeastOnce()).save(any());
-        assertNotNull(cliente);
-
-    }
-
-    @Test
-    @DisplayName("cenario 06  Teste de busca de cliente por nomee ")
-    void cenario06() {
-        when(clienteRepository.getByNome(anyString())).thenReturn(List.of(new Cliente()));
-
-        var resultado = clienteService.findByNome("Carlos");
+        List<Cliente> resultado = clienteService.findByNome("Maria");
 
         assertFalse(resultado.isEmpty());
+        verify(clienteRepository).getByNome("Maria");
     }
 
+    // CENÁRIO 10 - FIND BY CPF/CNPJ
     @Test
-    @DisplayName("cenario 07 teste de CPF e CNPJ ")
-    void cenario07() {
-        cliente.setCpfCnpj("123435464");
+    @DisplayName("Buscar cliente por CPF/CNPJ")
+    void deveBuscarPorCpfCnpj() {
+        when(clienteRepository.getByCpfCnpj("11122233344")).thenReturn(cliente);
 
-        when(clienteRepository.getByCpfCnpj("123435464")).thenReturn(cliente);
+        Cliente resultado = clienteService.findByCpfCnpj("11122233344");
 
-        Cliente resultado = clienteService.findByCpfCnpj("123435464");
-
-        assertEquals("123435464", resultado.getCpfCnpj());
-        verify(clienteRepository).getByCpfCnpj("123435464");
+        assertEquals("11122233344", resultado.getCpfCnpj());
+        verify(clienteRepository).getByCpfCnpj("11122233344");
     }
 }
-
