@@ -29,29 +29,29 @@ public class PedidoItemController {
     private PedidoItemService pedidoItemService;
 
     @PostMapping("/save")
-    public ResponseEntity<PedidoItem> save(@RequestBody @Valid PedidoItemResponseDTO pedidoItem){
-        return new ResponseEntity<>(pedidoItemService.save(pedidoItem), HttpStatus.CREATED);
+    public ResponseEntity<PedidoItem> save(@RequestBody @Valid PedidoItem pedidoItem) {
+        return new ResponseEntity<>( pedidoItemService.save( pedidoItem ), HttpStatus.CREATED );
     }
-    
+
     @PutMapping("/update/{pedidoItemId}")
-    public ResponseEntity<PedidoItem> update(@RequestBody PedidoItemResponseDTO pedidoItem, @PathVariable int pedidoItemId){
-        return new ResponseEntity<>(pedidoItemService.update(pedidoItem, pedidoItemId), HttpStatus.CREATED);
+    public ResponseEntity<PedidoItem> update(@RequestBody PedidoItem pedidoItem, @PathVariable int pedidoItemId) {
+        return new ResponseEntity<>( pedidoItemService.update( pedidoItem, pedidoItemId ), HttpStatus.CREATED );
     }
 
-    
+
     @DeleteMapping("/delete/{pedidoItemId}")
-    public ResponseEntity<String> delete(@PathVariable int pedidoItemId){
-        return new ResponseEntity<>(pedidoItemService.delete(pedidoItemId), HttpStatus.CREATED);
-    }
-        
-    @GetMapping("/findById/{pedidoItemId}")
-    public ResponseEntity<PedidoItem> findById(@PathVariable int pedidoItemId){
-        return new ResponseEntity<>(pedidoItemService.findById(pedidoItemId), HttpStatus.CREATED);
+    public ResponseEntity<String> delete(@PathVariable int pedidoItemId) {
+        return new ResponseEntity<>( pedidoItemService.delete( pedidoItemId ), HttpStatus.CREATED );
     }
 
-        
+    @GetMapping("/findById/{pedidoItemId}")
+    public ResponseEntity<PedidoItem> findById(@PathVariable int pedidoItemId) {
+        return new ResponseEntity<>( pedidoItemService.findById( pedidoItemId ), HttpStatus.CREATED );
+    }
+
+
     @GetMapping("/findAll")
-    public ResponseEntity<List<PedidoItemResponseDTO>> findAll(){
-        return new ResponseEntity<>(pedidoItemService.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<PedidoItemResponseDTO>> findAll() {
+        return new ResponseEntity<>( pedidoItemService.findAll(), HttpStatus.OK );
     }
 }

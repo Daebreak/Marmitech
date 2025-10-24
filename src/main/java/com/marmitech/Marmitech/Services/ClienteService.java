@@ -23,6 +23,7 @@ public class ClienteService {
 
         // Validação para não permitir nomes duplicados
         if (cliente.getNome() != null && !cliente.getNome().isBlank()) {
+            
             List<Cliente> clientesComMesmoNome = clienteRepository.findByNome( cliente.getNome() );
             if (!clientesComMesmoNome.isEmpty()) {
                 throw new RuntimeException( "Nome já cadastrado" );
@@ -81,4 +82,6 @@ public class ClienteService {
     public Cliente findByCpfCnpj(String cpf_cnpj) {
         return clienteRepository.getByCpfCnpj( cpf_cnpj );
     }
+
+
 }

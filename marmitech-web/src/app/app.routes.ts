@@ -52,7 +52,8 @@ export const routes: Routes = [
             { path: 'historico/edit/:id', component: HistoricodetailsComponent },
             { path: 'usuarios', component: UsuariolistComponent },
             { path: 'usuarios/new', component: UsuariodetailsComponent },
-            { path: 'usuarios/edit/:id', component: UsuariodetailsComponent }
+            { path: 'usuarios/edit/:id', component: UsuariodetailsComponent },
+
         ]
     }
 ];

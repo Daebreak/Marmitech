@@ -3,13 +3,16 @@ import com.marmitech.Marmitech.Entity.Categoria;
 import com.marmitech.Marmitech.Repository.CategoriaRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CategoriaService {
+    @Autowired
     private final CategoriaRepository categoriaRepository;
 
     public String buscarCategoria(int id) {
@@ -52,5 +55,3 @@ public class CategoriaService {
     }
 
 }
-
-
