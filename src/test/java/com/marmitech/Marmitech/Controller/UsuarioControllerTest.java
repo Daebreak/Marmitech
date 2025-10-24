@@ -24,8 +24,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.data.jpa.domain.AbstractPersistable_.ID;
@@ -129,6 +128,7 @@ class UsuarioControllerTest {
         Mockito.when(usuarioService.update(anyInt(), any(Usuario.class))).thenReturn(usuario);
 
         String usuarioJson = objectMapper.writeValueAsString(usuario);
+
         mockMvc.perform(put("/api/usuario/update/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(usuarioJson))
@@ -140,17 +140,53 @@ class UsuarioControllerTest {
                 .andExpect(jsonPath("$.cargo").value("Caixa"))
                 .andExpect(jsonPath("$.data_criacao").value(LocalDate.now().toString()));
     }
+
     @Test
-    @DisplayName("05 - Delete")
-    void cenario05() throws Exception{
+    @DisplayName("05 - Cenario Delete - Deve excluir um usuário com sucesso")
+    void cenario05() throws Exception {
+        Mockito.doNothing().when(usuarioService).delete(anyInt());
 
-   doNothing().when(usuarioService).delete(anyInt());
-   usuarioService.delete( 1);
-   mockMvc.perform(delete("/api/usuario/delete/{id}", 1))
-           .andDo(print())
-           .andExpect(status().isNoContent())
-           .andExpect(jsonPath("$.id").value(1));
+        mockMvc.perform(delete("/api/usuario/delete/{id}", 1))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 
+    @Test
+    @DisplayName("06 - Cenario  Deve fazer login com sucesso")
+    void cenario06() throws Exception {
+       Mockito.doNothing().when(usuarioService).login(any(),any());
+       mockMvc.perform(post("/api/usuario/login").param("nome","marmitech")
+       .param("senha","123456")).andDo(print())
+               .andExpect(status().isAccepted());
+
+    }
+    @Test
+    @DisplayName("07 - Cenario  Deve buscar usuários pelo cargo")
+    void cenario07() throws Exception {
+        Mockito.when(usuarioService.findByCargo(anyString())).thenReturn(List.of(usuario));
+        mockMvc.perform(get("/api/usuario/findByCargo/{cargo}", "Caixa"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].nome").value("Marmitech"))
+                .andExpect(jsonPath("$[0].senha").value("123456"))
+                .andExpect(jsonPath("$[0].email").value("marmitech@gmail.com"))
+                .andExpect(jsonPath("$[0].cargo").value("Caixa"))
+                .andExpect(jsonPath("$[0].data_criacao").value(LocalDate.now().toString()));
+    }
+    @Test
+    @DisplayName("08 - Cenario ")
+    void cenario08() throws Exception {
+        Mockito.when( usuarioService.findByNome(anyString())).thenReturn(List.of(usuario));
+        mockMvc.perform(get("/api/usuario/findByNome/{nome}", "Marmitech"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].nome").value("Marmitech"))
+                .andExpect(jsonPath("$[0].senha").value("123456"))
+                .andExpect(jsonPath("$[0].email").value("marmitech@gmail.com"))
+                .andExpect(jsonPath("$[0].cargo").value("Caixa"))
+                .andExpect(jsonPath("$[0].data_criacao").value(LocalDate.now().toString()));
     }
 }
 
