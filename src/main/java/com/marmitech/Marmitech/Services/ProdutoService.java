@@ -56,22 +56,22 @@ public class ProdutoService {
         Produto produtoUpdate = findById( id );
         produtoUpdate.setDataCadastro( LocalDate.now().toString() );
 
-        if (produto.getNome() != null || produto.getNome().isBlank()) {
+        if (produto.getNome() != null && !produto.getNome().isBlank()) {
             produtoUpdate.setNome( produto.getNome() );
         }
-        if (produto.getDescricao() != null || produto.getDescricao().isBlank()) {
+        if (produto.getDescricao() != null && !produto.getDescricao().isBlank()) {
             produtoUpdate.setDescricao( produto.getDescricao() );
         }
         if (produto.getPrecoUnitario() != null && produto.getPrecoUnitario().compareTo(java.math.BigDecimal.ZERO) >= 0) {
             produtoUpdate.setPrecoUnitario( produto.getPrecoUnitario() );
         }
-        if (produto.getCategoria() != null || produto.getCategoria().isBlank()) {
+        if (produto.getCategoria() != null && !produto.getCategoria().isBlank()) {
             produtoUpdate.setCategoria( produto.getCategoria() );
         }
         if (produto.getEstoque() >= 0) {
             produtoUpdate.setEstoque( produto.getEstoque() );
         }
-        if (produto.getSku() != null || produto.getSku().isBlank()) {
+        if (produto.getSku() != null && !produto.getSku().isBlank()) {
             produtoUpdate.setSku( produto.getSku() );
         }
     
