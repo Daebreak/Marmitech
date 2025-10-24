@@ -6,18 +6,31 @@ import com.marmitech.Marmitech.Services.UsuarioService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post; // ✅ CORRETO
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.springframework.data.jpa.domain.AbstractPersistable_.ID;
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -48,25 +61,115 @@ class UsuarioControllerTest {
     }
 
     @Test
-    @DisplayName("01 - POST /save")
+    @DisplayName("01 - POST /save - Deve criar um novo usuario com sucesso")
     void cenario01() throws Exception {
-        Mockito.when(usuarioService.save(any(Usuario.class))).thenReturn(usuario);
+        // Simula o comportamento do service
+        Mockito.when(usuarioService.save(any(Usuario.class)))
+                .thenReturn(usuario);
 
-        // transforma o objeto em JSON
+        // Transforma o objeto em JSON
         String usuarioJson = objectMapper.writeValueAsString(usuario);
 
-        // executa o POST simulando a requisição HTTP
+        // Executa o POST simulando a requisição HTTP
         mockMvc.perform(post("/api/usuario/save")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(usuarioJson))
-                        .andDo(print())
-                        .andExpect(status().isCreated())
-                        .andExpect(jsonPath("$.id").value(1))
-                        .andExpect(jsonPath("$.nome").value("Marmitech"))
-                        .andExpect(jsonPath("$.email").value("marmitech@gmail.com"))
-                        .andExpect(jsonPath("$.cargo").value("Caixa"))
-                        .andExpect(jsonPath("$.data_criacao").value(LocalDate.now().toString()));
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.nome").value("Marmitech"))
+                .andExpect(jsonPath("$.senha").value("123456"))
+                .andExpect(jsonPath("$.email").value("marmitech@gmail.com"))
+                .andExpect(jsonPath("$.cargo").value("Caixa"))
+                .andExpect(jsonPath("$.data_criacao").value(LocalDate.now().toString()));
+    }
 
+    @Test
+    @DisplayName("02 - GET /findAll - Deve retornar a lista de usuario cadastrados")
+    void cenario02() throws Exception {
+        // Simula o retorno do service
+        Mockito.when(usuarioService.findAll())
+                .thenReturn(List.of(usuario));
+
+        // Executa o GET simulando a requisição HTTP
+        mockMvc.perform(get("/api/usuario/findAll"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].nome").value("Marmitech"))
+                .andExpect(jsonPath("$[0].senha").value("123456"))
+                .andExpect(jsonPath("$[0].email").value("marmitech@gmail.com"))
+                .andExpect(jsonPath("$[0].cargo").value("Caixa"))
+                .andExpect(jsonPath("$[0].data_criacao").value(LocalDate.now().toString()));
+    }
+
+    @Test
+    @DisplayName("03 - GET /findById - Buscar usuário pelo ID")
+    void cenario03() throws Exception {
+        // Simula o retorno do service
+        Mockito.when(usuarioService.findById(anyInt()))
+                .thenReturn(usuario);
+
+        // Executa o GET simulando a requisição HTTP
+        mockMvc.perform(get("/api/usuario/findById/{id}", 1))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.nome").value("Marmitech"))
+                .andExpect(jsonPath("$.senha").value("123456"))
+                .andExpect(jsonPath("$.email").value("marmitech@gmail.com"))
+                .andExpect(jsonPath("$.cargo").value("Caixa"))
+                .andExpect(jsonPath("$.data_criacao").value(LocalDate.now().toString()));
+    }
+
+    @Test
+    @DisplayName("04-Cenario UP Deve atualizar os dados de um um usuario existente")
+    void cenario04() throws Exception {
+        // Simula o retorno do service
+        Mockito.when(usuarioService.update(anyInt(), any(Usuario.class))).thenReturn(usuario);
+
+        String usuarioJson = objectMapper.writeValueAsString(usuario);
+        mockMvc.perform(put("/api/usuario/update/{id}", 1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(usuarioJson))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.nome").value("Marmitech"))
+                .andExpect(jsonPath("$.email").value("marmitech@gmail.com"))
+                .andExpect(jsonPath("$.cargo").value("Caixa"))
+                .andExpect(jsonPath("$.data_criacao").value(LocalDate.now().toString()));
+    }
+    @Test
+    @DisplayName("05 - Delete")
+    void cenario05() throws Exception{
+
+   doNothing().when(usuarioService).delete(anyInt());
+   usuarioService.delete( 1);
+   mockMvc.perform(delete("/api/usuario/delete/{id}", 1))
+           .andDo(print())
+           .andExpect(status().isNoContent())
+           .andExpect(jsonPath("$.id").value(1));
 
     }
 }
+
+
+
+
+
+
+//BDDMockito e apenas o Mockito escrito no estilo BDD
+//Significado de BDD = Behavior Driven Development
+// (Desenvolvimento Guiado por Comportamento)
+//        given(usuarioService.findAll()).willReturn(usuarios);
+
+//String usuarioJson = objectMapper.writeValueAsString(usuario);
+
+//        mockMvc.perform(get("/api/usuario/findAll")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(usuarios))
+//                .andEx;
+
+
+
