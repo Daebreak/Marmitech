@@ -53,9 +53,11 @@ public class PedidoItemServiceTest {
 
         Produto produto = new Produto();
 
-        PedidoItemResponseDTO pedidoItemResponseDTO = new PedidoItemResponseDTO(1, 1, 1, "teste", "prodteste", 1, new BigDecimal(10.00), new BigDecimal(10.00));
+        PedidoItemResponseDTO pedidoItemResponseDTO = new PedidoItemResponseDTO(1, 1, 1, "teste", "prodteste", 1, 10.00, 10.00);
 
-        PedidoItem pedidoSalvo = new PedidoItem(1, 1, new BigDecimal(10.00), new BigDecimal(10.00), pedido, produto);
+        PedidoItem pedido1 = new PedidoItem(1, 1, 10.00, 10.00, pedido, produto);
+
+        PedidoItem pedidoSalvo = new PedidoItem(1, 1, 10.00, 10.00, pedido, produto);
 
         when(pedidoRepository.findById(1)).thenReturn(Optional.of(pedido));
 
@@ -77,7 +79,7 @@ public class PedidoItemServiceTest {
 
         Produto produto = new Produto();
 
-        PedidoItemResponseDTO pedidoItemResponseDTO = new PedidoItemResponseDTO(1, 1, 1, "teste", "prodteste", 1, null, new BigDecimal(10.00));
+        PedidoItemResponseDTO pedidoItemResponseDTO = new PedidoItemResponseDTO(1, 1, 1, "teste", "prodteste", 1, null, 10.00);
 
         when(pedidoRepository.findById(1)).thenReturn(Optional.of(pedido));
 
@@ -92,7 +94,7 @@ public class PedidoItemServiceTest {
     @Test
     @DisplayName("Teste: Pedido Item Save Pedido Nulo")
     void test12() {
-        PedidoItemResponseDTO pedidoItemResponseDTO = new PedidoItemResponseDTO(1, 1, 1, "teste", "prodteste", 1, null, new BigDecimal(10.00));
+        PedidoItemResponseDTO pedidoItemResponseDTO = new PedidoItemResponseDTO(1, 1, 1, "teste", "prodteste", 1, null, 10.00);
         
         RuntimeException excecao = assertThrows(RuntimeException.class, () -> {
             pedidoItemService.save(pedidoItemResponseDTO);
@@ -108,9 +110,9 @@ public class PedidoItemServiceTest {
 
         Produto produto = new Produto();
 
-        PedidoItemResponseDTO pedidoItemResponseDTO = new PedidoItemResponseDTO(1, 1, 1, "teste", "prodteste", 1, new BigDecimal(10.00), new BigDecimal(10.00));
+        PedidoItemResponseDTO pedidoItemResponseDTO = new PedidoItemResponseDTO(1, 1, 1, "teste", "prodteste", 1, 10.00, 10.00);
 
-        PedidoItem pedidoItem = new PedidoItem(1, 1, new BigDecimal(10.00), new BigDecimal(10.00), pedido, produto);
+        PedidoItem pedidoItem = new PedidoItem(1, 1, 10.00, 10.00, pedido, produto);
 
         when(pedidoItemRepository.findById(1)).thenReturn(Optional.of(pedidoItem));
 
@@ -130,7 +132,7 @@ public class PedidoItemServiceTest {
     @Test
     @DisplayName("Teste: Pedido Item Update Pedido Nulo")
     void test14() {
-        PedidoItemResponseDTO pedidoItemResponseDTO = new PedidoItemResponseDTO(1, 2, 2, "teste", "prodteste", 1, new BigDecimal(10.00), new BigDecimal(10.00));
+        PedidoItemResponseDTO pedidoItemResponseDTO = new PedidoItemResponseDTO(1, 2, 2, "teste", "prodteste", 1, 10.00, 10.00);
 
         when(pedidoItemRepository.findById(2)).thenReturn(Optional.of(new PedidoItem()));
 
@@ -145,7 +147,7 @@ public class PedidoItemServiceTest {
         when(pedidoItemRepository.findById(1)).thenReturn(Optional.empty());
 
         RuntimeException excecao = assertThrows(RuntimeException.class, () -> {
-            pedidoItemService.update(new PedidoItemResponseDTO(1, 1, 1, "teste", "prodteste", -1, new BigDecimal(-10.00), new BigDecimal(10.00)), 1);
+            pedidoItemService.update(new PedidoItemResponseDTO(1, 1, 1, "teste", "prodteste", -1, -10.00, 10.00), 1);
         });
 
         assertEquals("PedidoItem not found with id: 1", excecao.getMessage());
@@ -158,9 +160,9 @@ public class PedidoItemServiceTest {
 
         Produto produto = new Produto();
 
-        PedidoItemResponseDTO pedidoItemResponseDTO = new PedidoItemResponseDTO(1, 1, 1, "teste", "prodteste", 1, new BigDecimal(10.00), new BigDecimal(10.00));
+        PedidoItemResponseDTO pedidoItemResponseDTO = new PedidoItemResponseDTO(1, 1, 1, "teste", "prodteste", 1, 10.00, 10.00);
 
-        PedidoItem pedidoItem = new PedidoItem(1, 1, new BigDecimal(10.00), new BigDecimal(10.00), pedido, produto);
+        PedidoItem pedidoItem = new PedidoItem(1, 1, 10.00, 10.00, pedido, produto);
 
         when(pedidoItemRepository.findById(1)).thenReturn(Optional.of(pedidoItem));
 
@@ -180,9 +182,9 @@ public class PedidoItemServiceTest {
 
         Produto produto = new Produto();
 
-        PedidoItemResponseDTO pedidoItemResponseDTO = new PedidoItemResponseDTO(1, 1, 1, "teste", "prodteste", 1, new BigDecimal(10.00), new BigDecimal(10.00));
+        PedidoItemResponseDTO pedidoItemResponseDTO = new PedidoItemResponseDTO(1, 1, 1, "teste", "prodteste", 1, 10.00, 10.00);
 
-        PedidoItem pedidoItem = new PedidoItem(1, 1, new BigDecimal(10.00), new BigDecimal(10.00), pedido, produto);
+        PedidoItem pedidoItem = new PedidoItem(1, 1, 10.00, 10.00, pedido, produto);
 
         when(pedidoItemRepository.findById(1)).thenReturn(Optional.of(pedidoItem));
 
@@ -204,9 +206,9 @@ public class PedidoItemServiceTest {
 
         Produto produto = new Produto();
 
-        PedidoItemResponseDTO pedidoItemResponseDTO = new PedidoItemResponseDTO(1, 1, 1, "teste", "prodteste", 1, new BigDecimal(0.00), new BigDecimal(0.00));
+        PedidoItemResponseDTO pedidoItemResponseDTO = new PedidoItemResponseDTO(1, 1, 1, "teste", "prodteste", 1, 0.00, 0.00);
 
-        PedidoItem pedidoItem = new PedidoItem(1, 1, new BigDecimal(10.00), new BigDecimal(10.00), pedido, produto);
+        PedidoItem pedidoItem = new PedidoItem(1, 1, 10.00, 10.00, pedido, produto);
 
         when(pedidoItemRepository.findById(1)).thenReturn(Optional.of(pedidoItem));
 
@@ -245,7 +247,7 @@ public class PedidoItemServiceTest {
 
         Produto produto = new Produto();
 
-        PedidoItem pedidoItem = new PedidoItem(1, 1, new BigDecimal(10.00), new BigDecimal(10.00), pedido, produto);
+        PedidoItem pedidoItem = new PedidoItem(1, 1, 10.00, 10.00, pedido, produto);
 
         when(pedidoItemRepository.findById(1)).thenReturn(Optional.of(pedidoItem));
 
@@ -269,13 +271,13 @@ public class PedidoItemServiceTest {
         Produto produto = new Produto();
         produto.setId(1);
 
-        PedidoItemResponseDTO pedidoItemResponseDTO1 = new PedidoItemResponseDTO(1, 1, 1, "teste", "prodteste", 1, new BigDecimal(10.00), new BigDecimal(10.00));
+        PedidoItemResponseDTO pedidoItemResponseDTO1 = new PedidoItemResponseDTO(1, 1, 1, "teste", "prodteste", 1, 10.00, 10.00);
 
-        PedidoItemResponseDTO pedidoItemResponseDTO2 = new PedidoItemResponseDTO(2, 1, 1, "teste2", "prodteste2", 2, new BigDecimal(20.00), new BigDecimal(40.00));
+        PedidoItemResponseDTO pedidoItemResponseDTO2 = new PedidoItemResponseDTO(2, 1, 1, "teste2", "prodteste2", 2, 20.00, 40.00);
 
-        PedidoItem pedidoItem = new PedidoItem(1, 1, new BigDecimal(10.00), new BigDecimal(10.00), pedido, produto);
+        PedidoItem pedidoItem = new PedidoItem(1, 1, 10.00, 10.00, pedido, produto);
 
-        PedidoItem pedidoItem2 = new PedidoItem(2, 2, new BigDecimal(20.00), new BigDecimal(40.00), pedido, produto);
+        PedidoItem pedidoItem2 = new PedidoItem(2, 2, 20.00, 40.00, pedido, produto);
 
         List<PedidoItem> pedidoItems = List.of(pedidoItem, pedidoItem2);
 

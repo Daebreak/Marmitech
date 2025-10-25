@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoItemResponseDTO;
 import com.marmitech.Marmitech.Entity.Pedido;
 import com.marmitech.Marmitech.Entity.PedidoItem;
+import com.marmitech.Marmitech.Entity.Produto;
 import com.marmitech.Marmitech.Services.PedidoItemService;
 
 @WebMvcTest(PedidoItemController.class)
@@ -40,9 +41,9 @@ public class PedidoItemControllerTest {
     @Test
     @DisplayName("Teste: Find All PedidoItems Controller")
     void test27() throws Exception {
-        PedidoItemResponseDTO pedidoItem1 = new PedidoItemResponseDTO(1, 1, 1, "Cliente'", "Produto", 19, new BigDecimal(10.00), new BigDecimal(10.00));
-    
-        PedidoItemResponseDTO pedidoItem2 = new PedidoItemResponseDTO(2, 2, 2, "Cliente B", "Produto B", 29, new BigDecimal(20.00), new BigDecimal(20.00));
+        PedidoItemResponseDTO pedidoItem1 = new PedidoItemResponseDTO(1, 1, 1, "Cliente'", "Produto", 19, 10.00, 10.00);
+
+        PedidoItemResponseDTO pedidoItem2 = new PedidoItemResponseDTO(2, 2, 2, "Cliente B", "Produto B", 29, 20.00, 20.00);
     
         List<PedidoItemResponseDTO> pedidoItems = Arrays.asList(pedidoItem1, pedidoItem2);
 
@@ -58,7 +59,7 @@ public class PedidoItemControllerTest {
     @Test
     @DisplayName("Teste: Save PedidoItem Controller")
     void test28() throws Exception {
-        PedidoItemResponseDTO pedidoItem = new PedidoItemResponseDTO(1, 1, 1, "Cliente A", "Produto A", 19, new BigDecimal(10.00), new BigDecimal(10.00));
+        PedidoItemResponseDTO pedidoItem = new PedidoItemResponseDTO(1, 1, 1, "Cliente A", "Produto A", 19, 10.00, 10.00);
 
         PedidoItem pedidoItem1 = new PedidoItem();
         pedidoItem1.setId(1);
@@ -104,7 +105,7 @@ public class PedidoItemControllerTest {
     @Test
     @DisplayName("Teste: Update PedidoItem Controller")
     void test31() throws Exception {
-        PedidoItemResponseDTO atualizadoPedidoItem = new PedidoItemResponseDTO(1, 1, 1, "Cliente A", "Produto A", 19, new BigDecimal(10.00), new BigDecimal(10.00));    
+        PedidoItemResponseDTO atualizadoPedidoItem = new PedidoItemResponseDTO(1, 1, 1, "Cliente A", "Produto A", 19, 10.00, 10.00);    
 
         PedidoItem pedidoItem = new PedidoItem();
         pedidoItem.setId(1);

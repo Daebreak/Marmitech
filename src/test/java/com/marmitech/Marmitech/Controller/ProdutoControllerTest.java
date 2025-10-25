@@ -46,8 +46,8 @@ public class ProdutoControllerTest {
     @DisplayName("Teste: Find All Produtos Controller")
     public void test22() throws Exception {
 
-        ProdutoListaDTO produto1 = new ProdutoListaDTO(1, "Produto A", "Descrição A", "Categoria A", "Hoje", new BigDecimal(10.00), 10, "111");
-        ProdutoListaDTO produto2 = new ProdutoListaDTO(2, "Produto B", "Descrição B", "Categoria B", "Hoje", new BigDecimal(20.00), 20, "222");
+        ProdutoListaDTO produto1 = new ProdutoListaDTO(1, "Produto A", "Descrição A", "Categoria A", "Hoje", 10.00, 10, "111");
+        ProdutoListaDTO produto2 = new ProdutoListaDTO(2, "Produto B", "Descrição B", "Categoria B", "Hoje", 20.00, 20, "222");
         List<ProdutoListaDTO> produtos = Arrays.asList(produto1, produto2);
 
         given(produtoService.findAll()).willReturn(produtos);
@@ -77,8 +77,8 @@ public class ProdutoControllerTest {
     @Test
     @DisplayName("Teste: Save Produto Controller")
     public void test24() throws Exception {
-        ProdutoListaDTO produto1 = new ProdutoListaDTO(1, "Produto A", "Descrição A", "Categoria A", "Hoje", new BigDecimal(10.00), 10, "111");
-        ProdutoSaveDTO produto2 = new ProdutoSaveDTO("Produto A", "Descrição A", "Categoria A", 10, new BigDecimal(10.00), "111");
+        ProdutoListaDTO produto1 = new ProdutoListaDTO(1, "Produto A", "Descrição A", "Categoria A", "Hoje", 10.00, 10, "111");
+        ProdutoSaveDTO produto2 = new ProdutoSaveDTO("Produto A", "Descrição A", "Categoria A", 10, 10.00, "111");
 
         given(produtoService.save(any(ProdutoSaveDTO.class))).willReturn(produto1);
 
@@ -106,7 +106,7 @@ public class ProdutoControllerTest {
     public void test26() throws Exception {
         Set<PedidoItem> pedidoItem = new HashSet<>();
 
-        Produto produto = new Produto(1, "111", "Produto A", "Descrição A", new BigDecimal(10.00), 10, "null", "hoje", pedidoItem);
+        Produto produto = new Produto(1, "111", "Produto A", "Descrição A", 10.00, 10, "null", "hoje", pedidoItem);
 
         given(produtoService.update(1, produto)).willReturn(produto);
 

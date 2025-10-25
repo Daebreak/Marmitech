@@ -44,8 +44,8 @@ public class ProdutoServiceTest {
     @Test
     @DisplayName("Teste: FindAll Produto Service")
     void test01() {
-        Produto produto1 = new Produto(1, "SKU001", "Produto A", "Descricao A", new BigDecimal("10.00"), 100, "Categoria A", "2025-10-19", Collections.emptySet());
-        Produto produto2 = new Produto(2, "SKU002", "Produto B", "Descricao B", new BigDecimal("20.00"), 200, "Categoria B", "2025-10-19", Collections.emptySet());
+        Produto produto1 = new Produto(1, "SKU001", "Produto A", "Descricao A", 10.00, 100, "Categoria A", "2025-10-19", Collections.emptySet());
+        Produto produto2 = new Produto(2, "SKU002", "Produto B", "Descricao B", 20.00, 200, "Categoria B", "2025-10-19", Collections.emptySet());
         List<Produto> produtos = Arrays.asList(produto1, produto2);
 
         when(produtoRepository.findAll()).thenReturn(produtos);
@@ -60,7 +60,7 @@ public class ProdutoServiceTest {
     @Test
     @DisplayName("Teste: FindById Produto Service")
     void test02() {
-        Produto produto1 = new Produto(1, "SKU001", "Produto A", "Descricao A", new BigDecimal("10.00"), 100, "Categoria A", "2025-10-19", Collections.emptySet());
+        Produto produto1 = new Produto(1, "SKU001", "Produto A", "Descricao A", 10.00, 100, "Categoria A", "2025-10-19", Collections.emptySet());
 
         when(produtoRepository.findById(1)).thenReturn(Optional.of(produto1));
 
@@ -111,9 +111,9 @@ public class ProdutoServiceTest {
     @Test
     @DisplayName("Teste: Save Produto Service")
     void test06() {
-        Produto produto = new Produto(1, "SKU001", "Produto A", "Descricao A", new BigDecimal("10.00"), 100, "Categoria A", "2025-10-19", Collections.emptySet());
+        Produto produto = new Produto(1, "SKU001", "Produto A", "Descricao A", 10.00, 100, "Categoria A", "2025-10-19", Collections.emptySet());
         
-        ProdutoSaveDTO produtoSaveDTO = new ProdutoSaveDTO("Produto A", "Descricao A", "Categoria A", 100, new BigDecimal("10.00"), "SKU001");
+        ProdutoSaveDTO produtoSaveDTO = new ProdutoSaveDTO("Produto A", "Descricao A", "Categoria A", 100, 10.00, "SKU001");
         
         when(produtoRepository.save(any(Produto.class))).thenReturn(produto);
 
@@ -125,9 +125,9 @@ public class ProdutoServiceTest {
     @Test
     @DisplayName("Teste: Update Produto Service")
     void test07() {
-        Produto produto = new Produto(1, "SKU001", "Produto A", "Descricao A", new BigDecimal("10.00"), 100, "Categoria A", "2025-10-19", Collections.emptySet());
+        Produto produto = new Produto(1, "SKU001", "Produto A", "Descricao A", 10.00, 100, "Categoria A", "2025-10-19", Collections.emptySet());
 
-        Produto produtoSalvo = new Produto(1, "SKU001", "Produto A", "Descricao A", new BigDecimal("10.00"), 100, "Categoria A", "2025-10-19", Collections.emptySet());
+        Produto produtoSalvo = new Produto(1, "SKU001", "Produto A", "Descricao A", 10.00, 100, "Categoria A", "2025-10-19", Collections.emptySet());
 
         when(produtoRepository.findById(1)).thenReturn(Optional.of(produtoSalvo));
 
@@ -145,7 +145,7 @@ public class ProdutoServiceTest {
     void test08() {
         Produto produto = new Produto(1, "", "",  "" , null, -100, "", "2025-10-19", Collections.emptySet());
 
-        Produto produtoSalvo = new Produto(1, "SKU001", "Produto A", "Descricao A", new BigDecimal("10.00"), 100, "Categoria A", "2025-10-19", Collections.emptySet());
+        Produto produtoSalvo = new Produto(1, "SKU001", "Produto A", "Descricao A", 10.00, 100, "Categoria A", "2025-10-19", Collections.emptySet());
 
         when(produtoRepository.findById(1)).thenReturn(Optional.of(produtoSalvo));
 
@@ -163,12 +163,12 @@ public class ProdutoServiceTest {
         verify(produtoRepository, times(1)).save(produtoSalvo);
     }
     
-        @Test
+    @Test
     @DisplayName("Teste: Update Produto Service IFs not null")
     void test09() {
-        Produto produto = new Produto(1, null, null,  null , new BigDecimal("-10.00"), -100, null, "2025-10-19", Collections.emptySet());
+        Produto produto = new Produto(1, null, null,  null , -10.00, -100, null, "2025-10-19", Collections.emptySet());
 
-        Produto produtoSalvo = new Produto(1, "SKU001", "Produto A", "Descricao A", new BigDecimal("10.00"), 100, "Categoria A", "2025-10-19", Collections.emptySet());
+        Produto produtoSalvo = new Produto(1, "SKU001", "Produto A", "Descricao A", 10.00, 100, "Categoria A", "2025-10-19", Collections.emptySet());
 
         when(produtoRepository.findById(1)).thenReturn(Optional.of(produtoSalvo));
 
