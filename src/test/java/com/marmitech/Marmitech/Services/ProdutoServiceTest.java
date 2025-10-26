@@ -1,4 +1,4 @@
-package com.marmitech.Marmitech.Service;
+package com.marmitech.Marmitech.Services;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,7 +8,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +25,6 @@ import com.marmitech.Marmitech.DTO.ResponseDTO.ProdutoListaDTO;
 import com.marmitech.Marmitech.Entity.Produto;
 import com.marmitech.Marmitech.Repository.PedidoItemRepository;
 import com.marmitech.Marmitech.Repository.ProdutoRepository;
-import com.marmitech.Marmitech.Services.ProdutoService;
 
 
 @ExtendWith(MockitoExtension.class)

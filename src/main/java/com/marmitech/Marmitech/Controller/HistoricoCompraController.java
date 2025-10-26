@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.marmitech.Marmitech.DTO.RequestDTO.HistoricoSaveDTO;
+import com.marmitech.Marmitech.DTO.ResponseDTO.HistoricoResponseDTO;
 import com.marmitech.Marmitech.Entity.HistoricoCompra;
 import com.marmitech.Marmitech.Services.HistoricoCompraService;
 
@@ -20,7 +22,7 @@ public class HistoricoCompraController {
     private HistoricoCompraService historicoCompraService;
 
     @PostMapping("/save")
-    public ResponseEntity<HistoricoCompra> save(@RequestBody @Valid HistoricoCompra historicoCompra) {
+    public ResponseEntity<HistoricoCompra> save(@RequestBody @Valid HistoricoSaveDTO historicoCompra) {
         return new ResponseEntity<>( historicoCompraService.save( historicoCompra ), HttpStatus.CREATED );
     }
 
@@ -35,17 +37,17 @@ public class HistoricoCompraController {
     }
 
     @GetMapping("/findById/{historicoCompraId}")
-    public ResponseEntity<HistoricoCompra> findById(@PathVariable int historicoCompraId) {
+    public ResponseEntity<HistoricoResponseDTO> findById(@PathVariable int historicoCompraId) {
         return new ResponseEntity<>( historicoCompraService.findById( historicoCompraId ), HttpStatus.OK );
     }
 
     @GetMapping
-    public ResponseEntity<List<HistoricoCompra>> findAll() {
+    public ResponseEntity<List<HistoricoResponseDTO>> findAll() {
         return new ResponseEntity<>( historicoCompraService.findAll(), HttpStatus.OK );
     }
 
     @GetMapping("/findByDataEvento")
-    public ResponseEntity<List<HistoricoCompra>> findByDataEvento(@RequestParam String dataEvento) {
+    public ResponseEntity<List<HistoricoResponseDTO>> findByDataEvento(@RequestParam String dataEvento) {
         return new ResponseEntity<>( historicoCompraService.findByDataEvento( dataEvento ), HttpStatus.OK );
     }
 }
