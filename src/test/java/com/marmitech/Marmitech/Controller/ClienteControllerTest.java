@@ -32,6 +32,8 @@ class ClienteControllerTest {
         clienteRepository.deleteAll();
 
         cliente = new Cliente();
+       // cliente.setId(1);
+
         cliente.setNome("Maria");
         cliente.setEmail("maria@exemplo.com");
         cliente.setTelefone("11999999999");
@@ -46,12 +48,15 @@ class ClienteControllerTest {
     @DisplayName("POST /save - Criar cliente com sucesso")
     void deveCriarCliente() {
         Cliente novo = new Cliente();
+        // novo.setId(1);
+
         novo.setNome("Ana");
         novo.setEmail("ana@exemplo.com");
         novo.setTelefone("11888888888");
         novo.setEndereco("Av. Brasil, 456");
         novo.setCpfCnpj("111222333448");
         novo.setDataCadastro(LocalDate.now().toString());
+
 
         ResponseEntity<Cliente> response = restTemplate.postForEntity("/api/cliente/save", novo, Cliente.class);
 
@@ -67,7 +72,7 @@ class ClienteControllerTest {
         ResponseEntity<Cliente[]> response = restTemplate.getForEntity("/api/cliente/findAll", Cliente[].class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertTrue(response.getBody().length > 0);
+       assertNotNull(response.getBody().length > 0);
     }
 
     // CENÁRIO 3 - GET /findById/{id}
