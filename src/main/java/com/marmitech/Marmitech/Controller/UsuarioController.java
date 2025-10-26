@@ -30,7 +30,7 @@ public class UsuarioController {
     @GetMapping("/findAll")
     public ResponseEntity<List<Usuario>> findAll() {
         var result = usuarioService.findAll();
-        return new ResponseEntity<>( result, HttpStatus.CREATED );
+        return new ResponseEntity<>( result, HttpStatus.OK );
     }
 
     @GetMapping("findById/{id}")
