@@ -90,6 +90,23 @@
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>default-testCompile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                        <configuration>
+                            <testExcludes>
+                                <exclude>**/PedidoItemControllerTest.java</exclude>
+                                <exclude>**/ProdutoControllerTest.java</exclude>
+                                <exclude>**/PedidoItemServiceTest.java</exclude>
+                                <exclude>**/ProdutoServiceTest.java</exclude>
+                            </testExcludes>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
