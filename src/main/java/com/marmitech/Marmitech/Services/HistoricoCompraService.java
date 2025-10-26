@@ -2,7 +2,12 @@ package com.marmitech.Marmitech.Services;
 
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
+import com.marmitech.Marmitech.DTO.RequestDTO.HistoricoSaveDTO;
+import com.marmitech.Marmitech.DTO.ResponseDTO.HistoricoResponseDTO;
+import com.marmitech.Marmitech.Mapper.ResponseMapper.HistoricoResponseMapper;
+import com.marmitech.Marmitech.Repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +23,6 @@ public class HistoricoCompraService {
         return novaString != null && !novaString.isBlank();
     }
 
-    private Boolean isValidoNum(int novoNum) {
-        return novoNum > 0;
-    }
-
     private <T> T validador(T novo, T antigo, Predicate<T> validar) {
         return validar.test( novo ) ? novo : antigo;
     }
@@ -29,8 +30,20 @@ public class HistoricoCompraService {
     @Autowired
     private HistoricoCompraRepository historicoCompraRepository;
 
+    @Autowired
+    private PedidoRepository pedidoRepository;
+
     @Transactional
-    public HistoricoCompra save(HistoricoCompra novoHistoricoCompra) {
+    public HistoricoCompra save(HistoricoSaveDTO novoHistoricoDTO) {
+        var pedido = pedidoRepository.findById( novoHistoricoDTO.pedidoId() )
+                .orElseThrow( () -> new RuntimeException( "Pedido com ID " + novoHistoricoDTO.pedidoId() + " não encontrado" ) );
+
+        HistoricoCompra novoHistoricoCompra = new HistoricoCompra();
+        novoHistoricoCompra.setPedido( pedido );
+        novoHistoricoCompra.setDataEvento( novoHistoricoDTO.dataEvento() );
+        novoHistoricoCompra.setTipoEvento( novoHistoricoDTO.tipoEvento() );
+        novoHistoricoCompra.setDescricao( novoHistoricoDTO.descricao() );
+
         return historicoCompraRepository.save( novoHistoricoCompra );
     }
 
@@ -51,24 +64,34 @@ public class HistoricoCompraService {
         if (historicoCompraId <= 0) {
             throw new IllegalArgumentException( "ID DO HISTORICO INVALIDO" );
         }
+        if (!historicoCompraRepository.existsById( historicoCompraId )) {
+            throw new RuntimeException( "Historico com ID " + historicoCompraId + " não encontrado" );
+        }
         historicoCompraRepository.deleteById( historicoCompraId );
         return "Historico deletado com sucesso!";
     }
 
-    public HistoricoCompra findById(int historicoCompraId) {
+    public HistoricoResponseDTO findById(int historicoCompraId) {
         if (historicoCompraId <= 0) {
             throw new IllegalArgumentException( "ID DO HISTORICO INVALIDO" );
         }
-        return historicoCompraRepository.findById( historicoCompraId )
+        HistoricoCompra historico = historicoCompraRepository.findById( historicoCompraId )
                 .orElseThrow( () -> new RuntimeException( "Historico com ID " + historicoCompraId + " não encontrado" ) );
+
+        return HistoricoResponseMapper.toDto( historico );
     }
 
-    public List<HistoricoCompra> findAll() {
-        return historicoCompraRepository.findAll();
+    public List<HistoricoResponseDTO> findAll() {
+        return historicoCompraRepository.findAll()
+                .stream()
+                .map( HistoricoResponseMapper::toDto )
+                .collect( Collectors.toList() );
     }
 
-    public List<HistoricoCompra> findByDataEvento(String dataEvento) {
-        return historicoCompraRepository.findByDataEvento( dataEvento );
+    public List<HistoricoResponseDTO> findByDataEvento(String dataEvento) {
+        return historicoCompraRepository.findByDataEvento( dataEvento )
+                .stream()
+                .map( HistoricoResponseMapper::toDto )
+                .collect( Collectors.toList() );
     }
-
 }

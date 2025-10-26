@@ -1,6 +1,8 @@
 package com.marmitech.Marmitech.Controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.marmitech.Marmitech.DTO.RequestDTO.HistoricoSaveDTO;
+import com.marmitech.Marmitech.DTO.ResponseDTO.HistoricoResponseDTO;
 import com.marmitech.Marmitech.Entity.HistoricoCompra;
 import com.marmitech.Marmitech.Services.HistoricoCompraService;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,6 +37,8 @@ public class HistoricoCompraControllerTest {
     ObjectMapper objectMapper;
 
     HistoricoCompra historicoCompra;
+    HistoricoSaveDTO historicoSaveDTO;
+    HistoricoResponseDTO historicoResponseDTO;
 
     @BeforeEach
     void setUp() {
@@ -43,14 +47,30 @@ public class HistoricoCompraControllerTest {
         historicoCompra.setDataEvento( "2025-10-12" );
         historicoCompra.setTipoEvento( "CRIADO" );
         historicoCompra.setDescricao( "Pedido Criado" );
+
+        // DTO de request para o POST
+        historicoSaveDTO = new HistoricoSaveDTO(
+                0, // pedidoId (0 quando nao enviado pelo teste de controller)
+                historicoCompra.getDescricao(),
+                historicoCompra.getDataEvento(),
+                historicoCompra.getTipoEvento()
+        );
+
+        // DTO de response que o service/controller retorna nas buscas
+        historicoResponseDTO = new HistoricoResponseDTO(
+                historicoCompra.getId(),
+                historicoCompra.getTipoEvento(),
+                historicoCompra.getDataEvento(),
+                0
+        );
     }
 
     @Test
     @DisplayName("POST /save - Deve salvar um HistoricoCompra com status CREATED")
     void cenario01() throws Exception {
-        Mockito.when( historicoCompraService.save( any( HistoricoCompra.class ) ) ).thenReturn( historicoCompra );
+        Mockito.when( historicoCompraService.save( any( HistoricoSaveDTO.class ) ) ).thenReturn( historicoCompra );
 
-        String historicoJson = objectMapper.writeValueAsString( historicoCompra );
+        String historicoJson = objectMapper.writeValueAsString( historicoSaveDTO );
 
         mockMvc.perform( post( "/historicoCompra/save" )
                         .contentType( MediaType.APPLICATION_JSON )
@@ -64,9 +84,9 @@ public class HistoricoCompraControllerTest {
     @Test
     @DisplayName("POST /save - Deve retornar BAD_REQUEST em caso de falha no serviço")
     void cenario02() throws Exception {
-        Mockito.when( historicoCompraService.save( any( HistoricoCompra.class ) ) ).thenThrow( new RuntimeException( "Erro de teste" ) );
+        Mockito.when( historicoCompraService.save( any( HistoricoSaveDTO.class ) ) ).thenThrow( new RuntimeException( "Erro de teste" ) );
 
-        String historicoJson = objectMapper.writeValueAsString( historicoCompra );
+        String historicoJson = objectMapper.writeValueAsString( historicoSaveDTO );
 
         mockMvc.perform( post( "/historicoCompra/save" )
                         .contentType( MediaType.APPLICATION_JSON )
@@ -79,7 +99,10 @@ public class HistoricoCompraControllerTest {
     @DisplayName("PUT /update/{id} - Deve atualizar um HistoricoCompra com status OK")
     void cenario03() throws Exception {
 
-        HistoricoCompra historicoAtualizado = historicoCompra;
+        HistoricoCompra historicoAtualizado = new HistoricoCompra();
+        historicoAtualizado.setId( historicoCompra.getId() );
+        historicoAtualizado.setDataEvento( historicoCompra.getDataEvento() );
+        historicoAtualizado.setTipoEvento( historicoCompra.getTipoEvento() );
         historicoAtualizado.setDescricao( "Descrição Atualizada" );
 
         Mockito.when( historicoCompraService.update( any( HistoricoCompra.class ), anyInt() ) ).thenReturn( historicoAtualizado );
@@ -125,7 +148,7 @@ public class HistoricoCompraControllerTest {
     @Test
     @DisplayName("GET /findById/{id} - Deve retornar um HistoricoCompra por ID com status OK")
     void cenario06() throws Exception {
-        Mockito.when( historicoCompraService.findById( 1 ) ).thenReturn( historicoCompra );
+        Mockito.when( historicoCompraService.findById( 1 ) ).thenReturn( historicoResponseDTO );
 
         mockMvc.perform( get( "/historicoCompra/findById/1" ) )
                 .andDo( print() )
@@ -147,7 +170,7 @@ public class HistoricoCompraControllerTest {
     @DisplayName("GET / - Deve retornar todos os HistoricoCompra com status OK")
     void cenario08() throws Exception {
 
-        Mockito.when( historicoCompraService.findAll() ).thenReturn( List.of( historicoCompra ) );
+        Mockito.when( historicoCompraService.findAll() ).thenReturn( List.of( historicoResponseDTO ) );
 
         mockMvc.perform( get( "/historicoCompra" ) )
                 .andDo( print() )
@@ -158,7 +181,7 @@ public class HistoricoCompraControllerTest {
     @Test
     @DisplayName("GET /findByDataEvento - Deve retornar HistoricoCompra por DataEvento com status OK")
     void cenario09() throws Exception {
-        Mockito.when( historicoCompraService.findByDataEvento( "2025-10-12" ) ).thenReturn( List.of( historicoCompra ) );
+        Mockito.when( historicoCompraService.findByDataEvento( "2025-10-12" ) ).thenReturn( List.of( historicoResponseDTO ) );
 
         mockMvc.perform( get( "/historicoCompra/findByDataEvento" )
                         .param( "dataEvento", "2025-10-12" ) )
