@@ -15,9 +15,6 @@ public class CategoriaService {
     @Autowired
     private final CategoriaRepository categoriaRepository;
 
-    public String buscarCategoria(int id) {
-        return categoriaRepository.findById(id).toString();
-    }
 
     public List<Categoria> findAll() {
         return categoriaRepository.findAll();
