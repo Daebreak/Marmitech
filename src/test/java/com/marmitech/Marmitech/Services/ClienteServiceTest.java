@@ -109,7 +109,7 @@ class ClienteServiceTest {
         verify(clienteRepository).findById(1);
     }
 
-    // CENÁRIO 6 - FINDBID INEXISTENTE
+    // CENÁRIO 6 - FINDBYID INEXISTENTE
     @Test
     @DisplayName("Buscar cliente por ID inexistente deve lançar exceção")
     void deveLancarExcecaoAoBuscarId() {
@@ -150,7 +150,7 @@ class ClienteServiceTest {
         verify(clienteRepository, atLeast(2)).save(any());
     }
 
-    //  CENÁRIO 9 - FIND BY NOME
+    //  CENÁRIO 9 - FINDBYNOME
     @Test
     @DisplayName("Buscar clientes por nome")
     void deveBuscarPorNome() {
@@ -162,7 +162,7 @@ class ClienteServiceTest {
         verify(clienteRepository).getByNome("Maria");
     }
 
-    // CENÁRIO 10 - FIND BY CPF/CNPJ
+    // CENÁRIO 10 - FINDBYCPF/CNPJ
     @Test
     @DisplayName("Buscar cliente por CPF/CNPJ")
     void deveBuscarPorCpfCnpj() {

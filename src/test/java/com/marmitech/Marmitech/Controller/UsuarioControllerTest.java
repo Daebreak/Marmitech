@@ -175,7 +175,7 @@ class UsuarioControllerTest {
                 .andExpect(jsonPath("$[0].data_criacao").value(LocalDate.now().toString()));
     }
     @Test
-    @DisplayName("08 - Cenario ")
+    @DisplayName("08 - Cenario  Deve buscar usuários pelo nome ")
     void cenario08() throws Exception {
         Mockito.when( usuarioService.findByNome(anyString())).thenReturn(List.of(usuario));
         mockMvc.perform(get("/api/usuario/findByNome/{nome}", "Marmitech"))
