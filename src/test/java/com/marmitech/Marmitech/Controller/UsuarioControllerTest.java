@@ -38,7 +38,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UsuarioControllerTest {
 
     @Autowired
-    MockMvc mockMvc;
+    MockMvc mockMvc; /*MockMvc é uma ferramenta que simula chamadas HTTP reais (como POST, GET, PUT, DELETE)
+    sem precisar rodar o servidor (localhost:8080)*/
 
     @MockitoBean
     private UsuarioService usuarioService;

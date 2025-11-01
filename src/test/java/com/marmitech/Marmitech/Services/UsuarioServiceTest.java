@@ -28,13 +28,13 @@ public class UsuarioServiceTest {
     @Mock
     private UsuarioRepository usuarioRepository;
 
+
     @InjectMocks
     private UsuarioService usuarioService;
 
     private Usuario usuario;
 
-    // private Usuario usuarioUpdate;
-    @BeforeEach
+    @BeforeEach //Execute esse metodo antes de cada teste
     void setUp() {
         usuario = new Usuario();
         usuario.setId(1);
@@ -50,10 +50,15 @@ public class UsuarioServiceTest {
     @Test
     @DisplayName("Cenário 01 - Testar método save da UsuarioService")
     /*Se voce trocar Mock por Spy , o teste vai parar de ser Falso e vai tentar  chamar o banco real ,
-    entao elequebra*/
+    entao ele quebra*/
     void cenario01() {
+      // any:aceite  qualquer objeto do tipo Usuario
 
-
+        //thenReturn(...) → retorna sempre um valor fixo.
+        //
+        //thenAnswer(...) → permite você criar uma resposta dinâmica, calculada na hora.
+                                                                //thenAnswer:  devolve algo criado na hora com base no argumento recebido
+        // invo: Representa a chamada do método mockado
         Mockito.when(usuarioRepository.save(any(Usuario.class))).thenAnswer(invocation -> {
             Usuario u = invocation.getArgument(0);
             u.setId(1); // simula o ID que o banco geraria
@@ -64,8 +69,9 @@ public class UsuarioServiceTest {
         var usuarioSalvo = usuarioService.save(usuario);
 
         // Verificações
+        // assertEquals: firmar que são iguais
         assertNotNull(usuarioSalvo);
-        assertEquals("Gabi", usuarioSalvo.getNome());
+        assertEquals("Gabi", usuarioSalvo.getNome()); //Afirme que o nome do usuário salvo é igual a ‘Gabi’
         assertEquals("gabi@gabi.com", usuarioSalvo.getEmail());
         assertEquals("123456", usuarioSalvo.getSenha());
         assertEquals("Caixa", usuarioSalvo.getCargo());
