@@ -11,7 +11,7 @@ import java.util.function.Function;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import app.auth.Usuario;
+import  com.marmitech.Marmitech.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -19,7 +19,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 @Service
-public class JwtServiceGenerator {  
+public class JwtServiceGenerator {
 
 	///////////////////////////////////////////////////////
 	//Parâmetros para geração do token
@@ -29,22 +29,22 @@ public class JwtServiceGenerator {
 
 	public Map<String, Object> gerarPayload(Usuario usuario){
 		//AQUI VOCÊ PODE COLOCAR O QUE MAIS VAI COMPOR O PAYLOAD DO TOKEN
-		
+
 		Map<String, Object> payloadData = new HashMap<>();
 		payloadData.put("username", usuario.getUsername());
 		payloadData.put("id", usuario.getId().toString());
 		payloadData.put("role", usuario.getRole());
 		payloadData.put("outracoisa", "teste");
-		
+
 		return payloadData;
 	}
 
 	///////////////////////////////////////////////////////
 
-	
-	
-	
-	
+
+
+
+
 	public String generateToken(Usuario usuario) {
 
 		Map<String, Object> payloadData = this.gerarPayload(usuario);

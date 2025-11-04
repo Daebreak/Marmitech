@@ -7,6 +7,8 @@ export const meuhttpInterceptor: HttpInterceptorFn = (request, next) => {
 
   let router = inject(Router);
 
+
+  //inclui o token do localStorage em todas as requisicoes http(header)
   let token = localStorage.getItem('token');
   
   console.log('entrou aqui 1');
@@ -16,6 +18,7 @@ export const meuhttpInterceptor: HttpInterceptorFn = (request, next) => {
     });
   }
 
+  //tratamento dos responses , podemos tratar errros genericos aqui
   return next(request).pipe(
     catchError((err: any) => {
       if (err instanceof HttpErrorResponse) {

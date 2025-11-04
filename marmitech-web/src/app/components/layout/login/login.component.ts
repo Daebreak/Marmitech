@@ -1,33 +1,40 @@
-import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
-import { LoginService } from '../../../auth/login.service';
-import { Login } from '../../../auth/login';
+import { Component, inject } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { Router } from "@angular/router";
+import { MdbFormsModule } from "mdb-angular-ui-kit/forms";
+import { LoginService } from "../../../auth/login.service";
+import { Login } from "../../../auth/login";
 
 @Component({
-  selector: 'app-login',
+  selector: "app-login",
   imports: [MdbFormsModule, FormsModule],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  templateUrl: "./login.component.html",
+  styleUrl: "./login.component.scss",
 })
 export class LoginComponent {
- // usuario!: string;
+  // usuario!: string;
   //senha!: string;
-login: Login = new Login();
+  login: Login = new Login();
   router = inject(Router);
- loginService = inject(LoginService);
- 
- logar() {
+  loginService = inject(LoginService);
+
+  constructor() {}
+
+  logar() {
     this.loginService.logar(this.login).subscribe({
-   next:token =>{
-
-   },
-   error:err =>{
-    
+      next: (token) => {
+        if (token) {
+          this.loginService.addToken(token);
+          this.router.navigate(["/admin/produtos"]);
+        }
+        else {
+          alert("usuario ou senha incorretos");
+          
+        }
+      },
+      error: erro => {
+        alert("deu erro");
+      },
+    });
   }
-});
-  }
-
-
 }
