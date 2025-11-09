@@ -4,6 +4,7 @@ package com.marmitech.Marmitech.Config;
 
 import java.io.IOException;
 
+import com.marmitech.Marmitech.Services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,6 +26,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private JwtServiceGenerator jwtService;
 	@Autowired
 	private UserDetailsService userDetailsService;
+
+
 
 	@Override
 	protected void doFilterInternal(

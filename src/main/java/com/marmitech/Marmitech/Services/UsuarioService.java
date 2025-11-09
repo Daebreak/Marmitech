@@ -5,6 +5,8 @@ import com.marmitech.Marmitech.Repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,10 +21,14 @@ public class UsuarioService {
     @Autowired
     private final UsuarioRepository usuarioRepository;
 
-    public Usuario save(Usuario usuario) {
+    // @Autowired
+    // private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
+     public Usuario save(Usuario usuario) {
         //Para pegar a data e hora automatica
         usuario.setData_criacao( LocalDate.now() );
-
+        //String senhaCriptografasa = bCryptPasswordEncoder.encode(usuario.getPassword());
         return usuarioRepository.save( usuario );
     }
 
@@ -57,11 +63,17 @@ public class UsuarioService {
         if (usuario.getCargo() != null && !usuario.getCargo().isBlank()) {
             usuarioUpdate.setCargo( usuario.getCargo() );
         }
+//        if(!usuario.getPassword().equals("")) {
+//            String senhaCriptografada = bCryptPasswordEncoder.encode(usuario.getSenha());
+//           usuario.setSenha(senhaCriptografada);
+
+      //  }
         return usuarioRepository.save( usuarioUpdate );
     }
 
-    public void login(String nome, String senha) throws RuntimeException {
-        Optional<Usuario> usuarioOPT = usuarioRepository.findByNomeAndSenha( nome, senha );
+    public void login(String nome) throws RuntimeException {
+        Optional<Usuario> usuarioOPT = usuarioRepository.findByNome( nome);
+
         if (usuarioOPT.isEmpty()) {
             throw new RuntimeException( "Usuario ou senha invalidos" );
         }
@@ -74,13 +86,16 @@ public class UsuarioService {
             System.out.println( "Mudando para a tela de cozinha" );
         }
 
+
     }
 
     public List<Usuario> findByCargo(String cargo) {
         return usuarioRepository.getByCargo( cargo );
     }
 
-    public List<Usuario> findByNome(String nome) {
-        return usuarioRepository.findByNome( nome );
+    public List<Usuario> findAllByNome(String nome) {
+        return usuarioRepository.findAllByNome( nome );
     }
+
+
 }

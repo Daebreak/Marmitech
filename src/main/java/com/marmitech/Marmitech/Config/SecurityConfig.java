@@ -33,8 +33,8 @@ public class SecurityConfig  {
 		.csrf(AbstractHttpConfigurer::disable)
 		.cors(AbstractHttpConfigurer::disable)
 		.authorizeHttpRequests((requests) -> requests
-				.requestMatchers("/api/login").permitAll()
-				.requestMatchers("/api/register").permitAll()
+				.requestMatchers("/api/login").permitAll() //publico , acessado sem autenticacao
+				.requestMatchers("/api/usuario/save").permitAll() //publica, acessado sem autenticacao
 				.anyRequest().authenticated())
 		.authenticationProvider(authenticationProvider)
 		.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

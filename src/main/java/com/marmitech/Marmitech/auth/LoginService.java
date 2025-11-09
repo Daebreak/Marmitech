@@ -1,27 +1,29 @@
 //AuthenticationService.java
 package com.marmitech.Marmitech.auth;
 
+import com.marmitech.Marmitech.Config.JwtServiceGenerator;
 import com.marmitech.Marmitech.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+import com.marmitech.Marmitech.Entity.Usuario;
 
-import app.config.JwtServiceGenerator;
 
 @Service
 public class LoginService {
 
 	@Autowired
-	private LoginRepository repository;
-   //private UsuarioRepository usuarioRepository;
+	// Alterado para usar usuarioRepository em vez de loginRepository
+	//private LoginRepository repository;
+   private UsuarioRepository usuarioRepository;
 	@Autowired
 	private JwtServiceGenerator jwtService;
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
 
-	
+
 	public String logar(Login login) {
 
 		String token = this.gerarToken(login);
@@ -38,9 +40,16 @@ public class LoginService {
 						login.getPassword()
 						)
 				);
-		Usuario user = repository.findByUsername(login.getUsername()).get();
+		Usuario user = usuarioRepository.findByNome(login.getUsername()).get();
 		String jwtToken = jwtService.generateToken(user);
 		return jwtToken;
+
+
+//		Usuario user = usuarioRepository
+//				.findByNomeAndSenha(login.getNome(), login.getSenha())
+//				.orElseThrow(() -> new RuntimeException("Usuário ou senha inválidos"));
+//
+//		return jwtService.generateToken(user);
 	}
 
 

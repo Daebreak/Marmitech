@@ -53,7 +53,8 @@ public class UsuarioController {
 
     @PostMapping("/login")
     public ResponseEntity<Void> login(@RequestParam String nome, @RequestParam String senha) {
-        usuarioService.login( nome, senha );
+        usuarioService.login( nome );
+        //usuarioService.login(senha);
         return new ResponseEntity<>( HttpStatus.ACCEPTED );
     }
 
@@ -65,7 +66,7 @@ public class UsuarioController {
 
     @GetMapping("/findByNome/{nome}")
     public ResponseEntity<List<Usuario>> findByNome(@PathVariable String nome) {
-        var result = usuarioService.findByNome( nome );
+        var result = usuarioService.findAllByNome( nome );
         return new ResponseEntity<>( result, HttpStatus.OK );
     }
 

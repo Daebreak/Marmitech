@@ -8,10 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import java.nio.charset.StandardCharsets;
+
+import com.marmitech.Marmitech.Entity.*;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import  com.marmitech.Marmitech.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -22,37 +25,35 @@ import io.jsonwebtoken.security.Keys;
 public class JwtServiceGenerator {
 
 	///////////////////////////////////////////////////////
-	//Parâmetros para geração do token
-	public static final String SECRET_KEY = "UMACHAVESECRETADASUAAPIAQUIUMACHAVESECRETADASUAAPIAQUIUMACHAVESECRETADASUAAPIAQUIUMACHAVESECRETADASUAAPIAQUI";
+
+	public static final String SECRET_KEY = "TWFybWl0ZWNoU3VwZXJDaGF2ZVNlY3JldGFKV1QyMDI1XyNAJCEl1";
 	public static final SignatureAlgorithm ALGORITMO_ASSINATURA = SignatureAlgorithm.HS256;
 	public static final int HORAS_EXPIRACAO_TOKEN = 1;
 
-	public Map<String, Object> gerarPayload(Usuario usuario){
-		//AQUI VOCÊ PODE COLOCAR O QUE MAIS VAI COMPOR O PAYLOAD DO TOKEN
+	public Map<String, Object> gerarPayload(Usuario usuarioService) {
 
 		Map<String, Object> payloadData = new HashMap<>();
-		payloadData.put("username", usuario.getUsername());
-		payloadData.put("id", usuario.getId().toString());
-		payloadData.put("role", usuario.getRole());
-		payloadData.put("outracoisa", "teste");
-
+		payloadData.put("nome", usuarioService.getUsername());
+		payloadData.put("id", usuarioService.getId());
+//		payloadData.put("admin",usuarioService.getSenha());
+        payloadData.put("email", usuarioService.getEmail());
+		payloadData.put("senha", usuarioService.getPassword());
 		return payloadData;
 	}
 
-	///////////////////////////////////////////////////////
 
 
 
 
 
-	public String generateToken(Usuario usuario) {
+	public String generateToken(Usuario usuarioService) {
 
-		Map<String, Object> payloadData = this.gerarPayload(usuario);
+		Map<String, Object> payloadData = this.gerarPayload(usuarioService);
 
 		return Jwts
 				.builder()
 				.setClaims(payloadData)
-				.setSubject(usuario.getUsername())
+				.setSubject(usuarioService.getNome())
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(new Date().getTime() + 3600000 * this.HORAS_EXPIRACAO_TOKEN))
 				.signWith(getSigningKey(), this.ALGORITMO_ASSINATURA)
