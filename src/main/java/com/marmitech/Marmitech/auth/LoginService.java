@@ -15,8 +15,8 @@ public class LoginService {
 
 	@Autowired
 	// Alterado para usar usuarioRepository em vez de loginRepository
-	//private LoginRepository repository;
-   private UsuarioRepository usuarioRepository;
+	private LoginRepository userRepos;
+  // private UsuarioRepository usuarioRepository;
 	@Autowired
 	private JwtServiceGenerator jwtService;
 	@Autowired
@@ -40,7 +40,7 @@ public class LoginService {
 						login.getPassword()
 						)
 				);
-		Usuario user = usuarioRepository.findByNome(login.getUsername()).get();
+		Usuario user = userRepos.findByNome(login.getUsername()).get();
 		String jwtToken = jwtService.generateToken(user);
 		return jwtToken;
 

@@ -14,9 +14,9 @@ import java.util.Optional;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
-    List<Usuario> findAllByNome(String nome);
+    List<Usuario> findByNome(String nome);
 
-    Optional<Usuario> findByNome(String nome);
+   // Optional<Usuario> findBynNome(String nome);
 
     //Optional<Usuario> findByNomeAndSenha(String nome, String senha);
 

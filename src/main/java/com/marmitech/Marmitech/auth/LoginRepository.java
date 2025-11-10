@@ -11,6 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface LoginRepository extends JpaRepository<Usuario, Long>{
 // Não é mais necessário.... Use UsuarioRepository
 
-	//Optional<Usuario> findByEmail(@NotNull @NotBlank(message = "email não pode ser null ou vazio") String email);
+	Optional<Usuario> findByNome( String nome);
 
 }

@@ -13,6 +13,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 
 @Slf4j
 @Service
@@ -23,12 +25,13 @@ public class UsuarioService {
 
     // @Autowired
     // private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
+private final PasswordEncoder passwordEncoder;
 
      public Usuario save(Usuario usuario) {
         //Para pegar a data e hora automatica
         usuario.setData_criacao( LocalDate.now() );
-        //String senhaCriptografasa = bCryptPasswordEncoder.encode(usuario.getPassword());
+       // String senhaCriptografasa = bCryptPasswordEncoder.encode(usuario.getPassword());
+        // usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         return usuarioRepository.save( usuario );
     }
 
@@ -64,15 +67,15 @@ public class UsuarioService {
             usuarioUpdate.setCargo( usuario.getCargo() );
         }
 //        if(!usuario.getPassword().equals("")) {
-//            String senhaCriptografada = bCryptPasswordEncoder.encode(usuario.getSenha());
+//            String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
 //           usuario.setSenha(senhaCriptografada);
-
-      //  }
+//
+//        }
         return usuarioRepository.save( usuarioUpdate );
     }
 
     public void login(String nome) throws RuntimeException {
-        Optional<Usuario> usuarioOPT = usuarioRepository.findByNome( nome);
+        Optional<Usuario> usuarioOPT = usuarioRepository.findById(Integer.parseInt(nome));
 
         if (usuarioOPT.isEmpty()) {
             throw new RuntimeException( "Usuario ou senha invalidos" );
@@ -94,7 +97,7 @@ public class UsuarioService {
     }
 
     public List<Usuario> findAllByNome(String nome) {
-        return usuarioRepository.findAllByNome( nome );
+        return usuarioRepository.findByNome( nome );
     }
 
 
