@@ -16,7 +16,7 @@ public class LoginService {
 	@Autowired
 	// Alterado para usar usuarioRepository em vez de loginRepository
 	private LoginRepository userRepos;
-  // private UsuarioRepository usuarioRepository;
+   private UsuarioRepository usuarioRepository;
 	@Autowired
 	private JwtServiceGenerator jwtService;
 	@Autowired

@@ -23,15 +23,16 @@ public class UsuarioService {
     @Autowired
     private final UsuarioRepository usuarioRepository;
 
-    // @Autowired
-    // private final BCryptPasswordEncoder bCryptPasswordEncoder;
-private final PasswordEncoder passwordEncoder;
+//     @Autowired
+//     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+  @Autowired
+     private final PasswordEncoder passwordEncoder;
 
      public Usuario save(Usuario usuario) {
         //Para pegar a data e hora automatica
         usuario.setData_criacao( LocalDate.now() );
-       // String senhaCriptografasa = bCryptPasswordEncoder.encode(usuario.getPassword());
-        // usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+
+         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         return usuarioRepository.save( usuario );
     }
 
@@ -61,13 +62,13 @@ private final PasswordEncoder passwordEncoder;
             usuarioUpdate.setEmail( usuarioUpdate.getEmail() );
         }
         if (usuario.getSenha() != null && !usuario.getSenha().isBlank()) {
-            usuarioUpdate.setSenha( usuario.getSenha() );
+            usuarioUpdate.setSenha(passwordEncoder.encode(usuario.getSenha()));
         }
         if (usuario.getCargo() != null && !usuario.getCargo().isBlank()) {
             usuarioUpdate.setCargo( usuario.getCargo() );
         }
 //        if(!usuario.getPassword().equals("")) {
-//            String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
+//            String senhaCriptografada = bCryptPasswordEncoder.encode(usuario.getSenha());
 //           usuario.setSenha(senhaCriptografada);
 //
 //        }
@@ -82,6 +83,7 @@ private final PasswordEncoder passwordEncoder;
         }
         Usuario usuario = usuarioOPT.get();
 
+
         if (usuario.getCargo().equalsIgnoreCase( "Caixa" )) {
             System.out.println( "Mudando para tela de caixa" );
         }
@@ -92,11 +94,12 @@ private final PasswordEncoder passwordEncoder;
 
     }
 
+
     public List<Usuario> findByCargo(String cargo) {
         return usuarioRepository.getByCargo( cargo );
     }
 
-    public List<Usuario> findAllByNome(String nome) {
+    public List<Usuario> findByNome(String nome) {
         return usuarioRepository.findByNome( nome );
     }
 

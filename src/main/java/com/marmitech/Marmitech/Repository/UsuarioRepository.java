@@ -16,10 +16,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     List<Usuario> findByNome(String nome);
 
-   // Optional<Usuario> findBynNome(String nome);
+   // Optional<Usuario> findByNome(String nome);
 
     //Optional<Usuario> findByNomeAndSenha(String nome, String senha);
-
+    //public void alterarSenha(String novaSenha, long id);
     @Query("SELECT u FROM Usuario u WHERE u.cargo = :cargo")
     List<Usuario> getByCargo(@Param("cargo") String cargo);
 
@@ -27,7 +27,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     //Optional<Object> findByEmail(@NotNull @NotBlank(message = "email não pode ser null ou vazio") String email);
 
-    Optional<Usuario> findByEmail(String email);
+   // Optional<Usuario> findByEmail(String email);
 
     String nome(@NotNull @NotBlank(message = "nome não pode ser null ou vazio") String nome);
 }

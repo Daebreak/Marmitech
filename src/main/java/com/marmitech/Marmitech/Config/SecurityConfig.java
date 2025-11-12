@@ -31,7 +31,7 @@ public class SecurityConfig  {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http    
 		.csrf(AbstractHttpConfigurer::disable)
-		.cors(AbstractHttpConfigurer::disable)
+		.cors(AbstractHttpConfigurer::disable)   //hasdAnyRoles
 		.authorizeHttpRequests((requests) -> requests
 				.requestMatchers("/api/login").permitAll() //publico , acessado sem autenticacao
 				.requestMatchers("/api/usuario/save").permitAll() //publica, acessado sem autenticacao

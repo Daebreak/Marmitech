@@ -19,10 +19,8 @@ import java.util.List;
 @Getter
 @Setter
 public class Usuario implements UserDetails{
-//private String login;
-//private String password;
-//private String username;
-//private String roles;
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -34,6 +32,7 @@ public class Usuario implements UserDetails{
     @NotNull
     @NotBlank(message = "senha não pode ser null ou vazio")
     private String senha;
+
 
     @NotNull
     @NotBlank(message = "email não pode ser null ou vazio")
@@ -52,11 +51,13 @@ public class Usuario implements UserDetails{
     private List<Pedido> pedidos;
 
 
+
     /**
      * @return
      */
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<? extends GrantedAuthority> getAuthorities()
+    {
         return List.of();
     }
 
@@ -65,7 +66,6 @@ public class Usuario implements UserDetails{
      */
     @Override
     public String getPassword() {
-
         return this.senha;
     }
 
@@ -76,18 +76,22 @@ public class Usuario implements UserDetails{
     public String getUsername() {
         return this.nome;
     }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
+
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
+
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
+
     @Override
     public boolean isEnabled() {
         return true;

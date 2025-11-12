@@ -66,7 +66,7 @@ public class UsuarioController {
 
     @GetMapping("/findByNome/{nome}")
     public ResponseEntity<List<Usuario>> findByNome(@PathVariable String nome) {
-        var result = usuarioService.findAllByNome( nome );
+        var result = usuarioService.findByNome( nome );
         return new ResponseEntity<>( result, HttpStatus.OK );
     }
 
