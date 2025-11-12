@@ -18,21 +18,23 @@ export class LoginComponent {
   router = inject(Router);
   loginService = inject(LoginService);
 
-  constructor() {}
+  constructor() {
+    this.loginService.removerToken();
+  }
 
   logar() {
     this.loginService.logar(this.login).subscribe({
       next: (token) => {
+        // console.log(token);
+
         if (token) {
           this.loginService.addToken(token);
           this.router.navigate(["/admin/produtos"]);
-        }
-        else {
+        } else {
           alert("usuario ou senha incorretos");
-          
         }
       },
-      error: erro => {
+      error: (erro) => {
         alert("deu erro");
       },
     });
