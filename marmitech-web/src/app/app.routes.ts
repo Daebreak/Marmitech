@@ -23,6 +23,7 @@ import { ClientedetailsComponent } from './components/cliente/clientedetails/cli
 
 import { UsuariolistComponent } from './components/usuario/usuariolist/usuariolist.component';
 import { UsuariodetailsComponent } from './components/usuario/usuariodetails/usuariodetails.component';
+import { PedidosFilaComponent } from './components/pedidos/pedidos-fila/pedidos-fila.component'; // Importe o novo componente
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -33,6 +34,7 @@ export const routes: Routes = [
             { path: 'produtos/new', component: ProdutosdetailsComponent },
             { path: 'produtos/edit/:id', component: ProdutosdetailsComponent },
             { path: 'pedidos', component: PedidoslistComponent },
+            { path: 'pedidos/fila', component: PedidosFilaComponent }, // Nova rota
             { path: 'pedidos/new', component: PedidosdetailsComponent },
             { path: 'pedidos/edit/:id', component: PedidosdetailsComponent },
             { path: 'pedidosItem', component: PedidosItemlistComponent },

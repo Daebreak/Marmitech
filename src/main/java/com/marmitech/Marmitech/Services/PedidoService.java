@@ -1,5 +1,6 @@
 package com.marmitech.Marmitech.Services;
 
+import com.marmitech.Marmitech.DTO.RequestDTO.HistoricoSaveDTO;
 import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoResponseDTO;
 import com.marmitech.Marmitech.Entity.HistoricoCompra;
 import com.marmitech.Marmitech.Entity.Pedido;
@@ -35,6 +36,9 @@ public class PedidoService {
 
     @Autowired
     private ProdutoRepository produtoRepository;
+
+    @Autowired
+    private HistoricoCompraService historicoCompraService;
 
     @Transactional
     public Pedido save(Pedido pedido) {
@@ -102,6 +106,25 @@ public class PedidoService {
     @Transactional
     public Pedido update(Integer id, Pedido pedido) {
         Pedido pedidoUpdate = findById( id );
+
+        // 2. Verifica se o status realmente mudou
+        String statusAntigo = pedidoUpdate.getStatus();
+        String statusNovo = pedido.getStatus();
+
+        if (statusNovo != null && !statusNovo.isBlank() && !statusNovo.equals( statusAntigo )) {
+            pedidoUpdate.setStatus( statusNovo );
+
+            // CRIA O NOVO REGISTRO DE HISTÓRICO
+            // Usando o DTO que o seu HistoricoCompraService espera
+            HistoricoSaveDTO novoHistorico = new HistoricoSaveDTO(
+                    pedidoUpdate.getId(),       // pedidoId
+                    "Status do pedido alterado de " + statusAntigo + " para " + statusNovo, // descricao
+                    LocalDate.now().toString(), // dataEvento
+                    statusNovo                  // tipoEvento (ex: "FINALIZADO")
+            );
+            historicoCompraService.save( novoHistorico );
+        }
+
         return pedidoRepository.save( pedidoUpdate );
     }
 
