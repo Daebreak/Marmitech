@@ -24,15 +24,11 @@ import { ClientedetailsComponent } from './components/cliente/clientedetails/cli
 import { UsuariolistComponent } from './components/usuario/usuariolist/usuariolist.component';
 import { UsuariodetailsComponent } from './components/usuario/usuariodetails/usuariodetails.component';
 
-import { RelatoriolistComponent } from './components/relatorio/relatoriolist/relatoriolist.component';
-import { RelatoriodetailsComponent } from './components/relatorio/relatoriodetails/relatoriodetails.component';
-//import { loginGuard } from './auth/login.guard';
-
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
     {
-        path: 'admin', component: PrincipalComponent, children: [
+        path: 'admin', component: PrincipalComponent, children:  [
             { path: 'produtos', component: ProdutoslistComponent },
             { path: 'produtos/new', component: ProdutosdetailsComponent },
             { path: 'produtos/edit/:id', component: ProdutosdetailsComponent },
@@ -57,9 +53,7 @@ export const routes: Routes = [
             { path: 'usuarios', component: UsuariolistComponent },
             { path: 'usuarios/new', component: UsuariodetailsComponent },
             { path: 'usuarios/edit/:id', component: UsuariodetailsComponent },
-            { path: 'relatorio', component: RelatoriolistComponent },
-            { path: 'relatorio/new', component: RelatoriodetailsComponent },
-            { path: 'relatorio/edit/:id', component: RelatoriodetailsComponent }
+
         ]
     }
 ];

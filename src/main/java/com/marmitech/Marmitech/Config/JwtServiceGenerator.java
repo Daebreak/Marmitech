@@ -39,8 +39,8 @@ public class JwtServiceGenerator {
 
 		//	payloadData.put("admin",usuarioService.getSenha());
         payloadData.put("email", usuarioService.getEmail());
-		payloadData.put("data_criacao ", usuarioService.getData_criacao().toString());
-		payloadData.put(" password", usuarioService.getPassword());
+		payloadData.put("data_criacao", usuarioService.getData_criacao().toString());
+		//payloadData.put("password", usuarioService.getPassword());
 		return payloadData;
 	}
 
