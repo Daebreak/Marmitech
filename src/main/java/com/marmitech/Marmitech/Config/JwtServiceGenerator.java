@@ -33,14 +33,14 @@ public class JwtServiceGenerator {
 	public Map<String, Object> gerarPayload(Usuario usuarioService) {
 
 		Map<String, Object> payloadData = new HashMap<>();
-		payloadData.put("Roles", usuarioService.getCargo());
-		payloadData.put("ID", usuarioService.getId());
-		payloadData.put("Nome", usuarioService.getUsername());
+		payloadData.put("role", usuarioService.getCargo());
+		payloadData.put("id", usuarioService.getId());
+		payloadData.put("username", usuarioService.getUsername());
 
 		//	payloadData.put("admin",usuarioService.getSenha());
-        payloadData.put("Email", usuarioService.getEmail());
+        payloadData.put("email", usuarioService.getEmail());
 		payloadData.put("data_criacao ", usuarioService.getData_criacao().toString());
-		//payloadData.put("senha", usuarioService.getPassword());
+		payloadData.put(" password", usuarioService.getPassword());
 		return payloadData;
 	}
 

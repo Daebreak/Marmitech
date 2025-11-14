@@ -36,17 +36,12 @@
   background-color: #3d0202;
   margin-left: auto;
   margin-right: auto;
-   animation-name: myAnimation;
-  animation-duration: 4s;
-  @keyframes myAnimation {
-  0%   {background-color:rgb(255, 0, 0); left:0px; top:0px;}
-  25%  {background-color:rgb(199, 92, 5); left:200px; top:0px;}
-  50%  {background-color:rgb(133, 3, 3); left:200px; top:200px;}
-  75%  {background-color:rgb(55, 67, 2); left:0px; top:200px;}
-  100% {background-color:rgb(69, 4, 4); left:0px; top:0px;}
-}
+  &:hover {
+    background-color: #5e0a0a;
 
 }
+}
+
 .btn{
    background-color: rgb(97, 6, 6);
   padding: 10px 20px;

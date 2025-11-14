@@ -10,6 +10,7 @@ import { Usuario } from './usuario';
 })
 export class LoginService {
 
+
   http = inject(HttpClient);
   API = "http://localhost:8080/api/login";
 
@@ -47,6 +48,14 @@ export class LoginService {
       return true;
     else
       return false;
+  }
+  hasPermission(role: string) {
+    let user = this.jwtDecode() as Usuario;
+    if(user.role == role){
+      return true;
+    }else{
+      return false;
+    }
   }
   
   getUsuarioLogado() {
