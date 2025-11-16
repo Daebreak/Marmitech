@@ -40,7 +40,7 @@
           <a class="nav-link active" routerLink="/admin/usuarios">Usuarios</a>
         </li>
       }
-       @if(loginService.hasPermission('Cozinha') || loginService.hasPermission('admin')){
+      
       <li mdbDropdown class="nav-item dropdown">
           <a class="nav-link dropdown-toggle active" id="navbarDropdownMenuLink" role="button" mdbDropdownToggle
             aria-expanded="false">
@@ -48,7 +48,7 @@
           </a>
          
           <ul mdbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            
+            @if(loginService.hasPermission('Cozinha') || loginService.hasPermission('admin')){
             <li>
               <a class="dropdown-item" routerLink="/admin/pedidos">Pedidos</a>
             </li>
@@ -56,15 +56,20 @@
             <li>
               <a class="dropdown-item" routerLink="/admin/pedidosItem">Pedidos por Itens</a>
             </li>
+          }
+
+            @if(loginService.hasPermission('admin')){
             <li>
               <a class="dropdown-item" routerLink="/admin/historico">Histórico de Pedidos</a>
             </li>
             <li>
               <a class="dropdown-item" routerLink="/admin/relatorio">Relatório de Pedidos</a>
             </li>
+          }
+         
           </ul>
         </li>
-      }
+      
       </ul>
 
       <ul class="navbar-nav flex-row">

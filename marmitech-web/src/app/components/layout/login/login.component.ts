@@ -29,26 +29,21 @@ export class LoginComponent {
 
         if (token) {
           this.loginService.addToken(token);
-       
-        
-        this.router.navigate(["/admin/produtos"]);
+
+          this.router.navigate(["/admin/produtos"]);
         } else {
           alert("usuario ou senha incorretos");
         }
-        
-        if(this.loginService.hasPermission('Cozinha')){
-          this.router.navigate(["/admin/pedidos"]);
-        }else{
-           alert("usuario ou senha incorretos");
-        }
 
+        if (this.loginService.hasPermission("Cozinha")) {
+          this.router.navigate(["/admin/pedidos"]);
+        } else if (this.loginService.hasPermission("Caixa")) {
+          this.router.navigate(["/admin/produtos"]);
+        } else if (this.loginService.hasPermission("admin")) {
+          this.router.navigate(["/admin/produtos"]);
+        }
       },
-      
-      
-      
-      
-      
-      
+
       error: (erro) => {
         alert("deu erro");
       },
