@@ -23,15 +23,17 @@ import { ClientedetailsComponent } from './components/cliente/clientedetails/cli
 
 import { UsuariolistComponent } from './components/usuario/usuariolist/usuariolist.component';
 import { UsuariodetailsComponent } from './components/usuario/usuariodetails/usuariodetails.component';
+import { loginGuard } from './auth/login.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
     {
-        path: 'admin', component: PrincipalComponent, children:  [
+        path: 'admin', component: PrincipalComponent, canActivate: [loginGuard], children: [
             { path: 'produtos', component: ProdutoslistComponent },
             { path: 'produtos/new', component: ProdutosdetailsComponent },
             { path: 'produtos/edit/:id', component: ProdutosdetailsComponent },
+            
             { path: 'pedidos', component: PedidoslistComponent },
             { path: 'pedidos/new', component: PedidosdetailsComponent },
             { path: 'pedidos/edit/:id', component: PedidosdetailsComponent },
