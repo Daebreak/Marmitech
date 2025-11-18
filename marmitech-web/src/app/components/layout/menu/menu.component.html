@@ -48,7 +48,7 @@
           </a>
          
           <ul mdbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            @if(loginService.hasPermission('Cozinha') || loginService.hasPermission('admin')){
+            @if(loginService.hasPermission('Cozinha') || loginService.hasPermission('admin') || loginService.hasPermission('Caixa')) {
             <li>
               <a class="dropdown-item" routerLink="/admin/pedidos">Pedidos</a>
             </li>

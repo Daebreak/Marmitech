@@ -23,7 +23,9 @@ import { ClientedetailsComponent } from './components/cliente/clientedetails/cli
 
 import { UsuariolistComponent } from './components/usuario/usuariolist/usuariolist.component';
 import { UsuariodetailsComponent } from './components/usuario/usuariodetails/usuariodetails.component';
+
 import { loginGuard } from './auth/login.guard';
+import { RelatoriolistComponent } from './components/relatorio/relatoriolist/relatoriolist.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -41,8 +43,8 @@ export const routes: Routes = [
             { path: 'categorias', component: CategoriaslistComponent },
             { path: 'categorias/new', component: CategoriasdetailsComponent },
             { path: 'categorias/edit/:id', component: CategoriasdetailsComponent },
-            { path: 'historicos', component: HistoricolistComponent },
-            { path: 'historicos/:id', component: HistoricodetailsComponent },
+           // { path: 'historicos', component: HistoricolistComponent },
+           // { path: 'historicos/:id', component: HistoricodetailsComponent },
             { path: 'cliente', component: ClientelistComponent },
             { path: 'cliente/new', component: ClientedetailsComponent },
             { path: 'cliente/edit/:id', component: ClientedetailsComponent },
@@ -55,7 +57,7 @@ export const routes: Routes = [
             { path: 'usuarios', component: UsuariolistComponent },
             { path: 'usuarios/new', component: UsuariodetailsComponent },
             { path: 'usuarios/edit/:id', component: UsuariodetailsComponent },
-
+            { path: 'relatorio', component: RelatoriolistComponent }
         ]
     }
 ];

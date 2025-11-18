@@ -12,7 +12,7 @@ export const loginGuard: CanActivateFn = (_route, state) => {
     return false;
  }
 
- if(loginService.hasPermission('Caixa')  && state.url == '/admin/usuarios')
+ if((loginService.hasPermission('Caixa') ||loginService.hasPermission('Cozinha')) && state.url == '/admin/usuarios')
   {
     alert("Voce nao tem permissao para acessar essa pagina");
     return false;
@@ -21,6 +21,10 @@ export const loginGuard: CanActivateFn = (_route, state) => {
    alert("Voce nao tem permissao para acessar essa pagina");
    return false;
  }
+if((loginService.hasPermission('Caixa') || loginService.hasPermission('Cozinha') ) && state.url == '/admin/relatorio'){
+  alert("Voce nao tem permissao para acessar essa pagina");
+  return false;
+}
 
 
     return true;
