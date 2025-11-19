@@ -9,6 +9,7 @@ import { Usuario } from './usuario';
   providedIn: 'root'
 })
 export class LoginService {
+  
 
 
   http = inject(HttpClient);
@@ -16,6 +17,7 @@ export class LoginService {
 
 
   constructor() { }
+
 
 
   logar(login: Login): Observable<string> {

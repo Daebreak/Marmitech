@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,29 +27,29 @@ import com.marmitech.Marmitech.Services.PedidoItemService;
 public class PedidoItemController {
     @Autowired
     private PedidoItemService pedidoItemService;
-
+    @PreAuthorize("hasRole('admin') or hasRole('Cozinha') or hasRole('Caixa')")
     @PostMapping("/save")
     public ResponseEntity<PedidoItem> save(@RequestBody @Valid PedidoItemResponseDTO pedidoItem){
         return new ResponseEntity<>(pedidoItemService.save(pedidoItem), HttpStatus.CREATED);
     }
-    
+    @PreAuthorize("hasRole('admin') or hasRole('Cozinha') or hasRole('Caixa')")
     @PutMapping("/update/{pedidoItemId}")
     public ResponseEntity<PedidoItem> update(@RequestBody PedidoItemResponseDTO pedidoItem, @PathVariable int pedidoItemId){
         return new ResponseEntity<>(pedidoItemService.update(pedidoItem, pedidoItemId), HttpStatus.CREATED);
     }
 
-    
+    @PreAuthorize("hasRole('admin') or hasRole('Cozinha') or hasRole('Caixa')")
     @DeleteMapping("/delete/{pedidoItemId}")
     public ResponseEntity<String> delete(@PathVariable int pedidoItemId){
         return new ResponseEntity<>(pedidoItemService.delete(pedidoItemId), HttpStatus.CREATED);
     }
-        
+    @PreAuthorize("hasRole('admin') or hasRole('Cozinha') or hasRole('Caixa')")
     @GetMapping("/findById/{pedidoItemId}")
     public ResponseEntity<PedidoItem> findById(@PathVariable int pedidoItemId){
         return new ResponseEntity<>(pedidoItemService.findById(pedidoItemId), HttpStatus.CREATED);
     }
 
-        
+    @PreAuthorize("hasRole('admin') or hasRole('Cozinha') or hasRole('Caixa')")
     @GetMapping("/findAll")
     public ResponseEntity<List<PedidoItemResponseDTO>> findAll(){
         return new ResponseEntity<>(pedidoItemService.findAll(), HttpStatus.OK);

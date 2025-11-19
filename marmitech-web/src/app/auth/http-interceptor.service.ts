@@ -34,7 +34,7 @@ export const meuhttpInterceptor: HttpInterceptorFn = (request, next) => {
         } else {
           console.error('HTTP error:', err);
         }
-
+          
 
       } else {
         console.error('An error occurred:', err);

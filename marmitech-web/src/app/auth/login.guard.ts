@@ -3,8 +3,14 @@ import { CanActivateFn } from '@angular/router';
 import { LoginService } from './login.service';
 
 export const loginGuard: CanActivateFn = (_route, state) => {
-  
+ /* CanActivate(
+   
+
+    return : true;
+
+  );*/
  let loginService = inject(LoginService);
+ 
 
  if(loginService.hasPermission('Cozinha')  && state.url == '/admin/produtos')
   {
@@ -17,11 +23,20 @@ export const loginGuard: CanActivateFn = (_route, state) => {
     alert("Voce nao tem permissao para acessar essa pagina");
     return false;
  }
- if((loginService.hasPermission('Caixa') || loginService.hasPermission('Cozinha')) && state.url == '/admin/historico'){
+ if((loginService.hasPermission('Caixa') || loginService.hasPermission('Cozinha')) && state.url == '/admin/historico' ){
    alert("Voce nao tem permissao para acessar essa pagina");
    return false;
  }
-if((loginService.hasPermission('Caixa') || loginService.hasPermission('Cozinha') ) && state.url == '/admin/relatorio'){
+
+
+
+
+
+ if((loginService.hasPermission('Caixa') || loginService.hasPermission('Cozinha') ) && state.url == '/admin/relatorio'){
+  alert("Voce nao tem permissao para acessar essa pagina");
+  return false;
+}
+ if(loginService.hasPermission('Cozinha') && state.url == '/admin/categorias'){
   alert("Voce nao tem permissao para acessar essa pagina");
   return false;
 }
@@ -29,4 +44,6 @@ if((loginService.hasPermission('Caixa') || loginService.hasPermission('Cozinha')
 
     return true;
   }
+
+
   
