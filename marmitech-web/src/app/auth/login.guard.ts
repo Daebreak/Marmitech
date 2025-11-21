@@ -3,12 +3,9 @@ import { CanActivateFn } from '@angular/router';
 import { LoginService } from './login.service';
 
 export const loginGuard: CanActivateFn = (_route, state) => {
- /* CanActivate(
+// CanActivateFn()
    
-
-    return : true;
-
-  );*/
+ 
  let loginService = inject(LoginService);
  
 
