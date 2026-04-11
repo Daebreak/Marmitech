@@ -23,36 +23,84 @@ import { ClientedetailsComponent } from './components/cliente/clientedetails/cli
 
 import { UsuariolistComponent } from './components/usuario/usuariolist/usuariolist.component';
 import { UsuariodetailsComponent } from './components/usuario/usuariodetails/usuariodetails.component';
+import { PedidosFilaComponent } from './components/pedidos/pedidos-fila/pedidos-fila.component'; // Importe o novo componente
+import { roleGuard } from './auth/role.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
     {
-        path: 'admin', component: PrincipalComponent, children: [
-            { path: 'produtos', component: ProdutoslistComponent },
-            { path: 'produtos/new', component: ProdutosdetailsComponent },
-            { path: 'produtos/edit/:id', component: ProdutosdetailsComponent },
-            { path: 'pedidos', component: PedidoslistComponent },
-            { path: 'pedidos/new', component: PedidosdetailsComponent },
-            { path: 'pedidos/edit/:id', component: PedidosdetailsComponent },
-            { path: 'pedidosItem', component: PedidosItemlistComponent },
-            { path: 'categorias', component: CategoriaslistComponent },
-            { path: 'categorias/new', component: CategoriasdetailsComponent },
-            { path: 'categorias/edit/:id', component: CategoriasdetailsComponent },
-            { path: 'historicos', component: HistoricolistComponent },
-            { path: 'historicos/:id', component: HistoricodetailsComponent },
-            { path: 'cliente', component: ClientelistComponent },
-            { path: 'cliente/new', component: ClientedetailsComponent },
-            { path: 'cliente/edit/:id', component: ClientedetailsComponent },
-            { path: 'pedidosItem', component: PedidosItemlistComponent },
-            { path: 'pedidosItem/new', component: PedidosItemdetailsComponent },
-            { path: 'pedidosItem/edit/:id', component: PedidosItemdetailsComponent },
-            { path: 'historico', component: HistoricolistComponent },
-            { path: 'historico/new', component: HistoricodetailsComponent },
-            { path: 'historico/edit/:id', component: HistoricodetailsComponent },
-            { path: 'usuarios', component: UsuariolistComponent },
-            { path: 'usuarios/new', component: UsuariodetailsComponent },
-            { path: 'usuarios/edit/:id', component: UsuariodetailsComponent },
+        path: 'admin',
+        component: PrincipalComponent,
+        children: [
+            // PRODUTOS (Só ADMIN)
+            {
+                path: 'produtos',
+                component: ProdutoslistComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['ADMIN'] }
+            },
+            {
+                path: 'produtos/new',
+                component: ProdutosdetailsComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['ADMIN'] }
+            },
+
+            // PEDIDOS (ADMIN e CAIXA)
+            {
+                path: 'pedidos',
+                component: PedidoslistComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['ADMIN', 'CAIXA'] }
+            },
+
+            // FILA (ADMIN, CAIXA e COZINHA)
+            {
+                path: 'pedidos/fila',
+                component: PedidosFilaComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['ADMIN', 'CAIXA', 'COZINHA'] }
+            },
+
+            {
+                path: 'pedidos/pedidosItem',
+                component: PedidosItemlistComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['ADMIN', 'CAIXA'] }
+            },
+
+            // HISTÓRICOS (ADMIN, CAIXA e COZINHA)
+            {
+                path: 'historicos',
+                component: HistoricolistComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['ADMIN', 'CAIXA', 'COZINHA'] }
+            },
+
+            // CLIENTES
+            {
+                path: 'cliente',
+                component: ClientelistComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['ADMIN', 'CAIXA'] }
+            },
+
+            // CATEGORIAS (Só ADMIN)
+            {
+                path: 'categorias',
+                component: CategoriaslistComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['ADMIN'] }
+            },
+
+            // USUÁRIOS (ADMIN e CAIXA - conforme seu pedido)
+            {
+                path: 'usuarios',
+                component: UsuariolistComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['ADMIN', 'CAIXA'] }
+            },
 
         ]
     }

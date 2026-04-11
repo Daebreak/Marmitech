@@ -25,6 +25,7 @@
 
               </tr>
             </thead>
+      
             <tbody>
               @for (usuario of lista; track $index) {
               <tr>
@@ -33,8 +34,8 @@
                 <td>{{usuario.senha}}</td>
                 <td>{{usuario.cargo}}</td>
                 <td>{{usuario.data_criacao | date: 'dd/MM/yyyy'}}</td>
-
-                <td class="direita">
+  
+                <td class="btntable">
                   <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="editById(usuario)">
                     Editar
                   </button>

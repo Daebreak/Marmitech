@@ -31,8 +31,15 @@ export class HistoricolistComponent implements OnInit {
   carregarPedidos() {
     this.pedidoService.findAll().subscribe({
       next: (listaRecebida) => {
-        this.pedidos = listaRecebida;
-        this.pedidosOriginal = listaRecebida; // Salva a lista original
+        // Colocando os status para nao aparecer no historico todos os tipos de status
+        const pedidosFiltrados = listaRecebida.filter(p =>
+          p.status === 'FINALIZADO' ||
+          p.status === 'CANCELADO' ||
+          p.status === 'ENTREGUE'
+        );
+
+        this.pedidos = pedidosFiltrados;
+        this.pedidosOriginal = pedidosFiltrados;
       },
       error: (erro) => {
         console.error('Erro ao buscar a lista de pedidos:', erro);
@@ -46,13 +53,11 @@ export class HistoricolistComponent implements OnInit {
 
     if (this.filtroData) {
       pedidosFiltrados = pedidosFiltrados.filter(pedido => {
-        // Converte a data do pedido para o formato YYYY-MM-DD para comparação
         const dataPedidoFormatada = new Date(pedido.dataPedido).toISOString().split('T')[0];
         return dataPedidoFormatada === this.filtroData;
       });
     }
 
-    // Aplica filtro de status se houver
     if (this.filtroStatus) {
       pedidosFiltrados = pedidosFiltrados.filter(pedido =>
         pedido.status.toUpperCase() === this.filtroStatus.toUpperCase()

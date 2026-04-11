@@ -13,9 +13,10 @@
           </div>
         </div>
         <br />
+        <div class="centralizar">
         <table class="table table-striped">
           <thead>
-            <tr class="centralizar">
+            <tr>
               <th>ID</th>
               <th>Nome</th>
               <th>Descrição</th>
@@ -28,9 +29,9 @@
               <td>{{ categoria.id }}</td>
               <td>{{ categoria.nome }}</td>
               <td>{{ categoria.descricao }}</td>
-              <div>
+  
                 <td>
-                  <div class="botoes">
+                  <div>
                     <button type="button" class=" btn btn-primary btn-rounded" mdbRipple (click)="editById(categoria)">
                       Editar
                     </button>
@@ -39,7 +40,6 @@
                     </button>
                   </div>
                 </td>
-              </div>
             </tr>
             }
           </tbody>
