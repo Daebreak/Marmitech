@@ -9,13 +9,13 @@ import { environment } from '../../environments/environment';
 })
 export class LoginService {
     http = inject(HttpClient);
-    API = `${environment.apiUrl}/api/login`;
+    API = `${environment.apiUrl}/api/usuario/login`;
 
     constructor() { }
 
-    // Faz o POST no backend para pegar o token
-    logar(loginData: any): Observable<string> {
-        return this.http.post<string>(this.API, loginData, { responseType: 'text' as 'json' });
+    // Faz o POST no backend para logar
+    logar(nome: string, senha: string): Observable<any> {
+        return this.http.post<any>(`${this.API}?nome=${nome}&senha=${senha}`, {}, { responseType: 'text' as 'json' });
     }
 
     // Salva o token no navegador
@@ -37,8 +37,14 @@ export class LoginService {
     getUsuarioCargo(): string {
         const token = this.getToken();
         if (token) {
-            const decoded: any = jwtDecode(token);
-            return (decoded.role || decoded.cargo || '').toUpperCase();
+            try {
+                const decoded: any = jwtDecode(token);
+                // Tenta pegar de 'role' ou 'cargo' e limpa espaços
+                const cargo = (decoded.role || decoded.cargo || '').toString().trim().toUpperCase();
+                return cargo;
+            } catch (e) {
+                console.error('Erro ao decodificar token:', e);
+            }
         }
         return '';
     }

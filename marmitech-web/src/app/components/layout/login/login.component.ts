@@ -19,27 +19,15 @@ export class LoginComponent {
   loginService = inject(LoginService);
 
   logar() {
-    const dto = {
-      username: this.loginData.username,
-      password: this.loginData.password
-    };
-
-    this.loginService.logar(dto).subscribe({
+    this.loginService.logar(this.loginData.username, this.loginData.password).subscribe({
       next: (token) => {
-        //Salva o token
         this.loginService.addToken(token);
+        Swal.fire('Sucesso', 'Login realizado!', 'success');
 
-        //Verifica o cargo para decidir o destino
-        // O método getUsuarioCargo lê o token que acabamos de salvar
-        const cargo = this.loginService.getUsuarioCargo().toUpperCase();
-
-        if (cargo === 'ADMIN') {
-          this.router.navigate(['/admin/usuarios']);
-        }
-        else if (cargo === 'COZINHA') {
+        const role = this.loginService.getUsuarioCargo();
+        if (role === 'COZINHA') {
           this.router.navigate(['/admin/pedidos/fila']);
-        }
-        else {
+        } else {
           this.router.navigate(['/admin/pedidos']);
         }
       },

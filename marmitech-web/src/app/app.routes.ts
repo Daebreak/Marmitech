@@ -23,7 +23,7 @@ import { ClientedetailsComponent } from './components/cliente/clientedetails/cli
 
 import { UsuariolistComponent } from './components/usuario/usuariolist/usuariolist.component';
 import { UsuariodetailsComponent } from './components/usuario/usuariodetails/usuariodetails.component';
-import { PedidosFilaComponent } from './components/pedidos/pedidos-fila/pedidos-fila.component'; // Importe o novo componente
+import { PedidosFilaComponent } from './components/pedidos/pedidos-fila/pedidos-fila.component';
 import { roleGuard } from './auth/role.guard';
 
 export const routes: Routes = [
@@ -67,7 +67,7 @@ export const routes: Routes = [
                 path: 'pedidos/pedidosItem',
                 component: PedidosItemlistComponent,
                 canActivate: [roleGuard],
-                data: { roles: ['ADMIN', 'CAIXA'] }
+                data: { roles: ['ADMIN', 'CAIXA', 'COZINHA'] }
             },
 
             // HISTÓRICOS (ADMIN, CAIXA e COZINHA)

@@ -7,14 +7,19 @@ export const roleGuard: CanActivateFn = (route, state) => {
     const loginService = inject(LoginService);
     const router = inject(Router);
 
-    // Pega o cargo do usuário logado  ADMIN, CAIXA, COZINHA
-    const userRole = loginService.getUsuarioCargo().toUpperCase();
+    // Pega o cargo do usuário logado (ex: CAIXA, ADMIN, COZINHA)
+    const userRole = loginService.getUsuarioCargo();
 
-    // Pega as roles esperadas da rota que estao definidas no routes.ts
+    // Pega as roles esperadas da rota (ex: ['ADMIN', 'CAIXA' , 'COZINHA'])
     const expectedRoles = route.data['roles'] as Array<string>;
 
-    // Se o usuário tiver uma das roles permitidas ele consegue acessar
-    if (expectedRoles.includes(userRole)) {
+    // Verifica se o cargo do usuário bate com alguma das permitidas
+    // Aceita variações como ADMIN ou ROLE_ADMIN
+    const hasPermission = expectedRoles.some(role =>
+        userRole === role.toUpperCase() || userRole === 'ROLE_' + role.toUpperCase()
+    );
+
+    if (hasPermission) {
         return true;
     }
 
