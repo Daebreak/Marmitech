@@ -14,7 +14,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/usuario")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class UsuarioController {
 
     @Autowired
@@ -49,12 +48,6 @@ public class UsuarioController {
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         usuarioService.delete( id );
         return new ResponseEntity<>( HttpStatus.OK );
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestParam String nome, @RequestParam String senha) {
-        usuarioService.login( nome, senha );
-        return new ResponseEntity<>( HttpStatus.ACCEPTED );
     }
 
     @GetMapping("/findByCargo/{cargo}")

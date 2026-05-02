@@ -1,17 +1,14 @@
 import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
-import { LoginService } from './login.service';
+import { CanActivateFn } from '@angular/router';
+import { KeycloakService } from './login.service';
 
 export const loginGuard: CanActivateFn = (route, state) => {
-  const loginService = inject(LoginService);
-  const router = inject(Router);
+  const keycloakService = inject(KeycloakService);
 
-  // Se houver um token guardado, deixa entrar
-  if (loginService.getToken()) {
+  if (keycloakService.isAuthenticated()) {
     return true;
   }
-
-  // Se não houver, expulsa para o ecrã de login
-  router.navigate(['/login']);
+  alert('Você precisa fazer login!');
+  window.location.reload();
   return false;
 };

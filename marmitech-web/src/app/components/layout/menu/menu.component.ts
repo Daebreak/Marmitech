@@ -1,10 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MdbCollapseModule } from 'mdb-angular-ui-kit/collapse';
 import { MdbDropdownModule } from 'mdb-angular-ui-kit/dropdown';
-import { LoginService } from '../../../auth/login.service';
+import { KeycloakService } from '../../../auth/login.service';
 
 @Component({
   selector: 'app-menu',
@@ -15,8 +14,7 @@ import { LoginService } from '../../../auth/login.service';
 })
 export class MenuComponent {
 
-  router = inject(Router);
-  loginService = inject(LoginService);
+  loginService = inject(KeycloakService);
 
   get isAdmin() {
     return this.loginService.hasRole('ADMIN');
@@ -31,8 +29,6 @@ export class MenuComponent {
   }
 
   logout() {
-    this.loginService.removerToken();
-    // Redireciona o usuário para a tela de login
-    this.router.navigate(['/login']);
+    this.loginService.logout();
   }
 }

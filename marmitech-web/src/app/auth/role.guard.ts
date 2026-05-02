@@ -1,25 +1,34 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { LoginService } from './login.service';
-import Swal from 'sweetalert2';
+import { KeycloakService } from './login.service'; // Certifique-se de que o caminho e o nome estão corretos
 
 export const roleGuard: CanActivateFn = (route, state) => {
-    const loginService = inject(LoginService);
-    const router = inject(Router);
+  const keycloakService = inject(KeycloakService);
+  const router = inject(Router);
 
-    // Pega o cargo do usuário logado  ADMIN, CAIXA, COZINHA
-    const userRole = loginService.getUsuarioCargo().toUpperCase();
-
-    // Pega as roles esperadas da rota que estao definidas no routes.ts
-    const expectedRoles = route.data['roles'] as Array<string>;
-
-    // Se o usuário tiver uma das roles permitidas ele consegue acessar
-    if (expectedRoles.includes(userRole)) {
-        return true;
-    }
-
-    // Se não tiver permissão
-    Swal.fire('Acesso Negado', 'Você não tem permissão para acessar esta página.', 'error');
-    router.navigate(['/login']);
+  // 1. Verifica se o usuário está logado
+  if (!keycloakService.isAuthenticated()) {
+    keycloakService.logout(); // Força o logout se tentar burlar
     return false;
+  }
+
+  // 2. Pega as roles exigidas pela rota (definidas lá no app.routes.ts)
+  const rolesExigidas = route.data['roles'] as Array<string>;
+
+  // Se a rota não exige nenhuma role específica, deixa passar
+  if (!rolesExigidas || rolesExigidas.length === 0) {
+    return true;
+  }
+
+  // 3. Verifica se o usuário tem pelo menos UMA das roles exigidas
+  const temPermissao = rolesExigidas.some(role => keycloakService.hasRole(role));
+
+  if (temPermissao) {
+    return true; // Deixa carregar a tela
+  } else {
+    // Se não tiver permissão, redireciona para uma tela segura ou avisa
+    console.warn('Acesso Negado: Você não tem as roles necessárias:', rolesExigidas);
+    alert('Acesso Negado! Você não tem permissão para acessar esta tela.');
+    return false; // A tela fica em branco ou parada se retornar false sem redirecionar
+  }
 };

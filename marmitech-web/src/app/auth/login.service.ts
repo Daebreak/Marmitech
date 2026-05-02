@@ -1,55 +1,71 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
-import { jwtDecode } from "jwt-decode";
-import { environment } from '../../environments/environment';
+import { Injectable } from '@angular/core';
+import Keycloak from 'keycloak-js';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
-export class LoginService {
-    http = inject(HttpClient);
-    API = `${environment.apiUrl}/api/login`;
+export class KeycloakService {
+  private keycloak: Keycloak;
 
-    constructor() { }
+  constructor() {
+    this.keycloak = new Keycloak({
+      url: 'http://192.168.3.22:5001',
+      realm: 'marmitech',
+      clientId: 'marmitech-web'
+    });
+  }
 
-    // Faz o POST no backend para pegar o token
-    logar(loginData: any): Observable<string> {
-        return this.http.post<string>(this.API, loginData, { responseType: 'text' as 'json' });
-    }
 
-    // Salva o token no navegador
-    addToken(token: string) {
-        localStorage.setItem('token', token);
-    }
+  async init(): Promise<boolean> {
+    const authenticated = await this.keycloak.init({
+      onLoad: 'login-required',
+      checkLoginIframe: false
+    });
+    return authenticated;
+  }
 
-    // Remove o token
-    removerToken() {
-        localStorage.removeItem('token');
-    }
+  getToken(): string | undefined {
+    return this.keycloak.token;
+  }
 
-    // Recupera o token salvo
-    getToken() {
-        return localStorage.getItem('token');
-    }
+  async updateToken(): Promise<string> {
+    await this.keycloak.updateToken(30);
+    return this.keycloak.token!;
+  }
 
-    // Lê o cargo dentro do token
-    getUsuarioCargo(): string {
-        const token = this.getToken();
-        if (token) {
-            const decoded: any = jwtDecode(token);
-            return (decoded.role || decoded.cargo || '').toUpperCase();
-        }
-        return '';
-    }
+  login(): void {
+    this.keycloak.login({ redirectUri: 'http://front.marmitech.qzz.io:4200/admin/pedidos/fila' });
+  }
 
-    // Verifica se tem permissão
-    hasRole(role: string): boolean {
-        const cargoAtual = this.getUsuarioCargo();
-        // Aceita tanto "ADMIN" quanto "ROLE_ADMIN"
-        if (cargoAtual === role.toUpperCase() || cargoAtual === 'ROLE_' + role.toUpperCase()) {
-            return true;
-        }
-        return false;
-    }
+  logout(): void {
+    this.keycloak.logout({ redirectUri: 'http://front.marmitech.qzz.io:4200/' });
+  }
+
+  getUserRoles(): string[] {
+    const realmAccess = this.keycloak.tokenParsed?.['realm_access'];
+    return realmAccess?.['roles'] || [];
+  }
+
+  hasRole(role: string): boolean {
+    return this.keycloak.hasRealmRole(role);
+  }
+
+  getUsername(): string | undefined {
+    return this.keycloak.tokenParsed?.['preferred_username'];
+  }
+
+  isAuthenticated(): boolean {
+    return !!this.keycloak.authenticated;
+  }
+
+  getUserCargo(): string {
+    const roles = this.getUserRoles().filter(
+      r => !['offline_access', 'uma_authorization', 'default-roles-marmitech'].includes(r)
+    );
+    return roles.length > 0 ? roles[0].toUpperCase() : '';
+  }
+
+  getUsuarioCargo(): string {
+    return this.getUserCargo();
+  }
 }

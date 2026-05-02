@@ -1,26 +1,22 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { catchError, throwError } from 'rxjs';
-
+import { from, switchMap, catchError, throwError } from 'rxjs';
+import { KeycloakService } from './login.service';
 
 export const httpInterceptor: HttpInterceptorFn = (request, next) => {
-  const router = inject(Router);
-  const token = localStorage.getItem('token');
+  const keycloak = inject(KeycloakService);
 
-  if (token) {
-    request = request.clone({
-      setHeaders: { Authorization: 'Bearer ' + token },
-    });
-  }
-
-  return next(request).pipe(
+  // Atualiza o token antes de cada request (se necessário)
+  return from(keycloak.updateToken()).pipe(
+    switchMap(token => {
+      const cloned = request.clone({
+        setHeaders: { Authorization: 'Bearer ' + token }
+      });
+      return next(cloned);
+    }),
     catchError((err: any) => {
-      if (err instanceof HttpErrorResponse) {
-        if (err.status === 401 || err.status === 403) {
-          localStorage.removeItem('token');
-          router.navigate(['/login']);
-        }
+      if (err instanceof HttpErrorResponse && (err.status === 401 || err.status === 403)) {
+        keycloak.logout();
       }
       return throwError(() => err);
     })

@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './components/layout/login/login.component';
 import { PrincipalComponent } from './components/layout/principal/principal.component';
 
 import { ProdutoslistComponent } from './components/produtos/produtoslist/produtoslist.component';
@@ -27,8 +26,7 @@ import { PedidosFilaComponent } from './components/pedidos/pedidos-fila/pedidos-
 import { roleGuard } from './auth/role.guard';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'login', pathMatch: 'full' },
-    { path: 'login', component: LoginComponent },
+    { path: '', redirectTo: 'admin/pedidos/fila', pathMatch: 'full' },
     {
         path: 'admin',
         component: PrincipalComponent,
@@ -59,7 +57,7 @@ export const routes: Routes = [
             {
                 path: 'pedidos/fila',
                 component: PedidosFilaComponent,
-                canActivate: [roleGuard],
+                // canActivate: [roleGuard],
                 data: { roles: ['ADMIN', 'CAIXA', 'COZINHA'] }
             },
 

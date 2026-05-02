@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://marmitech-back.pm02.com.br:5000'
+  apiUrl: 'http://back.marmitech.qzz.io:8080'
 };

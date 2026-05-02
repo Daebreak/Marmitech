@@ -60,22 +60,6 @@ public class UsuarioService {
         return usuarioRepository.save( usuarioUpdate );
     }
 
-    public void login(String nome, String senha) throws RuntimeException {
-        Optional<Usuario> usuarioOPT = usuarioRepository.findByNomeAndSenha( nome, senha );
-        if (usuarioOPT.isEmpty()) {
-            throw new RuntimeException( "Usuario ou senha invalidos" );
-        }
-        Usuario usuario = usuarioOPT.get();
-
-        if (usuario.getCargo().equalsIgnoreCase( "Caixa" )) {
-            System.out.println( "Mudando para tela de caixa" );
-        }
-        if (usuario.getCargo().equalsIgnoreCase( "Cozinha" )) {
-            System.out.println( "Mudando para a tela de cozinha" );
-        }
-
-    }
-
     public List<Usuario> findByCargo(String cargo) {
         return usuarioRepository.getByCargo( cargo );
     }
