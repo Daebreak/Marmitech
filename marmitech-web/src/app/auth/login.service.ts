@@ -9,7 +9,7 @@ export class KeycloakService {
 
   constructor() {
     this.keycloak = new Keycloak({
-      url: 'https://front.marmitech.qzz.io:5001',
+      url: 'http://localhost:5001',
       realm: 'marmitech',
       clientId: 'marmitech-web'
     });
@@ -34,11 +34,11 @@ export class KeycloakService {
   }
 
   login(): void {
-    this.keycloak.login({ redirectUri: 'https://front.marmitech.qzz.io:4200/admin/pedidos/fila' });
+    this.keycloak.login({ redirectUri: 'http://localhost:5001' });
   }
 
   logout(): void {
-    this.keycloak.logout({ redirectUri: 'https://front.marmitech.qzz.io:4200/' });
+    this.keycloak.logout({ redirectUri: 'http://localhost:5001' });
   }
 
   getUserRoles(): string[] {
