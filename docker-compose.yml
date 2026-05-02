@@ -31,7 +31,7 @@ services:
 
       # --- Configurações de Hostname e HTTP ---
       # O Keycloak precisa saber qual é sua URL pública para gerar os links de redirecionamento corretos.
-      KC_HOSTNAME: localhost
+      KC_HOSTNAME: front.marmitech.qzz.io
       # Para desenvolvimento local, desabilitamos a exigência de HTTPS.
       KC_HTTP_ENABLED: 'true'
       KC_HOSTNAME_STRICT: 'false'
