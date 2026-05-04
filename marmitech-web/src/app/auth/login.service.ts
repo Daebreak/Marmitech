@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import Keycloak from 'keycloak-js';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +10,9 @@ export class KeycloakService {
 
   constructor() {
     this.keycloak = new Keycloak({
-      url: 'http://localhost:5001',
-      realm: 'marmitech',
-      clientId: 'marmitech-web'
+      url: environment.keycloak.url,
+      realm: environment.keycloak.realm,
+      clientId: environment.keycloak.clientId
     });
   }
 
@@ -34,11 +35,11 @@ export class KeycloakService {
   }
 
   login(): void {
-    this.keycloak.login({ redirectUri: 'http://localhost:5001' });
+    this.keycloak.login();
   }
 
   logout(): void {
-    this.keycloak.logout({ redirectUri: 'http://localhost:5001' });
+    this.keycloak.logout();
   }
 
   getUserRoles(): string[] {
