@@ -2,9 +2,11 @@ package com.marmitech.Marmitech.Services;
 
 import com.marmitech.Marmitech.DTO.RequestDTO.ProdutoSaveDTO;
 import com.marmitech.Marmitech.DTO.ResponseDTO.ProdutoListaDTO;
+import com.marmitech.Marmitech.Entity.Categoria;
 import com.marmitech.Marmitech.Entity.Produto;
 import com.marmitech.Marmitech.Mapper.RequestMapper.SaveProdutoMapping;
 import com.marmitech.Marmitech.Mapper.ResponseMapper.ProdutoListaMapper;
+import com.marmitech.Marmitech.Repository.CategoriaRepository;
 import com.marmitech.Marmitech.Repository.PedidoItemRepository;
 import com.marmitech.Marmitech.Repository.ProdutoRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +19,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProdutoService {
 
+    private final CategoriaRepository categoriaRepository;
     private final PedidoItemRepository pedidoItemRepository;
-
     private final ProdutoRepository produtoRepository;
 
-    public ProdutoListaDTO save(ProdutoSaveDTO produto) {
-        Produto novoProduto = SaveProdutoMapping.toEntity( produto );
+    public ProdutoListaDTO save(ProdutoSaveDTO produtoDto) {
+        Categoria categoria = categoriaRepository.findById( produtoDto.categoriaId() )
+                .orElseThrow( () -> new RuntimeException( "Categoria com ID " + produtoDto.categoriaId() + " não encontrada" ) );
 
+        Produto novoProduto = SaveProdutoMapping.toEntity( produtoDto, categoria );
         novoProduto.setDataCadastro( LocalDate.now().toString() );
 
         Produto salvoProduto = produtoRepository.save( novoProduto );
@@ -65,8 +69,10 @@ public class ProdutoService {
         if (produto.getPrecoUnitario() != null && produto.getPrecoUnitario() >= 0) {
             produtoUpdate.setPrecoUnitario( produto.getPrecoUnitario() );
         }
-        if (produto.getCategoria() != null && !produto.getCategoria().isBlank()) {
-            produtoUpdate.setCategoria( produto.getCategoria() );
+        if (produto.getCategoria() != null) {
+            Categoria cat = categoriaRepository.findById( produto.getCategoria().getId() )
+                    .orElseThrow( () -> new RuntimeException( "Categoria com ID " + produto.getCategoria().getId() + " não encontrada" ) );
+            produtoUpdate.setCategoria( cat );
         }
         if (produto.getEstoque() >= 0) {
             produtoUpdate.setEstoque( produto.getEstoque() );
