@@ -1,27 +1,25 @@
 package com.marmitech.Marmitech.Services;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.marmitech.Marmitech.DTO.RequestDTO.PedidoRequestDTO;
 import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoResponseDTO;
-import com.marmitech.Marmitech.Entity.HistoricoCompra;
 import com.marmitech.Marmitech.Entity.Pedido;
-import com.marmitech.Marmitech.Mapper.RequestMapper.PedidoRequestMapper;
-import com.marmitech.Marmitech.Mapper.ResponseMapper.PedidoResponseMapper;
 import com.marmitech.Marmitech.Entity.PedidoItem;
 import com.marmitech.Marmitech.Entity.Produto;
+import com.marmitech.Marmitech.Mapper.RequestMapper.PedidoRequestMapper;
+import com.marmitech.Marmitech.Mapper.ResponseMapper.PedidoResponseMapper;
 import com.marmitech.Marmitech.Repository.ClienteRepository;
 import com.marmitech.Marmitech.Repository.PedidoRepository;
+import com.marmitech.Marmitech.Repository.ProdutoRepository;
 import com.marmitech.Marmitech.Repository.UsuarioRepository;
 
 import jakarta.transaction.Transactional;
-
-import com.marmitech.Marmitech.Repository.ProdutoRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -94,6 +92,12 @@ public class PedidoService {
     @Transactional
     public Pedido update(Integer id, Pedido pedido) {
         Pedido pedidoUpdate = findById( id );
+        pedidoUpdate.setValorTotal( pedido.getValorTotal() );
+        pedidoUpdate.setStatus( pedido.getStatus() );
+        pedidoUpdate.setEnderecoEntrega( pedido.getEnderecoEntrega() );
+        pedidoUpdate.setUsuario( pedido.getUsuario() );
+        pedidoUpdate.setCliente( pedido.getCliente() );
+        pedidoUpdate.setPedidoItems( pedido.getPedidoItems() );
         return pedidoRepository.save( pedidoUpdate );
     }
 

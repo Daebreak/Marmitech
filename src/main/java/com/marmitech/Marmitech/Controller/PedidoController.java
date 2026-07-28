@@ -5,7 +5,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.marmitech.Marmitech.DTO.RequestDTO.PedidoRequestDTO;
 import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoResponseDTO;
@@ -40,20 +48,20 @@ public class PedidoController {
     @GetMapping("/findByStatus")
     public ResponseEntity<List<Pedido>> findByStatus(@RequestParam String status) {
         List<Pedido> result = pedidoService.findByStatus( status );
-        return new ResponseEntity<>( result, HttpStatus.FOUND );
+        return new ResponseEntity<>( result, HttpStatus.OK );
 
     }
 
     @GetMapping("/findByProdutoNome")
     public ResponseEntity<List<Pedido>> findByProdutoNome(@RequestParam String nomeProduto) {
         List<Pedido> result = pedidoService.findByProdutoNome( nomeProduto );
-        return new ResponseEntity<>( result, HttpStatus.FOUND );
+        return new ResponseEntity<>( result, HttpStatus.OK );
     }
 
     @GetMapping("/findByProduto")
     public ResponseEntity<List<Pedido>> findByProduto(@RequestParam int produtoId) {
         List<Pedido> result = pedidoService.findByProduto( produtoId );
-        return new ResponseEntity<>( result, HttpStatus.FOUND );
+        return new ResponseEntity<>( result, HttpStatus.OK );
     }
 
     @PutMapping("/update/{id}")
@@ -66,6 +74,7 @@ public class PedidoController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         pedidoService.delete( id );
-        return new ResponseEntity<>( null, HttpStatus.OK );
+        return new ResponseEntity<>( HttpStatus.NO_CONTENT );
     }
+
 }

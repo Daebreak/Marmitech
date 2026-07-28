@@ -33,17 +33,18 @@ public class PedidoItemController {
     @PutMapping("/update/{pedidoItemId}")
     public ResponseEntity<PedidoItem> update(@RequestBody PedidoItemResponseDTO pedidoItem,
             @PathVariable int pedidoItemId) {
-        return new ResponseEntity<>(pedidoItemService.update(pedidoItem, pedidoItemId), HttpStatus.CREATED);
+        return new ResponseEntity<>(pedidoItemService.update(pedidoItem, pedidoItemId), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{pedidoItemId}")
-    public ResponseEntity<String> delete(@PathVariable int pedidoItemId) {
-        return new ResponseEntity<>(pedidoItemService.delete(pedidoItemId), HttpStatus.CREATED);
+    public ResponseEntity<Void> delete(@PathVariable int pedidoItemId) {
+        pedidoItemService.delete(pedidoItemId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/findById/{pedidoItemId}")
     public ResponseEntity<PedidoItem> findById(@PathVariable int pedidoItemId) {
-        return new ResponseEntity<>(pedidoItemService.findById(pedidoItemId), HttpStatus.CREATED);
+        return new ResponseEntity<>(pedidoItemService.findById(pedidoItemId), HttpStatus.OK);
     }
 
     @GetMapping("/findAll")

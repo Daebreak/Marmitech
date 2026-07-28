@@ -31,8 +31,9 @@ public class HistoricoCompraController {
     }
 
     @DeleteMapping("/delete/{historicoCompraId}")
-    public ResponseEntity<String> delete(@PathVariable int historicoCompraId) {
-        return new ResponseEntity<>( historicoCompraService.delete( historicoCompraId ), HttpStatus.OK );
+    public ResponseEntity<Void> delete(@PathVariable int historicoCompraId) {
+        historicoCompraService.delete( historicoCompraId );
+        return new ResponseEntity<>( HttpStatus.NO_CONTENT );
     }
 
     @GetMapping("/findById/{historicoCompraId}")
