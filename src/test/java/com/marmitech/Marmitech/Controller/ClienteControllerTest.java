@@ -122,7 +122,7 @@ class ClienteControllerTest {
         );
 
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
 
 
         boolean existe = clienteRepository.findById(cliente.getId()).isPresent();

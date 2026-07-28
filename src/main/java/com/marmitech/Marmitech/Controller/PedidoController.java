@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.marmitech.Marmitech.DTO.RequestDTO.PedidoRequestDTO;
 import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoResponseDTO;
 import com.marmitech.Marmitech.Entity.Pedido;
 import com.marmitech.Marmitech.Mapper.ResponseMapper.PedidoResponseMapper;
@@ -19,8 +20,8 @@ public class PedidoController {
     private PedidoService pedidoService;
 
     @PostMapping("/save")
-    public ResponseEntity<Pedido> save(@RequestBody Pedido pedido) {
-        return new ResponseEntity<Pedido>( pedidoService.save( pedido ), HttpStatus.CREATED );
+    public ResponseEntity<PedidoResponseDTO> save(@RequestBody PedidoRequestDTO dto) {
+        return new ResponseEntity<>( pedidoService.save( dto ), HttpStatus.CREATED );
     }
 
     @GetMapping

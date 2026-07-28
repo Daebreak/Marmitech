@@ -1,10 +1,13 @@
 package com.marmitech.Marmitech.Services;
+import com.marmitech.Marmitech.DTO.RequestDTO.CategoriaRequestDTO;
+import com.marmitech.Marmitech.DTO.ResponseDTO.CategoriaResponseDTO;
 import com.marmitech.Marmitech.Entity.Categoria;
+import com.marmitech.Marmitech.Mapper.RequestMapper.CategoriaRequestMapper;
+import com.marmitech.Marmitech.Mapper.ResponseMapper.CategoriaResponseMapper;
 import com.marmitech.Marmitech.Repository.CategoriaRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -12,43 +15,43 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CategoriaService {
-    @Autowired
     private final CategoriaRepository categoriaRepository;
 
-
-    public List<Categoria> findAll() {
-        return categoriaRepository.findAll();
+    public List<CategoriaResponseDTO> findAll() {
+        return categoriaRepository.findAll()
+                .stream()
+                .map( CategoriaResponseMapper::toDto )
+                .toList();
     }
 
-    public Object save(@Valid Categoria categoria) {
-        return categoriaRepository.save(categoria);
+    public CategoriaResponseDTO save(@Valid CategoriaRequestDTO dto) {
+        Categoria categoria = CategoriaRequestMapper.toEntity( dto );
+        Categoria saved = categoriaRepository.save( categoria );
+        return CategoriaResponseMapper.toDto( saved );
     }
 
-    public Categoria findById(Integer id) {
-        return categoriaRepository.findById(id).orElseThrow(RuntimeException::new);
+    public CategoriaResponseDTO findById(Integer id) {
+        Categoria categoria = categoriaRepository.findById( id ).orElseThrow( RuntimeException::new );
+        return CategoriaResponseMapper.toDto( categoria );
     }
 
     public void delete(Integer id) {
-        var delete = findById(id);
-        categoriaRepository.delete(delete);
+        var delete = findById( id );
+        categoriaRepository.deleteById( delete.id() );
     }
 
-    public Categoria update(Integer id, Categoria dadosNovaCategoria) {
-        // 1. Busca a categoria original no banco de dados.
-        Categoria categoriaParaAtualizar = findById(id);
+    public CategoriaResponseDTO update(Integer id, CategoriaRequestDTO dto) {
+        Categoria categoriaParaAtualizar = categoriaRepository.findById( id ).orElseThrow( RuntimeException::new );
 
-        // 2. Verifica se os DADOS NOVOS para 'nome' são válidos antes de atualizar.
-        if (dadosNovaCategoria.getNome() != null && !dadosNovaCategoria.getNome().isBlank()) {
-            categoriaParaAtualizar.setNome(dadosNovaCategoria.getNome());
+        if (dto.nome() != null && !dto.nome().isBlank()) {
+            categoriaParaAtualizar.setNome( dto.nome() );
         }
 
-        // 3. Verifica se os DADOS NOVOS para 'descricao' são válidos antes de atualizar.
-        if (dadosNovaCategoria.getDescricao() != null && !dadosNovaCategoria.getDescricao().isBlank()) {
-            categoriaParaAtualizar.setDescricao(dadosNovaCategoria.getDescricao());
+        if (dto.descricao() != null && !dto.descricao().isBlank()) {
+            categoriaParaAtualizar.setDescricao( dto.descricao() );
         }
 
-        // 4. Salva a entidade atualizada e a retorna.
-        return categoriaRepository.save(categoriaParaAtualizar);
+        Categoria saved = categoriaRepository.save( categoriaParaAtualizar );
+        return CategoriaResponseMapper.toDto( saved );
     }
-
 }

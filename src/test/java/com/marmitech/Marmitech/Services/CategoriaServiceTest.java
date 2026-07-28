@@ -1,4 +1,6 @@
 package com.marmitech.Marmitech.Services;
+import com.marmitech.Marmitech.DTO.RequestDTO.CategoriaRequestDTO;
+import com.marmitech.Marmitech.DTO.ResponseDTO.CategoriaResponseDTO;
 import com.marmitech.Marmitech.Entity.Categoria;
 import com.marmitech.Marmitech.Repository.CategoriaRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -27,20 +29,14 @@ class CategoriaServiceTest {
         categoria.setDescricao( "Tradicionais");
         List<Categoria> listaDeCategoriasFalsas = List.of(categoria);
 
-        // 2. Configura o MOCK
         when(categoriaRepository.findAll()).thenReturn(listaDeCategoriasFalsas);
 
+        List<CategoriaResponseDTO> resultado = categoriaService.findAll();
 
-
-        List<Categoria> resultado = categoriaService.findAll();
-
-
-        //  Verifica se o resultado está correto
         assertNotNull(resultado);
         assertEquals(1, resultado.size());
-        assertEquals("Marmitas", resultado.get(0).getNome());
+        assertEquals("Marmitas", resultado.get(0).nome());
 
-        // Verifica se o mock foi chamado
         verify(categoriaRepository, times(1)).findAll();
     }
     @Test
@@ -52,34 +48,21 @@ class CategoriaServiceTest {
     @DisplayName("Deve salvar uma nova categoria")
     void deveSalvarCategoria() {
 
-        // Cria a categoria que sera enviada  (sem ID)//
-        Categoria categoriaParaSalvar = new Categoria();
-        categoriaParaSalvar.setId(null);
-        categoriaParaSalvar.setNome( "Marmitas");
-        categoriaParaSalvar.setDescricao( "Tradicionais");
+        CategoriaRequestDTO dtoParaSalvar = new CategoriaRequestDTO("Marmitas", "Tradicionais");
 
-        //  Crie a categoria como ela deve voltar do banco (com ID)
         Categoria categoriaSalva = new Categoria();
         categoriaSalva.setId(1);
         categoriaSalva.setNome("Marmitas");
         categoriaSalva.setDescricao("Tradicionais");
 
-        // Configura o MOCK: "Quando repository.save for chamado com QUALQUER Categoria,
-        //  retorne a categoriaSalva//
         when(categoriaRepository.save(any(Categoria.class))).thenReturn(categoriaSalva);
 
-        // Chama o método REAL do serviço//
-        // O método retorna Object//
-        Object resultado = categoriaService.save(categoriaParaSalvar);
+        CategoriaResponseDTO resultado = categoriaService.save(dtoParaSalvar);
 
-
-        //  Verifica o resultado//
         assertNotNull(resultado);
-        assertInstanceOf(Categoria.class, resultado); // Garante que é uma Categoria
-        assertEquals(1, ((Categoria) resultado).getId());
-        assertEquals("Marmitas", ((Categoria) resultado).getNome());
+        assertEquals(1, resultado.id());
+        assertEquals("Marmitas", resultado.nome());
 
-        //  Verifica se o mock 'save' foi chamado//
         verify(categoriaRepository, times(1)).save(any(Categoria.class));
     }
 
@@ -87,89 +70,64 @@ class CategoriaServiceTest {
     @DisplayName("Deve encontrar uma categoria pelo ID com sucesso")
     void deveEncontrarCategoriaPorId() {
 
-        // Cria a categoria falsa
         Categoria categoriaFalsa = new Categoria();
         categoriaFalsa.setId(1);
         categoriaFalsa.setNome("porcoes");
         categoriaFalsa.setDescricao("porcoes individuais");
 
-        // Configura o MOCK: "Quando 'repository.findById' for chamado com ID 1,
-        //    retorna um Optional contendo a categoria falsa"
         when(categoriaRepository.findById(1)).thenReturn(Optional.of(categoriaFalsa));
 
+        CategoriaResponseDTO resultado = categoriaService.findById(1);
 
-        //  Chama o método REAL do serviço//
-        Categoria resultado = categoriaService.findById(1);
-
-
-        // Verifica o resultado//
         assertNotNull(resultado);
-        assertEquals(1, resultado.getId());
-        assertEquals("porcoes", resultado.getNome());
+        assertEquals(1, resultado.id());
+        assertEquals("porcoes", resultado.nome());
     }
 
     @Test
     @DisplayName("Deve deletar uma categoria com sucesso")
     void deletarCategoria() {
 
-        //  Cria a categoria que será deletada
         Categoria categoriaDeletada = new Categoria();
+        categoriaDeletada.setId(1);
         categoriaDeletada.setNome("Porcoes");
         categoriaDeletada.setDescricao("porcoes individuais");
 
-
         when(categoriaRepository.findById(1)).thenReturn(Optional.of(categoriaDeletada));
+        doNothing().when(categoriaRepository).deleteById(1);
 
-        doNothing().when(categoriaRepository).delete(categoriaDeletada);
-
-
-        // Chama o método REAL do serviço //
         categoriaService.delete(1);
 
-        // Verifica se os mocks foram chamados na ordem correta
         verify(categoriaRepository, times(1)).findById(1);
-        verify(categoriaRepository, times(1)).delete(categoriaDeletada);
+        verify(categoriaRepository, times(1)).deleteById(1);
     }
 
     @Test
     @DisplayName("Deve atualizar uma categoria com sucesso (lógica de update)")
     void deveAtualizarCategoria() {
 
-        //  Cria a categoria ORIGINAL (como está no banco)//
         Categoria categoriaOriginal = new Categoria();
         categoriaOriginal.setId(1);
         categoriaOriginal.setNome("Nome original");
         categoriaOriginal.setDescricao("Descricao original");
 
-        // Cria os DADOS NOVOS que sera enviado//
-        Categoria dadosNovos = new Categoria();
-        dadosNovos.setId(null);
-        dadosNovos.setNome("Nova categoria");
-        dadosNovos.setDescricao("Nova Descricao");
+        CategoriaRequestDTO dadosNovos = new CategoriaRequestDTO("Nova categoria", "Nova Descricao");
 
-        //  Cria como a categoria ATUALIZADA deve ficar//
         Categoria categoriaAtualizada = new Categoria();
         categoriaAtualizada.setId(1);
         categoriaAtualizada.setNome("categoria atualizada");
         categoriaAtualizada.setDescricao("descricao atualizada");
 
-
-        // Mocka o findById//
         when(categoriaRepository.findById(1)).thenReturn(Optional.of(categoriaOriginal));
-
-        // Mocka o 'save' (último passo do método 'update')
         when(categoriaRepository.save(any(Categoria.class))).thenReturn(categoriaAtualizada);
 
-        //  Chama o método REAL do serviço
-        Categoria resultado = categoriaService.update(1, dadosNovos);
+        CategoriaResponseDTO resultado = categoriaService.update(1, dadosNovos);
 
-        // Verifica o resultado
         assertNotNull(resultado);
-        assertEquals(1, resultado.getId());
-        assertEquals("categoria atualizada", resultado.getNome());
-        assertEquals("descricao atualizada", resultado.getDescricao());
+        assertEquals(1, resultado.id());
+        assertEquals("categoria atualizada", resultado.nome());
+        assertEquals("descricao atualizada", resultado.descricao());
 
-        //  Verifica se o save foi chamado
         verify(categoriaRepository, times(1)).save(any(Categoria.class));
     }
 }

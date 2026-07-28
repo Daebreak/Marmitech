@@ -1,30 +1,42 @@
 package com.marmitech.Marmitech.Controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoItemResponseDTO;
-import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoResponseDTO;
-import com.marmitech.Marmitech.Entity.*;
-import com.marmitech.Marmitech.Services.PedidoService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-
-import org.springframework.http.MediaType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.web.servlet.MockMvc;
-
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.mockito.ArgumentMatchers.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import org.mockito.Mockito;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.marmitech.Marmitech.DTO.RequestDTO.PedidoRequestDTO;
+import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoItemResponseDTO;
+import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoResponseDTO;
+import com.marmitech.Marmitech.Entity.Cliente;
+import com.marmitech.Marmitech.Entity.Pedido;
+import com.marmitech.Marmitech.Entity.Produto;
+import com.marmitech.Marmitech.Entity.Usuario;
+import com.marmitech.Marmitech.Services.PedidoService;
 
 @WebMvcTest(PedidoController.class)
 public class PedidoControllerTest {
@@ -56,10 +68,8 @@ public class PedidoControllerTest {
         produto.setId( 1 );
         produto.setNome( "Refrigerante" );
 
-        // PedidoItem Response DTO (simplificado para o mock)
         PedidoItemResponseDTO itemDto = new PedidoItemResponseDTO( 1, 1, 1, "Cliente Teste", "Refrigerante", 2, 10.00, 20.00 );
 
-        // Pedido principal para o Service (Entidade)
         pedido = new Pedido();
         pedido.setId( 1 );
         pedido.setValorTotal( 20.00 );
@@ -71,15 +81,20 @@ public class PedidoControllerTest {
         pedido.setPedidoItems( Collections.emptySet() );
         pedido.setHistoricos( Collections.emptyList() );
 
-        // Pedido Response DTO para o Controller
         pedidoResponseDTO = new PedidoResponseDTO( 1, "Cliente Teste", "FILA", "Rua Teste, 123", Set.of( itemDto ), 20.00, "2025-10-12" );
     }
 
     @Test
     @DisplayName("save - Deve criar um novo pedido com status CREATED")
     void cenario01() throws Exception {
-        Mockito.when( pedidoService.save( any( Pedido.class ) ) ).thenReturn( pedido );
-        String pedidoJson = objectMapper.writeValueAsString( pedido );
+        Mockito.when( pedidoService.save( any( PedidoRequestDTO.class ) ) ).thenReturn( pedidoResponseDTO );
+
+        PedidoRequestDTO dto = new PedidoRequestDTO(
+                20.00, "FILA", "Rua Teste, 123",
+                new PedidoRequestDTO.EntityId(1),
+                new HashSet<>()
+        );
+        String pedidoJson = objectMapper.writeValueAsString( dto );
 
         mockMvc.perform( post( "/api/pedido/save" )
                         .contentType( MediaType.APPLICATION_JSON )

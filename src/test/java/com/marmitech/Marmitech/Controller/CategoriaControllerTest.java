@@ -1,6 +1,7 @@
 package com.marmitech.Marmitech.Controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.marmitech.Marmitech.Entity.Categoria;
+import com.marmitech.Marmitech.DTO.RequestDTO.CategoriaRequestDTO;
+import com.marmitech.Marmitech.DTO.ResponseDTO.CategoriaResponseDTO;
 import com.marmitech.Marmitech.Services.CategoriaService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,14 +43,10 @@ class CategoriaControllerTest {
     @Test
    @DisplayName("Deve retornar a lista de categorias com sucesso")
     void buscarcategorias() throws Exception {
-       Categoria categoria1= new Categoria();
-       Categoria categoria2 = new Categoria();
-       categoria1.setNome("Marmitex");
-       categoria1.setDescricao("Marmita Grande");
-       categoria2.setNome("Porcao torresmo");
-       categoria2.setDescricao("Porcao torresmo 350g");
+       CategoriaResponseDTO categoria1 = new CategoriaResponseDTO(null, "Marmitex", "Marmita Grande");
+       CategoriaResponseDTO categoria2 = new CategoriaResponseDTO(null, "Porcao torresmo", "Porcao torresmo 350g");
 
-       List<Categoria> listadeCategorias =  Arrays.asList(categoria1,categoria2);
+       List<CategoriaResponseDTO> listadeCategorias = Arrays.asList(categoria1, categoria2);
 
        when(categoriaService.findAll()).thenReturn(listadeCategorias);
 
@@ -62,21 +59,14 @@ class CategoriaControllerTest {
    @Test
    @DisplayName("deve salvar uma categoria")
    void salvarcategoria() throws Exception{
-        Categoria  novaCategoria = new Categoria();
-        novaCategoria.setNome("Marmitas");
-        novaCategoria.setDescricao("Marmitas variadas");
+        CategoriaResponseDTO categoriaSalva = new CategoriaResponseDTO(1, "Marmitas", "Marmitas variadas");
 
-        Categoria categoriaSalva = new Categoria();
-        categoriaSalva.setId(1);
-        categoriaSalva.setNome("Marmitas");
-        categoriaSalva.setDescricao("Marmitas variadas");
+        when(categoriaService.save(any(CategoriaRequestDTO.class))).thenReturn(categoriaSalva);
 
-        when(categoriaService.save(any(Categoria.class))).thenReturn(categoriaSalva);
-
-        String jsonenviado = objectMapper.writeValueAsString(categoriaSalva);
+        String jsonEnviado = objectMapper.writeValueAsString(new CategoriaRequestDTO("Marmitas", "Marmitas variadas"));
 
         mockMvc.perform(post("/api/categoria/save").contentType(MediaType.APPLICATION_JSON)
-                .content(jsonenviado)).andExpect(status().isCreated()).andExpect(jsonPath("$.id",is(1))).andExpect(jsonPath("$.nome",is("Marmitas"))).andExpect(jsonPath("$.descricao",is("Marmitas variadas")));
+                .content(jsonEnviado)).andExpect(status().isCreated()).andExpect(jsonPath("$.id",is(1))).andExpect(jsonPath("$.nome",is("Marmitas"))).andExpect(jsonPath("$.descricao",is("Marmitas variadas")));
 
    }
     @Test
@@ -89,7 +79,7 @@ class CategoriaControllerTest {
 
         mockMvc.perform(delete("/api/categoria/delete/{id}", idParaDeletar))
 
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
 
 
@@ -102,27 +92,16 @@ class CategoriaControllerTest {
 
         Integer idParaAtualizar = 1;
 
+        CategoriaResponseDTO categoriaAtualizadaRetornada = new CategoriaResponseDTO(idParaAtualizar, "Marmitex Atualizada", "Descricao Atualizada");
 
-        Categoria dadosParaAtualizar = new Categoria();
-        dadosParaAtualizar.setNome("Marmitex Atualizada");
-        dadosParaAtualizar.setDescricao("Descricao Atualizada");
-
-
-        Categoria categoriaAtualizadaRetornada = new Categoria();
-        categoriaAtualizadaRetornada.setId(idParaAtualizar);
-        categoriaAtualizadaRetornada.setNome("Marmitex Atualizada");
-        categoriaAtualizadaRetornada.setDescricao("Descricao Atualizada");
-
-        when(categoriaService.update(eq(idParaAtualizar), any(Categoria.class)))
+        when(categoriaService.update(eq(idParaAtualizar), any(CategoriaRequestDTO.class)))
                 .thenReturn(categoriaAtualizadaRetornada);
 
-        String jsonParaEnviar = objectMapper.writeValueAsString(dadosParaAtualizar);
+        String jsonParaEnviar = objectMapper.writeValueAsString(new CategoriaRequestDTO("Marmitex Atualizada", "Descricao Atualizada"));
 
         mockMvc.perform(put("/api/categoria/update/{id}", idParaAtualizar)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonParaEnviar))
-
-
 
                 .andExpect(status().isOk())
 

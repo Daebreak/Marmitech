@@ -1,8 +1,10 @@
 package com.marmitech.Marmitech.Services;
 
+import com.marmitech.Marmitech.DTO.RequestDTO.PedidoRequestDTO;
 import com.marmitech.Marmitech.DTO.ResponseDTO.PedidoResponseDTO;
 import com.marmitech.Marmitech.Entity.HistoricoCompra;
 import com.marmitech.Marmitech.Entity.Pedido;
+import com.marmitech.Marmitech.Mapper.RequestMapper.PedidoRequestMapper;
 import com.marmitech.Marmitech.Mapper.ResponseMapper.PedidoResponseMapper;
 import com.marmitech.Marmitech.Entity.PedidoItem;
 import com.marmitech.Marmitech.Entity.Produto;
@@ -37,36 +39,26 @@ public class PedidoService {
     private ProdutoRepository produtoRepository;
 
     @Transactional
-    public Pedido save(Pedido pedido) {
+    public PedidoResponseDTO save(PedidoRequestDTO dto) {
+        Pedido pedido = PedidoRequestMapper.toEntity( dto );
         pedido.setDataPedido( LocalDate.now().toString() );
 
-        // Associa o pedido a cada item do pedido
         for (PedidoItem item : pedido.getPedidoItems()) {
-            // Busca a entidade 'Produto' gerida pelo JPA para evitar o erro "detached entity"
             Produto produto = produtoRepository.findById( item.getProduto().getId() )
                     .orElseThrow( () -> new RuntimeException( "Produto não encontrado: " + item.getProduto().getId() ) );
 
-            item.setProduto( produto ); // Define o produto gerido no item
-            item.setPedido( pedido ); // Estabelece a referência de volta para o pedido (lado "dono" da relação)
+            item.setProduto( produto );
+            item.setPedido( pedido );
         }
 
-        for (HistoricoCompra hist : pedido.getHistoricos()) {
-            hist.setPedido( pedido );
-        }
-
-        if (pedido.getUsuario() != null && pedido.getUsuario().getId() > 0) { // Corrigido para > 0
-            var usuario = usuarioRepository.findById( pedido.getUsuario().getId() )
-                    .orElseThrow( () -> new RuntimeException( "Usuário não encontrado" ) );
-            pedido.setUsuario( usuario );
-        }
-
-        if (pedido.getCliente() != null && pedido.getCliente().getId() > 0) { // Corrigido para > 0
+        if (pedido.getCliente() != null && pedido.getCliente().getId() > 0) {
             var cliente = clienteRepository.findById( pedido.getCliente().getId() )
                     .orElseThrow( () -> new RuntimeException( "Cliente não encontrado" ) );
             pedido.setCliente( cliente );
         }
 
-        return pedidoRepository.save( pedido );
+        Pedido saved = pedidoRepository.save( pedido );
+        return PedidoResponseMapper.toDto( saved );
     }
 
     public List<PedidoResponseDTO> findAll() {
