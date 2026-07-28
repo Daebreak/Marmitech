@@ -12,40 +12,40 @@
             </button>
 
           </div>
-          <br />
-          <table class="table table-striped">
-            <thead>
-              <tr class="centralizar">
-                <th>Nome</th>
-                <th>E-mail</th>
-                <th>Cargo</th>
-                <th>Data de criação</th>
-                <th>Ações</th>
-
-              </tr>
-            </thead>
-      
-            <tbody>
-              @for (usuario of lista; track $index) {
-              <tr>
-                <td>{{usuario.nome}}</td>
-                <td>{{usuario.email}}</td>
-                <td>{{usuario.cargo}}</td>
-                <td>{{usuario.dataCriacao | date: 'dd/MM/yyyy'}}</td>
-  
-                <td class="btntable">
-                  <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="editById(usuario)">
-                    Editar
-                  </button>
-                  <button type="button" class="btn btn-danger btn-rounded" mdbRipple (click)="deleteById(usuario)">
-                    Deletar
-                  </button>
-                </td>
-              </tr>
-              }
-            </tbody>
-          </table>
         </div>
+        <br />
+        <table class="table table-striped">
+          <thead>
+            <tr class="centralizar">
+              <th>Nome</th>
+              <th>E-mail</th>
+              <th>Cargo</th>
+              <th>Data de criação</th>
+              <th>Ações</th>
+
+            </tr>
+          </thead>
+    
+          <tbody>
+            @for (usuario of lista; track $index) {
+            <tr>
+              <td>{{usuario.nome}}</td>
+              <td>{{usuario.email}}</td>
+              <td>{{usuario.cargo}}</td>
+              <td>{{usuario.dataCriacao | date: 'dd/MM/yyyy'}}</td>
+
+              <td class="btntable">
+                <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="editById(usuario)">
+                  Editar
+                </button>
+                <button type="button" class="btn btn-danger btn-rounded" mdbRipple (click)="deleteById(usuario)">
+                  Deletar
+                </button>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
       </div>
       <br />
 

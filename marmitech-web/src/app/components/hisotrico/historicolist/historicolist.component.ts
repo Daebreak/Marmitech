@@ -21,6 +21,18 @@ export class HistoricolistComponent implements OnInit {
 
   filtroData: string = '';
   filtroStatus: string = '';
+  seletorDataAberto = false;
+  seletorStatusAberto = false;
+  mesAtualCalendario = new Date();
+
+  statusOptions = [
+    { value: '', label: 'Todos' },
+    { value: 'FILA', label: 'Em Fila' },
+    { value: 'PREPARANDO', label: 'Preparando' },
+    { value: 'FINALIZADO', label: 'Finalizado' },
+    { value: 'ENTREGUE', label: 'Entregue' },
+    { value: 'CANCELADO', label: 'Cancelado' },
+  ];
 
   private pedidoService = inject(PedidoService);
 
@@ -72,5 +84,85 @@ export class HistoricolistComponent implements OnInit {
     this.filtroData = '';
     this.filtroStatus = '';
     this.pedidos = [...this.pedidosOriginal];
+  }
+
+  get statusSelecionado() {
+    return this.statusOptions.find(status => status.value === this.filtroStatus) ?? this.statusOptions[0];
+  }
+
+  get dataSelecionadaLabel(): string {
+    if (!this.filtroData) {
+      return 'Escolher data';
+    }
+
+    const [ano, mes, dia] = this.filtroData.split('-');
+    return `${dia}/${mes}/${ano}`;
+  }
+
+  get mesAtualLabel(): string {
+    return new Intl.DateTimeFormat('pt-BR', {
+      month: 'long',
+      year: 'numeric'
+    }).format(this.mesAtualCalendario);
+  }
+
+  get diasCalendario(): Array<number | null> {
+    const ano = this.mesAtualCalendario.getFullYear();
+    const mes = this.mesAtualCalendario.getMonth();
+    const primeiroDiaSemana = new Date(ano, mes, 1).getDay();
+    const totalDias = new Date(ano, mes + 1, 0).getDate();
+    const dias: Array<number | null> = Array(primeiroDiaSemana).fill(null);
+
+    for (let dia = 1; dia <= totalDias; dia++) {
+      dias.push(dia);
+    }
+
+    return dias;
+  }
+
+  alternarSeletorData() {
+    this.seletorDataAberto = !this.seletorDataAberto;
+    this.seletorStatusAberto = false;
+  }
+
+  alternarSeletorStatus() {
+    this.seletorStatusAberto = !this.seletorStatusAberto;
+    this.seletorDataAberto = false;
+  }
+
+  mudarMesCalendario(direcao: number) {
+    const ano = this.mesAtualCalendario.getFullYear();
+    const mes = this.mesAtualCalendario.getMonth() + direcao;
+    this.mesAtualCalendario = new Date(ano, mes, 1);
+  }
+
+  selecionarDia(dia: number | null) {
+    if (!dia) {
+      return;
+    }
+
+    const ano = this.mesAtualCalendario.getFullYear();
+    const mes = String(this.mesAtualCalendario.getMonth() + 1).padStart(2, '0');
+    const diaFormatado = String(dia).padStart(2, '0');
+
+    this.filtroData = `${ano}-${mes}-${diaFormatado}`;
+    this.seletorDataAberto = false;
+  }
+
+  selecionarStatus(status: string) {
+    this.filtroStatus = status;
+    this.seletorStatusAberto = false;
+  }
+
+  diaEstaSelecionado(dia: number | null): boolean {
+    if (!dia || !this.filtroData) {
+      return false;
+    }
+
+    const ano = this.mesAtualCalendario.getFullYear();
+    const mes = String(this.mesAtualCalendario.getMonth() + 1).padStart(2, '0');
+    const diaFormatado = String(dia).padStart(2, '0');
+
+    return this.filtroData === `${ano}-${mes}-${diaFormatado}`;
   }
 }
