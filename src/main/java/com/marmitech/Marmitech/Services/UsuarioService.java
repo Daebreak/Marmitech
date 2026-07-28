@@ -4,7 +4,7 @@ import com.marmitech.Marmitech.Entity.Usuario;
 import com.marmitech.Marmitech.Repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,11 +14,15 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UsuarioService {
-    @Autowired
+
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public Usuario save(Usuario usuario) {
         usuario.setDataCriacao(LocalDate.now());
+        if (usuario.getSenha() != null && !usuario.getSenha().isBlank()) {
+            usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        }
         return usuarioRepository.save(usuario);
     }
 
@@ -44,10 +48,10 @@ public class UsuarioService {
             usuarioUpdate.setNome(usuario.getNome());
         }
         if (usuario.getEmail() != null && !usuario.getEmail().isBlank()) {
-            usuarioUpdate.setEmail(usuarioUpdate.getEmail());
+            usuarioUpdate.setEmail(usuario.getEmail());
         }
         if (usuario.getSenha() != null && !usuario.getSenha().isBlank()) {
-            usuarioUpdate.setSenha(usuario.getSenha());
+            usuarioUpdate.setSenha(passwordEncoder.encode(usuario.getSenha()));
         }
         if (usuario.getCargo() != null && !usuario.getCargo().isBlank()) {
             usuarioUpdate.setCargo(usuario.getCargo());
@@ -64,7 +68,13 @@ public class UsuarioService {
     }
 
     public Usuario login(String email, String senha) {
-        return usuarioRepository.findByEmailAndSenha(email, senha)
+        Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Usuário ou senha inválidos"));
+
+        if (!passwordEncoder.matches(senha, usuario.getSenha())) {
+            throw new RuntimeException("Usuário ou senha inválidos");
+        }
+
+        return usuario;
     }
 }
