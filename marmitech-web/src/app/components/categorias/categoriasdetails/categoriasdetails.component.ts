@@ -28,60 +28,10 @@ export class CategoriasdetailsComponent {
   routerSaver = inject(Router);
   categoriaService = inject(CategoriaService);
 
-  constructor() {
-    /*const id = this.route.snapshot.paramMap.get('id');
-    console.log(id);*/  }
+  constructor() { }
   categoriaServices = inject(CategoriaService);
 
   salvar() {
-    if (this.categoria.id > 0) {
-      // 🟠 Atualizar categoria existente
-      this.categoriaService.update(this.categoria).subscribe({
-        next: (updatedCategoria) => {
-          Swal.fire({
-            title: 'Atualizado!',
-            icon: 'success',
-            confirmButtonText: 'OK',
-          });
-          this.categoria = updatedCategoria;
-          this.retorno.emit(this.categoria);
-        },
-        error: (err) => {
-          Swal.fire({
-            title: 'Erro ao atualizar categoria',
-            text: err.message,
-            icon: 'error',
-            confirmButtonText: 'Fechar',
-          });
-        },
-      });
-    } else {
-      // 🔵 Criar nova categoria
-      this.categoriaService.create(this.categoria).subscribe({
-        next: (createdCategoria) => {
-          Swal.fire({
-            title: 'Criado!',
-            icon: 'success',
-            confirmButtonText: 'OK',
-          });
-          this.categoria = createdCategoria;
-          // ✅ Aqui já vem com o ID real do banco
-          this.routerSaver.navigate(['admin/categorias'], {
-            state: { categoriaNovo: this.categoria },
-          });
-          this.retorno.emit(this.categoria);
-        },
-        error: (err) => {
-          Swal.fire({
-            title: 'Erro ao criar categoria',
-            text: err.message,
-            icon: 'error',
-            confirmButtonText: 'Fechar',
-          });
-        },
-      });
-      this.routerSaver.navigate(['admin/categorias'], { state: { categoriaNovo: this.categoria } });
-    }
     this.retorno.emit(this.categoria);
   }
 }
