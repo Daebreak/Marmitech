@@ -7,12 +7,7 @@
           <h3>Lista de Clientes</h3>
 
           <div class="direita">
-            <button
-              type="button"
-              class="btn btn-primary btn-rounded"
-              mdbRipple
-              (click)="new()"
-            >
+            <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="new()">
               Novo
             </button>
           </div>
@@ -41,20 +36,10 @@
               <td>{{ cliente.dataCadastro | date : "dd/MM/yyyy" }}</td>
 
               <td class="botoes">
-                <button
-                  type="button"
-                  class="btn btn-primary btn-rounded"
-                  mdbRipple
-                  (click)="editById(cliente)"
-                >
+                <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="editById(cliente)">
                   Editar
                 </button>
-                <button
-                  type="button"
-                  class="btn btn-danger btn-rounded"
-                  mdbRipple
-                  (click)="deleteById(cliente)"
-                >
+                <button type="button" class="btn btn-danger btn-rounded" mdbRipple (click)="deleteById(cliente)">
                   Deletar
                 </button>
               </td>
@@ -69,19 +54,12 @@
 
 <!-- Modal -->
 <ng-template #modalClienteDetalhe>
-  <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Cadastro de Clientes</h5>
-    <button
-      type="button"
-      class="btn-close"
-      aria-label="Close"
-      (click)="modalRef.close()"
-    ></button>
+  <div class="modal-header px-4 pt-4 pb-2">
+    <h5 class="modal-title fw-bold fs-4" id="exampleModalLabel">Cadastro de Cliente</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modalRef.close()"></button>
   </div>
-  <div class="modal-body">
-    <app-clientedetails
-      [cliente]="clienteEdit"
-      (retorno)="retornoDetalhes($event)"
-    ></app-clientedetails>
+  <div class="modal-body p-4">
+    <app-clientedetails [cliente]="clienteEdit" (retorno)="retornoDetalhes($event)"
+      (cancelar)="modalRef.close()"></app-clientedetails>
   </div>
 </ng-template>

@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MdbCollapseModule } from 'mdb-angular-ui-kit/collapse';
 import { MdbDropdownModule } from 'mdb-angular-ui-kit/dropdown';
@@ -28,7 +28,10 @@ export class MenuComponent {
     return this.loginService.hasRole('COZINHA');
   }
 
+  router = inject(Router);
+
   logout() {
     this.loginService.logout();
+    this.router.navigate(['/login']);
   }
 }

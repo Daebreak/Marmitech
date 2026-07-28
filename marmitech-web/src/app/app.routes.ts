@@ -25,8 +25,11 @@ import { UsuariodetailsComponent } from './components/usuario/usuariodetails/usu
 import { PedidosFilaComponent } from './components/pedidos/pedidos-fila/pedidos-fila.component'; // Importe o novo componente
 import { roleGuard } from './auth/role.guard';
 
+import { LoginComponent } from './components/layout/login/login.component';
+
 export const routes: Routes = [
-    { path: '', redirectTo: 'admin/pedidos/fila', pathMatch: 'full' },
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    { path: 'login', component: LoginComponent },
     {
         path: 'admin',
         component: PrincipalComponent,

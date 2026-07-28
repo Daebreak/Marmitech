@@ -1,13 +1,12 @@
 
-.centralizar{
+.centralizar {
     display: flex;
     flex-direction: column;
-    color:gold;
-    border:solid;
 }
-.direita{
-    color:blue;
-    border: solid;
+
+.direita {
+    display: flex;
+    justify-content: flex-end;
 }
 
 

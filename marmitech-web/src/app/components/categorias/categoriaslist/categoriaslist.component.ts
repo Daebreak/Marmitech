@@ -110,13 +110,17 @@ export class CategoriaslistComponent {
       nome: '',
       descricao: '',
     });
-    this.modalRef = this.modalService.open(this.modalCategoriaDetalhe);
+    this.modalRef = this.modalService.open(this.modalCategoriaDetalhe, {
+      modalClass: 'modal-lg modal-dialog-centered'
+    });
   }
 
   // ✏️ Editar categoria
   editById(categoria: Categoria) {
     this.categoriaEdit = Object.assign({}, categoria); // Clona o objeto para evitar referência
-    this.modalRef = this.modalService.open(this.modalCategoriaDetalhe);
+    this.modalRef = this.modalService.open(this.modalCategoriaDetalhe, {
+      modalClass: 'modal-lg modal-dialog-centered'
+    });
   }
 
   // 🔁 Retorno de criação ou atualização (Lógica Otimizada)

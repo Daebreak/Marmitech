@@ -5,6 +5,8 @@ import { Produto } from '../../../models/produto';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { ProdutoService } from '../../../services/produto.service';
+import { CategoriaService } from '../../../services/categoria.service';
+import { Categoria } from '../../../models/categoria';
 
 @Component({
   selector: 'app-produtosdetails',
@@ -16,12 +18,23 @@ export class ProdutosdetailsComponent {
   router = inject(ActivatedRoute);
   routerSaver = inject(Router);
   
+  categoriaService = inject(CategoriaService);
+  categorias: Categoria[] = [];
+
   constructor() {
+    this.carregarCategorias();
     const id = this.router.snapshot.paramMap.get('id');
     console.log(id);
     if (id) {
       this.findById(parseInt(id));
     }
+  }
+
+  carregarCategorias() {
+    this.categoriaService.findAll().subscribe({
+      next: (lista) => (this.categorias = lista),
+      error: (err) => console.error('Erro ao carregar categorias:', err)
+    });
   }
   
   produtoService = inject(ProdutoService);
@@ -37,6 +50,7 @@ export class ProdutosdetailsComponent {
       sku: '' });
 
   @Output("retorno") retorno = new EventEmitter<Produto>();
+  @Output() cancelar = new EventEmitter<void>();
       
     findById(id: number) {
       this.produtoService.findById(id).subscribe(

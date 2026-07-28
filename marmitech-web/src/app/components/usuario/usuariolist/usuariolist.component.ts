@@ -103,11 +103,15 @@ export class UsuariolistComponent {
       cargo: '',
       dataCriacao: '',
     });
-    this.modalRef = this.modalService.open(this.modalUsuariosDetalhe);
+    this.modalRef = this.modalService.open(this.modalUsuariosDetalhe, {
+      modalClass: 'modal-lg modal-dialog-centered'
+    });
   }
   editById(usuario: Usuario) {
     this.usuarioEdit = Object.assign({}, usuario); //clonando pra evitar referencia de objeto
-    this.modalRef = this.modalService.open(this.modalUsuariosDetalhe);
+    this.modalRef = this.modalService.open(this.modalUsuariosDetalhe, {
+      modalClass: 'modal-lg modal-dialog-centered'
+    });
   }
   retornoDetalhes(usuario: Usuario) {
     this.findAll();

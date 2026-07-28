@@ -22,6 +22,7 @@ export class CategoriasdetailsComponent {
   });
 
   @Output('retorno') retorno = new EventEmitter<any>();
+  @Output() cancelar = new EventEmitter<void>();
 
   route = inject(ActivatedRoute);
   routerSaver = inject(Router);

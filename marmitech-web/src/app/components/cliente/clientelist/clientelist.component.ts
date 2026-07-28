@@ -99,12 +99,16 @@ export class ClientelistComponent {
       endereco: '',
       dataCadastro: '',
     });
-    this.modalRef = this.modalService.open(this.modalClienteDetalhe);
+    this.modalRef = this.modalService.open(this.modalClienteDetalhe, {
+      modalClass: 'modal-lg modal-dialog-centered'
+    });
   }
 
   editById(cliente: Cliente) {
     this.clienteEdit = Object.assign({}, cliente);
-    this.modalRef = this.modalService.open(this.modalClienteDetalhe);
+    this.modalRef = this.modalService.open(this.modalClienteDetalhe, {
+      modalClass: 'modal-lg modal-dialog-centered'
+    });
   }
 
   retornoDetalhes(cliente: Cliente) {

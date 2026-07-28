@@ -6,16 +6,15 @@ export class Usuario {
     email!: string;
     senha!: string;
     cargo!: string;
-    data_criacao!: string;
+    dataCriacao!: string;
 
-    constructor( data: any ) {
-        this.id = data.usuarioId;
-        this.nome = data.nome;
-        this.email = data.email;
-        this.senha = data.senha;
-        this.cargo = data.cargo;
-        this.data_criacao = data.data_criacao;
+    constructor(data: any) {
+        this.id = data.id || data.usuarioId || 0;
+        this.nome = data.nome || '';
+        this.email = data.email || '';
+        this.senha = data.senha || '';
+        this.cargo = data.cargo || '';
+        this.dataCriacao = data.dataCriacao || data.data_criacao || '';
     }
 
 }
-                                                                                                                                                                                                                

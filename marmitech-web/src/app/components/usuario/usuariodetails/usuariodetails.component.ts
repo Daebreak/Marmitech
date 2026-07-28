@@ -22,10 +22,11 @@ export class UsuariodetailsComponent {
     nome: '',
     email: '',
     senha: '',
-    dataCadastro: '',
-    ativo: true
+    cargo: '',
+    dataCriacao: ''
   });
   @Output("retorno") retorno = new EventEmitter<any>();
+  @Output() cancelar = new EventEmitter<void>();
  
   route = inject(ActivatedRoute);
   routerSaver = inject(Router);

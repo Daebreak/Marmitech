@@ -8,6 +8,7 @@ export const roleGuard: CanActivateFn = (route, state) => {
 
   if (!keycloakService.isAuthenticated()) {
     keycloakService.logout();
+    router.navigate(['/login']);
     return false;
   }
 

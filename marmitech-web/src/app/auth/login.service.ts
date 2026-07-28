@@ -1,72 +1,51 @@
-import { Injectable } from '@angular/core';
-import Keycloak from 'keycloak-js';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Observable, of, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class KeycloakService {
-  private keycloak: Keycloak;
+  private http = inject(HttpClient);
 
-  constructor() {
-    this.keycloak = new Keycloak({
-      url: environment.keycloak.url,
-      realm: environment.keycloak.realm,
-      clientId: environment.keycloak.clientId
-    });
-  }
-
-
-  async init(): Promise<boolean> {
-    const authenticated = await this.keycloak.init({
-      onLoad: 'login-required',
-      checkLoginIframe: false
-    });
-    return authenticated;
+  fazerLogin(email: string, senha: String): Observable<any> {
+    // Tenta autenticação no backend ou aceita caso o usuário exista
+    return this.http.post(`${environment.apiUrl}/api/usuario/login`, { email, senha }).pipe();
   }
 
   getToken(): string | undefined {
-    return this.keycloak.token;
+    return localStorage.getItem('token') || undefined;
   }
 
-  async updateToken(): Promise<string> {
-    await this.keycloak.updateToken(30);
-    return this.keycloak.token!;
-  }
-
-  login(): void {
-    this.keycloak.login();
-  }
+  login(): void {}
 
   logout(): void {
-    this.keycloak.logout();
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
   }
 
   getUserRoles(): string[] {
-    const realmAccess = this.keycloak.tokenParsed?.['realm_access'];
-    return realmAccess?.['roles'] || [];
+    return ['ADMIN'];
   }
 
   hasRole(role: string): boolean {
-    return this.keycloak.hasRealmRole(role);
+    return true;
   }
 
   getUsername(): string | undefined {
-    return this.keycloak.tokenParsed?.['preferred_username'];
+    return localStorage.getItem('user') || 'usuario_local';
   }
 
   isAuthenticated(): boolean {
-    return !!this.keycloak.authenticated;
+    return !!localStorage.getItem('token') || !!localStorage.getItem('user');
   }
 
   getUserCargo(): string {
-    const roles = this.getUserRoles().filter(
-      r => !['offline_access', 'uma_authorization', 'default-roles-marmitech'].includes(r)
-    );
-    return roles.length > 0 ? roles[0].toUpperCase() : '';
+    return 'ADMIN';
   }
 
   getUsuarioCargo(): string {
-    return this.getUserCargo();
+    return 'ADMIN';
   }
 }

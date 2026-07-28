@@ -23,6 +23,7 @@ export class ClientedetailsComponent {
 
   });
   @Output() retorno = new EventEmitter<Cliente>();
+  @Output() cancelar = new EventEmitter<void>();
 
   clienteService = inject(ClienteService);
   routerSaver = inject(Router);

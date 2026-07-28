@@ -62,4 +62,13 @@ public class UsuarioController {
         return new ResponseEntity<>( result, HttpStatus.OK );
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Usuario loginData) {
+        try {
+            var usuario = usuarioService.login(loginData.getEmail(), loginData.getSenha());
+            return ResponseEntity.ok(usuario);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+    }
 }

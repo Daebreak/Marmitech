@@ -51,7 +51,9 @@ export class ProdutoslistComponent {
 
   editById(produto: Produto) {
     this.produtoEdit = Object.assign({}, produto);
-    this.modalRef = this.modalService.open(this.modalProdutoDetalhe);
+    this.modalRef = this.modalService.open(this.modalProdutoDetalhe, {
+      modalClass: 'modal-lg modal-dialog-centered'
+    });
   }
 
   new() {
@@ -64,7 +66,9 @@ export class ProdutoslistComponent {
         precoUnitario: 0, 
         estoque: 0, 
         sku: '' });
-    this.modalRef = this.modalService.open(this.modalProdutoDetalhe);
+    this.modalRef = this.modalService.open(this.modalProdutoDetalhe, {
+      modalClass: 'modal-lg modal-dialog-centered'
+    });
   }
 
 
